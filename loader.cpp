@@ -1,5 +1,6 @@
 extern start_ctors, end_ctors, start_dtors, end_dtors;
   
+extern "C"
 void
 loader (void)
 {

@@ -1,4 +1,4 @@
-#include <Memory.h>
+#include <Memory/Memory.h>
 
 void*
 Memory::alloc (Type::ulong size)
@@ -89,9 +89,8 @@ Memory::operator Type::ulong ()
     return _size;
 }
 
-/**
- * This looks weird, I mean, object construction?
- */
+/* kernel space new/delete */
+
 void*
 operator new (Type::ulong size)
 {
@@ -104,9 +103,6 @@ operator new[] (Type::ulong size)
     return Memory::alloc(size);
 }
 
-/**
- * This looks weird, I mean, object destruction?
- */
 void
 operator delete (void* pointer)
 {
