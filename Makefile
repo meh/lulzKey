@@ -13,7 +13,7 @@ all: loader kernel
 	ld -melf_i386 -T ${LINKER_FILE} -o ${NAME} $(LOADER_FILE:.cpp=.o) $(KERNEL_FILES:.cpp=.o)
 
 loader:
-	${CXX} ${CFLAGS} -fPIC -o $(LOADER_FILE:.cpp=.o) -c ${LOADER_FILE}
+	as --32 -o loader.o loader.s
 
 kernel: $(KERNEL_FILES:.cpp=.o)
 
