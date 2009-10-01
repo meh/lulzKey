@@ -1,16 +1,31 @@
-.data ALIGN (0x1000) : {
-    start_ctors = .;
-    *(.ctor*)
-    end_ctors = .;
-    start_dtors = .;
-    *(.dtor*)
-    end_dtors = .;
-    *(.data)
-}
+ENTRY (loader)
 
-.text 0x100000 {
-    *(.text)
-    *(.rodata*)
-}
+SECTIONS {
+    . = 0x00100000;
 
-ENTRY(loader)
+    .text :{
+        *(.text)
+        *(.rodata*)
+    }
+
+    .rodata ALIGN (0x1000) : {
+        *(.rodata)
+    }
+
+    .data ALIGN (0x1000) : {
+        start_ctors = .;
+        *(.ctor*)
+        end_ctors = .;
+        start_dtors = .;
+        *(.dtor*)
+        end_dtors = .;
+        *(.data)
+    }
+
+    .bss : {
+        sbss = .;
+        *(COMMON)
+        *(.bss)
+        ebss = .;
+    }
+}

@@ -1,9 +1,11 @@
 #include <Memory/Memory.h>
 
 void*
-Memory::alloc (Type::ulong size)
+Memory::alloc (Type::uint size)
 {
     /* OverMe */
+
+    return NULL;
 }
 
 void
@@ -12,7 +14,7 @@ Memory::free (void* pointer)
     /* OverMe */
 }
 
-Memory::Memory (Type::ulong size)
+Memory::Memory (Type::uint size)
 {
     _size   = size;
     _memory = Memory::alloc(_size);
@@ -20,12 +22,13 @@ Memory::Memory (Type::ulong size)
 
 Memory::Memory (Memory& memory)
 {
-    void* data = memory.data();
-    _size      = memory.size();
-    _memory    = Memory::alloc(_size);
+    const void* data = memory.data();
 
-    for (Type::ulong i = 0; i < _size; i++) {
-        _memory[i] = data[i];
+    _size   = memory.size();
+    _memory = Memory::alloc(_size);
+
+    for (Type::uint i = 0; i < _size; i++) {
+        ((char*) _memory)[i] = ((char*) data)[i];
     }
 }
 
@@ -34,14 +37,14 @@ Memory::~Memory ()
     Memory::free(_memory);
 }
 
-Type::ulong
+Type::uint
 Memory::size (void)
 {
     return _size;
 }
 
 void
-Memory::size (Type::ulong size)
+Memory::size (Type::uint size)
 {
     _size = size;
 }
@@ -53,21 +56,21 @@ Memory::data (void)
 }
 
 void
-Memory::data (Memory& memory, Type::ulong offset)
+Memory::data (Memory& memory, Type::uint offset)
 {
-    void*       data = memory.data();
-    Type::ulong size = memory.size();
+    const void* data = memory.data();
+    Type::uint size = memory.size();
 
-    for (Type:ulong i = offset; i < size; i++) {
-        _memory[i] = data[i];
+    for (Type::uint i = offset; i < size; i++) {
+        ((char*) _memory)[i] = ((char*) data)[i];
     }
 }
 
 void
-Memory::data (void* memory, Type::ulong size, Type::ulong offset)
+Memory::data (void* memory, Type::uint size, Type::uint offset)
 {
-    for (Type:ulong i = offset; i < size; i++) {
-        _memory[i] = memory[i];
+    for (Type::uint i = offset; i < size; i++) {
+        ((char*) _memory)[i] = ((char*) memory)[i];
     }
 }
 
@@ -84,7 +87,7 @@ Memory::operator void* ()
     return _memory;
 }
 
-Memory::operator Type::ulong ()
+Memory::operator Type::uint ()
 {
     return _size;
 }
@@ -92,13 +95,13 @@ Memory::operator Type::ulong ()
 /* kernel space new/delete */
 
 void*
-operator new (Type::ulong size)
+operator new (Type::uint size)
 {
     return Memory::alloc(size);
 }
 
 void*
-operator new[] (Type::ulong size)
+operator new[] (Type::uint size)
 {
     return Memory::alloc(size);
 }
