@@ -34,7 +34,7 @@ class Memory
   public:
     operator void*       () const;
     operator Type::ulong () const;
-}
+};
 
 // Kernel space new's
 void* operator new   (Type::ulong size);
