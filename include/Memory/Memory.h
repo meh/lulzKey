@@ -9,11 +9,14 @@
 
 #include <Type.h>
 
+namespace Kernel {
+
 class Memory
 {
   public:
     static void* alloc (Type::uint size);
     static void  free  (void* pointer);
+    static void  copy  (void* source, void* dest, Type::uint size);
 
   private:
     void*       _memory;
@@ -35,9 +38,11 @@ class Memory
     void* pointer (void);
 
   public:
-    operator void*       ();
+    operator void*      ();
     operator Type::uint ();
 };
+
+}
 
 // Kernel space new's
 void* operator new   (Type::uint size);
