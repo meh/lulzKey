@@ -30,16 +30,29 @@ Shell::color (Shell::Color color)
     _color.background(color.background());
 }
 
+void
+Shell::color (char foreground, char background)
+{
+    _color.foreground(foreground);
+    _color.background(background);
+}
+
 Shell::Color
 Shell::color (void)
 {
     return _color;
 }
 
-Type::uint
-Shell::print (char out)
+unsigned int
+Shel::print (char out)
 {
-    Type::uint printed = 0;
+    return this->print((unsigned char) out);
+}
+
+unsigned int
+Shell::print (unsigned char out)
+{
+    unsigned int printed = 0;
 
     switch (out) {
         case '\t':
@@ -101,12 +114,89 @@ Shell::print (char out)
     return printed;
 }
 
-Type::uint
+unsigned int
+Shell::print (short out)
+{
+    unsigned int printed;
+
+    if (out < 0) {
+        printed = this->print('-') + this->print((unsigned long) -out);
+    }
+    else {
+        printed = this->print((unsigned long) -out);
+    }
+
+    return printed;
+}
+
+unsigned int
+Shell::print (unsigned short out)
+{
+    return this->print((unsigned long) out);
+}
+
+unsigned int
+Shel::print (int out)
+{
+    unsigned int printed;
+
+    if (out < 0) {
+        printed = this->print('-') + this->print((unsigned long) -out);
+    }
+    else {
+        printed = this->print((unsigned long) -out);
+    }
+
+    return printed;
+}
+
+unsigned int
+Shell::print (unsigned int out)
+{
+    return this->print((unsigned long) out);
+}
+
+unsigned int
+Shell::print (long out)
+{
+    unsigned int printed;
+
+    if (out < 0) {
+        printed = this->print('-') + this->print((unsigned long) -out);
+    }
+    else {
+        printed = this->print((unsigned long) -out);
+    }
+
+    return printed;
+}
+
+unsigned int
+Shell::print (unsigned long out)
+{
+    char output[21] = {0};
+    int  count      = 0;
+
+    do {
+        output[count] = out % 10;
+        out           = out / 10;
+        count++;
+    } while (out > 0);
+
+    count = 0;
+    for (int i = 0; i < count; i++) {
+        count += this->print(output[i] + 0x30);
+    }
+
+    return count;
+}
+
+unsigned int
 Shell::print (const char* out)
 {
-    Type::uint printed = 0;
+    unsigned int printed = 0;
 
-    for (Type::uint i = 0; out[i] != '\0'; i++) {
+    for (unsigned int i = 0; out[i] != '\0'; i++) {
         printed += this->print(out[i]);
     }
 
@@ -127,10 +217,83 @@ Shell::operator << (char out)
     return *this;
 }
 
+Shell&
+Shell::operator << (unsigned char out)
+{
+    this->print(out);
+    return *this;
+}
+
+Shell&
+Shell::operator << (short out)
+{
+    this->print(out);
+    return *this;
+}
+
+Shell&
+Shell::operator << (unsigned short out)
+{
+    this->print(out);
+    return *this;
+}
+
+Shell&
+Shell::operator << (int out)
+{
+    this->print(out);
+    return *this;
+}
+
+Shell&
+Shell::operator << (unsigned int out)
+{
+    this->print(out);
+    return *this;
+}
+
+Shell&
+Shell::operator << (long out)
+{
+    this->print(out);
+    return *this;
+}
+
+Shell&
+Shell::operator << (unsigned long out)
+{
+    this->print(out);
+    return *this;
+}
+
+Shell&
+Shell::operator << (const void* out)
+{
+    this->printHexadecimal((unsigned int) out);
+}
+
 Shell& operator << (Shell& shell, const char* string)
 {
     shell.print(string);
     return shell;
+}
+
+unsigned int
+Shell::_binary (unsigned long out)
+{
+
+}
+
+unsigned int
+Shell::_octal (unsigned long out)
+{
+
+}
+
+unsigned int
+Shell::_hexadecimal (unsigned long out)
+{
+
 }
 
 }

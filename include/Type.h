@@ -8,11 +8,12 @@
 #define _LKEY_TYPE_H
 
 namespace Type {
-    typedef unsigned char uchar;
-    typedef unsigned int  uint;
-    typedef unsigned long ulong;
+    typedef u8  unsigned char;
+    typedef u16 unsigned short;
+    typedef u32 unsigned int;
+    typedef u64 unsigned long long;
 
-    typedef struct MultiBoot {
+    struct MultiBoot {
         Type::ulong magic;
         Type::ulong flags;
         Type::ulong checksum;
@@ -21,7 +22,7 @@ namespace Type {
         Type::ulong loadEndAddress;
         Type::ulong bssEndAddress;
         Type::ulong entryAddress;
-    } MultiBoot;
+    };
 }
 
 #define NULL ((void*) 0)

@@ -15,18 +15,19 @@ class Shell
 {
   public:
     #include <Tools/Shell/Color.h>
+    #include <Tools/Shell/OutputMode.h>
 
   public:
-    static const Type::uchar  lines   = 25;
-    static const Type::uchar  columns = 80;
+    static const unsigned char lines   = 25;
+    static const unsigned char columns = 80;
 
-    static const Type::uchar  endLine = '\n';
+    static const unsigned char endLine = '\n';
 
   private:
-    Type::uchar* _video;
-    Type::uchar  _line;
-    Type::uchar  _position;
-    Shell::Color _color;
+    unsigned char* _video;
+    unsigned char  _line;
+    unsigned char  _position;
+    Shell::Color   _color;
 
   public:
     Shell (const void* address = (void*) 0xb8000);
@@ -34,16 +35,31 @@ class Shell
     void clear (void);
 
     void         color (Shell::Color color);
+    void         color (char foreground, char background = Shell::Color::Black);
     Shell::Color color (void);
 
-    Type::uint print (char out);
-    Type::uint print (const char* out);
+    unsigned int print (char out);
+    unsigned int print (unsigned char out);
+
+    unsigned int print (short out);
+    unsigned int print (unsigned short out);
+
+    unsigned int print (int out);
+    unsigned int print (unsigned int out);
+
+    unsigned int print (long out);
+    unsigned int print (unsigned long out);
+
+    unsigned int print (const char* out);
+
+    unsigned int _binary      (unsigned long out);
+    unsigned int _octal       (unsigned long out);
+    unsigned int _hexadecimal (unsigned long out);
 
   public:
     Shell& operator << (Shell::Color color);
 
     Shell& operator << (char out);
-#if 0
     Shell& operator << (unsigned char out);
 
     Shell& operator << (short out);
@@ -55,11 +71,7 @@ class Shell
     Shell& operator << (long out);
     Shell& operator << (unsigned long out);
 
-    Shell& operator << (float out);
-    Shell& operator << (double out);
-
     Shell& operator << (const void* out);
-#endif
 
     friend Shell& operator << (Shell& shell, const char* out);
 };
