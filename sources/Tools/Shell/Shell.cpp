@@ -1,4 +1,4 @@
-#include <Tools/Shell.h>
+#include <Tools/Shell/Shell.h>
 
 namespace Kernel {
 
@@ -7,7 +7,6 @@ Shell::Shell (const void* address)
     _video    = (Type::uchar*) address;
     _line     = 0;
     _position = 0;
-    _color    = FGWhite;
 }
 
 void
@@ -27,7 +26,8 @@ Shell::clear (void)
 void
 Shell::color (Shell::Color color)
 {
-    _color = color;
+    _color.foreground(color.foreground());
+    _color.background(color.background());
 }
 
 Shell::Color
@@ -91,7 +91,7 @@ Shell::print (char out)
         }
 
         _video[(_line * 2 * Shell::columns) + (_position * 2)]     = out;
-        _video[(_line * 2 * Shell::columns) + (_position * 2) + 1] = _color;
+        _video[(_line * 2 * Shell::columns) + (_position * 2) + 1] = _color.value();
 
         _position++;
         printed = 1;
@@ -111,6 +111,13 @@ Shell::print (const char* out)
     }
 
     return printed;
+}
+
+Shell&
+Shell::operator << (Shell::Color color)
+{
+    this->color(color);
+    return *this;
 }
 
 Shell&

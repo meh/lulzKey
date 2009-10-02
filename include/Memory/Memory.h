@@ -28,12 +28,12 @@ class Memory
 
     virtual ~Memory ();
 
-    inline Type::uint size (void);
-    inline void        size (Type::uint size);
+    Type::uint size (void);
+    void       size (Type::uint size);
 
-    inline const void* data (void);
-                 void  data (Memory& memory, Type::uint offset = 0);
-                 void  data (void* memory, Type::uint size, Type::uint offset = 0);
+    const void* data (void);
+          void  data (Memory& memory, Type::uint offset = 0);
+          void  data (void* memory, Type::uint size, Type::uint offset = 0);
 
     void* pointer (void);
 

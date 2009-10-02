@@ -8,8 +8,10 @@ FLOPPY=`mktemp`
 
 dd if=/dev/zero of="$TMP" bs=1 count=750 &> /dev/null
 cat test/stage1 test/stage2 "$TMP" lulzKey > "$FLOPPY"
-dd if=/dev/zero of="$TMP" bs=1 count=$((1474560-$STAGE1-$STAGE2-$KERNEL-750)) &> /dev/null
-cat "$TMP" >> "$FLOPPY"
+
+# Uncomment these if the emulator whines about it's not floppy sized.
+# dd if=/dev/zero of="$TMP" bs=1 count=$((1474560-$STAGE1-$STAGE2-$KERNEL-750)) &> /dev/null
+# cat "$TMP" >> "$FLOPPY"
 
 echo "Now type:"
 echo "kernel 200+$(stat -c %b lulzKey)"

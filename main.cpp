@@ -1,7 +1,7 @@
 #include <Type.h>
 #include <Memory/Memory.h>
 
-#include <Tools/Shell.h>
+#include <Tools/Shell/Shell.h>
 
 using namespace Kernel;
 
@@ -18,8 +18,6 @@ kmain (Type::MultiBoot* multiBoot, Type::uint magic)
 
     shell.clear();
 
-    shell.color(Shell::FGYellow);
-    shell << "giallo" << Shell::endLine << Shell::endLine;
-    shell.color(Shell::FGPink);
-    shell << "vagina" << Shell::endLine;
+    shell << Shell::Color(Shell::Color::Yellow) << "giallo" << Shell::endLine;
+    shell << Shell::Color(Shell::Color::Pink)   << "vagina" << Shell::endLine;
 }

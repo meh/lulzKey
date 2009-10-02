@@ -14,14 +14,7 @@ namespace Kernel {
 class Shell
 {
   public:
-    typedef enum Color {
-        FGBlack  = 0x0,
-        FGYellow = 0xE,
-        FGPink   = 0xD,
-        FGWhite  = 0xF,
-
-        BGBlack  = 0x00
-    } Color;
+    #include <Tools/Shell/Color.h>
 
   public:
     static const Type::uchar  lines   = 25;
@@ -47,23 +40,25 @@ class Shell
     Type::uint print (const char* out);
 
   public:
+    Shell& operator << (Shell::Color color);
+
     Shell& operator << (char out);
 #if 0
-    inline Shell& operator << (unsigned char out);
+    Shell& operator << (unsigned char out);
 
-    inline Shell& operator << (short out);
-    inline Shell& operator << (unsigned short out);
+    Shell& operator << (short out);
+    Shell& operator << (unsigned short out);
 
-    inline Shell& operator << (int out);
-    inline Shell& operator << (unsigned int out);
+    Shell& operator << (int out);
+    Shell& operator << (unsigned int out);
 
-    inline Shell& operator << (long out);
-    inline Shell& operator << (unsigned long out);
+    Shell& operator << (long out);
+    Shell& operator << (unsigned long out);
 
-    inline Shell& operator << (float out);
-    inline Shell& operator << (double out);
+    Shell& operator << (float out);
+    Shell& operator << (double out);
 
-    inline Shell& operator << (const void* out);
+    Shell& operator << (const void* out);
 #endif
 
     friend Shell& operator << (Shell& shell, const char* out);

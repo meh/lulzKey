@@ -6,7 +6,9 @@ LINKER_FILE = linker.ld
 CXX     = g++
 CFLAGS  = -m32 -Os -Wall -Wextra -pedantic -nostartfiles -nostdlib -nodefaultlibs -fno-rtti -fno-exceptions -I./include -I./sources
 
-KERNEL_FILES = main.cpp sources/Memory/Memory.cpp sources/Tools/Shell.cpp
+KERNEL_FILES = main.cpp sources/Memory/Memory.cpp \
+			   sources/Tools/Shell/Shell.cpp sources/Tools/Shell/Color.cpp
+
 LOADER_FILE  = loader.cpp
 
 all: loader kernel
