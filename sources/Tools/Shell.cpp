@@ -7,7 +7,7 @@ Shell::Shell (const void* address)
     _video    = (Type::uchar*) address;
     _line     = 0;
     _position = 0;
-    _color    = FGBlack;
+    _color    = FGWhite;
 }
 
 void
@@ -15,8 +15,8 @@ Shell::clear (void)
 {
     for (Type::uchar i = 0; i < Shell::lines; i++) {
         for (Type::uchar h = 0; h < Shell::columns; h++) {
-            _video[(i * Shell::columns) + (h * 2)]     = ' ';
-            _video[(i * Shell::columns) + (h * 2) + 1] = 0x00;
+            _video[(i * 2 * Shell::columns) + (h * 2)]     = ' ';
+            _video[(i * 2 * Shell::columns) + (h * 2) + 1] = 0x00;
         }
     }
 
@@ -60,14 +60,14 @@ Shell::print (char out)
         else {
             for (Type::uchar i = 1; i < Shell::lines; i++) {
                 for (Type::uchar h = 0; h < Shell::columns; h++) {
-                    _video[((i-1) * Shell::columns) + (h * 2)]     = _video[(i * Shell::columns) + h];
-                    _video[((i-1) * Shell::columns) + (h * 2) + 1] = _video[(i * Shell::columns) + h + 1];
+                    _video[((i-1) * 2 * Shell::columns) + (h * 2)]     = _video[(i * Shell::columns) + (h * 2)];
+                    _video[((i-1) * 2 * Shell::columns) + (h * 2) + 1] = _video[(i * Shell::columns) + (h * 2) + 1];
                 }
             }
 
             for (Type::uchar i = 0; i < Shell::columns; i += 2) {
-                _video[((Shell::lines-1) * Shell::columns) + i]     = ' ';
-                _video[((Shell::lines-1) * Shell::columns) + i + 1] = 0x00;
+                _video[((Shell::lines-1) * 2 * Shell::columns) + (i * 2)]     = ' ';
+                _video[((Shell::lines-1) * 2 * Shell::columns) + (i * 2) + 1] = 0x00;
             }
         }
 
@@ -76,8 +76,8 @@ Shell::print (char out)
 
         case '\b':
         if (_position > 0) {
-            _video[(_line * Shell::columns) + (_position * 2)]     = ' ';
-            _video[(_line * Shell::columns) + (_position * 2) + 1] = 0x00;
+            _video[(_line * 2 * Shell::columns) + (_position * 2)]     = ' ';
+            _video[(_line * 2 * Shell::columns) + (_position * 2) + 1] = 0x00;
 
             _position--;
         }
@@ -86,8 +86,12 @@ Shell::print (char out)
         break;
 
         default:
-        _video[(_line * Shell::columns) + (_position * 2)]     = out;
-        _video[(_line * Shell::columns) + (_position * 2) + 1] = _color;
+        if (_position == Shell::columns) {
+            this->print('\n');
+        }
+
+        _video[(_line * 2 * Shell::columns) + (_position * 2)]     = out;
+        _video[(_line * 2 * Shell::columns) + (_position * 2) + 1] = _color;
 
         _position++;
         printed = 1;

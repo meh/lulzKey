@@ -17,6 +17,8 @@ class Shell
     typedef enum Color {
         FGBlack  = 0x0,
         FGYellow = 0xE,
+        FGPink   = 0xD,
+        FGWhite  = 0xF,
 
         BGBlack  = 0x00
     } Color;

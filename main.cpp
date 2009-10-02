@@ -17,6 +17,9 @@ kmain (Type::MultiBoot* multiBoot, Type::uint magic)
     Shell shell;
 
     shell.clear();
+
     shell.color(Shell::FGYellow);
-    shell << "giallo" << Shell::endLine;
+    shell << "giallo" << Shell::endLine << Shell::endLine;
+    shell.color(Shell::FGPink);
+    shell << "vagina" << Shell::endLine;
 }
