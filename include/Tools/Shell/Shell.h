@@ -18,6 +18,8 @@ class Shell
     #include <Tools/Shell/OutputMode.h>
 
   public:
+    static const int Default = -1;
+
     static const unsigned char lines   = 25;
     static const unsigned char columns = 80;
 

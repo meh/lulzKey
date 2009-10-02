@@ -4,7 +4,7 @@ namespace Kernel {
 
 Shell::Shell (const void* address)
 {
-    _video    = (Type::uchar*) address;
+    _video    = (unsigned char*) address;
     _line     = 0;
     _position = 0;
 }
@@ -12,8 +12,8 @@ Shell::Shell (const void* address)
 void
 Shell::clear (void)
 {
-    for (Type::uchar i = 0; i < Shell::lines; i++) {
-        for (Type::uchar h = 0; h < Shell::columns; h++) {
+    for (unsigned char i = 0; i < Shell::lines; i++) {
+        for (unsigned char h = 0; h < Shell::columns; h++) {
             _video[(i * 2 * Shell::columns) + (h * 2)]     = ' ';
             _video[(i * 2 * Shell::columns) + (h * 2) + 1] = 0x00;
         }
@@ -44,7 +44,7 @@ Shell::color (void)
 }
 
 unsigned int
-Shel::print (char out)
+Shell::print (char out)
 {
     return this->print((unsigned char) out);
 }
@@ -71,14 +71,14 @@ Shell::print (unsigned char out)
             _line++;
         }
         else {
-            for (Type::uchar i = 1; i < Shell::lines; i++) {
-                for (Type::uchar h = 0; h < Shell::columns; h++) {
+            for (unsigned char i = 1; i < Shell::lines; i++) {
+                for (unsigned char h = 0; h < Shell::columns; h++) {
                     _video[((i-1) * 2 * Shell::columns) + (h * 2)]     = _video[(i * Shell::columns) + (h * 2)];
                     _video[((i-1) * 2 * Shell::columns) + (h * 2) + 1] = _video[(i * Shell::columns) + (h * 2) + 1];
                 }
             }
 
-            for (Type::uchar i = 0; i < Shell::columns; i += 2) {
+            for (unsigned char i = 0; i < Shell::columns; i += 2) {
                 _video[((Shell::lines-1) * 2 * Shell::columns) + (i * 2)]     = ' ';
                 _video[((Shell::lines-1) * 2 * Shell::columns) + (i * 2) + 1] = 0x00;
             }
@@ -136,7 +136,7 @@ Shell::print (unsigned short out)
 }
 
 unsigned int
-Shel::print (int out)
+Shell::print (int out)
 {
     unsigned int printed;
 
@@ -269,7 +269,7 @@ Shell::operator << (unsigned long out)
 Shell&
 Shell::operator << (const void* out)
 {
-    this->printHexadecimal((unsigned int) out);
+    return *this;
 }
 
 Shell& operator << (Shell& shell, const char* string)
@@ -281,19 +281,22 @@ Shell& operator << (Shell& shell, const char* string)
 unsigned int
 Shell::_binary (unsigned long out)
 {
-
+    // mandrake
+    return 0;
 }
 
 unsigned int
 Shell::_octal (unsigned long out)
 {
-
+    // mandrake
+    return 0;
 }
 
 unsigned int
 Shell::_hexadecimal (unsigned long out)
 {
-
+    // mandrake
+    return 0;
 }
 
 }

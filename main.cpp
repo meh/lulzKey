@@ -7,7 +7,7 @@ using namespace Kernel;
 
 extern "C"
 void
-kmain (Type::MultiBoot* multiBoot, Type::uint magic)
+kmain (Type::MultiBoot* multiBoot, unsigned int magic)
 {
     /* the magic number is wrong */
     if (magic != 0x2BADB002) {
@@ -20,4 +20,5 @@ kmain (Type::MultiBoot* multiBoot, Type::uint magic)
 
     shell << Shell::Color(Shell::Color::Yellow) << "giallo" << Shell::endLine;
     shell << Shell::Color(Shell::Color::Pink)   << "vagina" << Shell::endLine;
+    shell << 23 << Shell::endLine;
 }
