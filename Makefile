@@ -4,9 +4,10 @@ NAME    = lulzKey
 LINKER_FILE = linker.ld
 
 CXX     = g++
-CFLAGS  = -m32 -Os -Wall -Wextra -pedantic -nostartfiles -nostdlib -nodefaultlibs -fno-rtti -fno-exceptions -I./include -I./sources
+CFLAGS  = -m32 -Os -Wall -Wextra -pedantic -ffreestanding -nostartfiles -nostdlib -nodefaultlibs -fno-rtti -fno-exceptions -I./include -I./sources
 
 KERNEL_FILES = main.cpp sources/Memory/Memory.cpp \
+			   sources/Process/Process.cpp sources/Process/State.cpp sources/Process/Context.cpp \
 			   sources/Tools/Shell/Shell.cpp sources/Tools/Shell/Color.cpp
 
 LOADER_FILE  = loader.cpp

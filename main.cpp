@@ -7,7 +7,7 @@ using namespace Kernel;
 
 extern "C"
 void
-kmain (Type::MultiBoot* multiBoot, unsigned int magic)
+main (Type::MultiBoot* multiBoot, unsigned int magic)
 {
     /* the magic number is wrong */
     if (magic != 0x2BADB002) {

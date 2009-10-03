@@ -31,7 +31,7 @@ _2:
    cmp  $end_ctors, %ebx
    jb   _1
 
-   call kmain
+   call main
 
    # calling static destructors
    mov  $start_dtors, %ebx
