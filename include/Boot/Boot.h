@@ -50,6 +50,8 @@ class Boot
   public:
     Boot (void* information);
 
+    const char* command (void);
+
   private:
     bool _checkFlag (unsigned long flags, char bit);
 };

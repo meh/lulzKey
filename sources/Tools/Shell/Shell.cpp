@@ -173,7 +173,7 @@ unsigned int
 Shell::print (unsigned long out)
 {
     char output[21] = {0};
-    int  count      = 0;
+    char count      = 0;
 
     do {
         output[count] = out % 10;
@@ -181,9 +181,8 @@ Shell::print (unsigned long out)
         count++;
     } while (out > 0);
 
-    count = 0;
-    for (int i = 0; i < count; i++) {
-        count += this->print(output[i] + 0x30);
+    for (char i = count-1; i >= 0; i--) {
+        this->print((char) (output[i] + 0x30));
     }
 
     return count;

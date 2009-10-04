@@ -22,5 +22,8 @@ main (Type::u32 magic, void* information)
 
     shell << Shell::Color(Shell::Color::Yellow) << "giallo" << Shell::endLine;
     shell << Shell::Color(Shell::Color::Pink)   << "vagina" << Shell::endLine;
-    shell << 23 << Shell::endLine;
+
+    shell << Shell::Color(Shell::Color::White) << Shell::endLine << Shell::endLine;
+
+    shell << boot.command() << Shell::endLine;
 }
