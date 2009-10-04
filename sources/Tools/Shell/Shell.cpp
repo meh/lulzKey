@@ -313,7 +313,7 @@ Shell::_octal (unsigned long out)
     cipher    = ((filter & out) >> shift);
 
     if (cipher != 0) {
-        returned += this->print(cipher+'0');
+        returned += this->print((char) (cipher + '0'));
     }
 
     filter = 0x38000000;
@@ -327,13 +327,13 @@ Shell::_octal (unsigned long out)
     }
 
     while (shift > 0) {
-        returned += this->print(cipher+'0');
+        returned += this->print((char) (cipher + '0'));
         filter >>= 3;
         shift   -= 3;
         cipher   = ((filter & out) >> shift);
     }
 
-    returned += this->print(cipher+'0');
+    returned += this->print((char) (cipher + '0'));
 
     return returned;
 }
@@ -359,10 +359,10 @@ Shell::_hexadecimal (unsigned long out)
 
     while (shift > 0) {
         if (cipher < 10) {
-            returned += this->print(cipher + '0');
+            returned += this->print((char) (cipher + '0'));
         }
         else {
-            returned += this->print(cipher - 10 + 'a');
+            returned += this->print((char) (cipher - 10 + 'a'));
         }
         shift   -= 4;
         filter >>= 4;
@@ -370,10 +370,10 @@ Shell::_hexadecimal (unsigned long out)
     }
 
     if (cipher < 10) {
-        returned += this->print(cipher+'0');
+        returned += this->print((char) (cipher + '0'));
     }
     else {
-        returned += this->print(cipher-10+'a');
+        returned += this->print((char) (cipher - 10 + 'a'));
     }
 
     return returned;

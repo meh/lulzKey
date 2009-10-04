@@ -62,8 +62,6 @@ class Boot
   public:
     Boot (void* information);
 
-    Type::u32 flags (void);
-
     const char* command (void);
 
   private:
