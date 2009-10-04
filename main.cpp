@@ -26,4 +26,5 @@ main (Type::u32 magic, void* information)
     shell << Shell::Color(Shell::Color::White) << Shell::endLine << Shell::endLine;
 
     shell << boot.command() << Shell::endLine;
+    shell << information << Shell::endLine;
 }

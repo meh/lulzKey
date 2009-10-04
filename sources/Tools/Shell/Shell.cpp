@@ -173,7 +173,7 @@ unsigned int
 Shell::print (unsigned long out)
 {
     char output[21] = {0};
-    char count      = 0;
+    int  count      = 0;
 
     do {
         output[count] = out % 10;
@@ -181,7 +181,7 @@ Shell::print (unsigned long out)
         count++;
     } while (out > 0);
 
-    for (char i = count-1; i >= 0; i--) {
+    for (int i = count-1; i >= 0; i--) {
         this->print((char) (output[i] + 0x30));
     }
 
@@ -286,23 +286,97 @@ Shell& operator << (Shell& shell, const char* string)
 unsigned int
 Shell::_binary (unsigned long out)
 {
-    // mandrake
-    return 0;
+    unsigned long filter = 0x80000000;
+
+    for (int i = 0; i < 32; i++) {
+        if (filter & out) {
+            this->print('1');
+        }
+        else {
+            this->print('0');
+        }
+        filter >>= 1;
+    }
+
+    return 32;
 }
 
 unsigned int
 Shell::_octal (unsigned long out)
 {
-    // mandrake
-    return 0;
+    int           shift    = 30;
+    unsigned int  returned = 0;
+    unsigned long filter   = 0xC0000000;
+    char          cipher;
+
+    returned += this->print('0');
+    cipher    = ((filter & out) >> shift);
+
+    if (cipher != 0) {
+        returned += this->print(cipher+'0');
+    }
+
+    filter = 0x38000000;
+    shift -= 3;
+    cipher = ((filter & out) >> shift);
+
+    while (cipher == 0 && shift > 0) {
+        filter >>= 3;
+        shift   -= 3;
+        cipher   = ((filter & out) >> shift);
+    }
+
+    while (shift > 0) {
+        returned += this->print(cipher+'0');
+        filter >>= 3;
+        shift   -= 3;
+        cipher   = ((filter & out) >> shift);
+    }
+
+    returned += this->print(cipher+'0');
+
+    return returned;
 }
 
 unsigned int
 Shell::_hexadecimal (unsigned long out)
 {
-    // mandrake
-    return 0;
+    int           shift    = 28;
+    unsigned int  returned = 0;
+    unsigned long filter   = 0xf0000000;
+    char          cipher;
+
+    returned += this->print('0');
+    returned += this->print('x');
+
+    cipher = ((filter & out) >> shift);
+
+    while (cipher == 0 && shift > 0) {
+        filter >>= 4;
+        shift   -= 4;
+        cipher   = ((filter & out) >> shift);
+    }
+
+    while (shift > 0) {
+        if (cipher < 10) {
+            returned += this->print(cipher + '0');
+        }
+        else {
+            returned += this->print(cipher - 10 + 'a');
+        }
+        shift   -= 4;
+        filter >>= 4;
+        cipher   = ((filter & out) >> shift);
+    }
+
+    if (cipher < 10) {
+        returned += this->print(cipher+'0');
+    }
+    else {
+        returned += this->print(cipher-10+'a');
+    }
+
+    return returned;
 }
 
 }
-
