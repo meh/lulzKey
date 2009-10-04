@@ -26,15 +26,13 @@ Shell::clear (void)
 void
 Shell::color (Shell::Color color)
 {
-    _color.foreground(color.foreground());
-    _color.background(color.background());
+    _color = color;
 }
 
 void
 Shell::color (char foreground, char background)
 {
-    _color.foreground(foreground);
-    _color.background(background);
+    _color = Color(foreground, background);
 }
 
 Shell::Color
