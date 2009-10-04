@@ -10,10 +10,8 @@ KERNEL_FILES = main.cpp sources/Memory/Memory.cpp \
 			   sources/Process/Process.cpp sources/Process/State.cpp sources/Process/Context.cpp \
 			   sources/Tools/Shell/Shell.cpp sources/Tools/Shell/Color.cpp
 
-LOADER_FILE  = loader.cpp
-
 all: loader kernel
-	ld -melf_i386 -T ${LINKER_FILE} -o ${NAME} $(LOADER_FILE:.cpp=.o) $(KERNEL_FILES:.cpp=.o)
+	ld -melf_i386 -T ${LINKER_FILE} -o ${NAME} loader.o $(KERNEL_FILES:.cpp=.o)
 
 loader:
 	as --32 -o loader.o loader.s

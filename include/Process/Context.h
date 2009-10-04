@@ -8,31 +8,6 @@
 
 class Context
 {
-  public:
-    struct Flags {
-        unsigned carry                   : 1;
-        unsigned __1                     : 1;
-        unsigned parity                  : 1;
-        unsigned __2                     : 1;
-        unsigned adjust                  : 1;
-        unsigned __3                     : 1;
-        unsigned zero                    : 1;
-        unsigned sign                    : 1;
-        unsigned trap                    : 1;
-        unsigned interrupt               : 1;
-        unsigned direction               : 1;
-        unsigned overflow                : 1;
-        unsigned ioPrivilege             : 2;
-        unsigned nestedTask              : 1;
-        unsigned __4                     : 1;
-        unsigned resume                  : 1;
-        unsigned virtualMode             : 1;
-        unsigned alignmentCheck          : 1;
-        unsigned virtualInterruptFlag    : 1;
-        unsigned virtualInterruptPending : 1;
-        unsigned identification          : 1;
-    };
-
   private:
     Type::u32 _eax;
     Type::u32 _ecx;
@@ -44,7 +19,7 @@ class Context
     Type::u32 _esi;
     Type::u32 _edi;
 
-    Flags     _eflags;
+    Type::u32 _eflags;
     Type::u32 _eip;
 
     Type::u16 _cs;
@@ -60,7 +35,7 @@ class Context
     Context (
         Type::u32 eax, Type::u32 ecx, Type::u32 edx, Type::u32 ebx,
         Type::u32 esp, Type::u32 ebp, Type::u32 esi, Type::u32 edi,
-        Flags eflags, Type::u32 eip,
+        Type::u32 eflags, Type::u32 eip,
         Type::u16 cs, Type::u16 ds, Type::u16 ss, Type::u16 es, Type::u16 fs, Type::u16 gs
     );
 
@@ -88,8 +63,8 @@ class Context
     void      edi (Type::u32 edi);
     Type::u32 edi (void);
 
-    Flags eflags (Flags eflags);
-    Flags eflags (void);
+    void      eflags (Type::u32 eflags);
+    Type::u32 eflags (void);
 
     void      eip (Type::u32 eip);
     Type::u32 eip (void);

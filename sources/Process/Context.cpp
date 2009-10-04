@@ -14,7 +14,7 @@ Process::Context::Context (void)
     _esi = 0;
     _edi = 0;
 
-    _eflags = (Process::Context::Flags) 0;
+    _eflags = 0;
     _eip    = 0;
 
     _cs = 0;
@@ -28,7 +28,7 @@ Process::Context::Context (void)
 Process::Context::Context(
     Type::u32 eax, Type::u32 ecx, Type::u32 edx, Type::u32 ebx,
     Type::u32 esp, Type::u32 ebp, Type::u32 esi, Type::u32 edi,
-    Process::Context::Flags eflags, Type::u32 eip,
+    Type::u32 eflags, Type::u32 eip,
     Type::u16 cs, Type::u16 ds, Type::u16 ss, Type::u16 es, Type::u16 fs, Type::u16 gs)
 {
     _eax = eax;
@@ -149,12 +149,12 @@ Process::Context::edi (void)
 }
 
 void
-eflags (Process::Context::Flags eflags)
+Process::Context::eflags (Type::u32 eflags)
 {
     _eflags = eflags;
 }
 
-Process::Context::Flags
+Type::u32
 Process::Context::eflags (void)
 {
     return _eflags;
