@@ -1,6 +1,6 @@
-.global loader                 # making entry point visible to linker
+.global loader
 
-# setting up the Multiboot header - see GRUB docs for details
+# setting up the Multiboot header
 .set ALIGN,    1 << 0           # align loaded modules on page boundaries
 .set MEMINFO,  1 << 1           # provide memory map
 .set FLAGS,    ALIGN | MEMINFO  # this is the Multiboot 'flag' field
@@ -13,13 +13,17 @@
 .long CHECKSUM
 
 # reserve initial kernel stack space
-.set STACKSIZE, 0x4000          # that is, 16k.
-.comm stack, STACKSIZE, 32      # reserve 16k stack on a quadword boundary
+.set STACKSIZE, 0x4000     # that is, 16k.
+.comm stack, STACKSIZE, 32 # reserve 16k stack on a quadword boundary
 
 loader:
-   mov  $(stack + STACKSIZE), %esp # set up the stack
-   push %eax                       # Multiboot magic number
-   push %ebx                       # Multiboot data structure
+   movl  $(stack + STACKSIZE), %esp # set up the stack
+
+   pushl $0
+   popf
+
+   pushl %ebx
+   pushl %eax
 
    # calling static constructors
    mov  $start_ctors, %ebx
@@ -44,6 +48,6 @@ _4:
    jb   _3
 
 hang:
-   hlt         # halt machine should kernel return
-   jmp   hang
+    hlt         # halt machine should kernel return
+    jmp   hang
 

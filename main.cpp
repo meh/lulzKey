@@ -7,12 +7,13 @@ using namespace Kernel;
 
 extern "C"
 void
-main (Type::MultiBoot* multiBoot, unsigned int magic)
+main (Type::u32 magic, void* information)
 {
-    /* the magic number is wrong */
-    if (magic != 0x2BADB002) {
+    if (magic != Boot::Magic) {
         return;
     }
+
+    Boot boot = Boot(information);
 
     Shell shell;
 
