@@ -7,6 +7,8 @@
 #ifndef _LKEY_BOOT_H
 #define _LKEY_BOOT_H
 
+#include <Type.h>
+
 namespace Kernel {
 
 class Boot
@@ -22,17 +24,17 @@ class Boot
         unsigned long bootDevice;
         unsigned long command;
         unsigned long modulesCount;
-        unsigned long modulesAddr;
+        unsigned long modulesAddress;
 
         struct {
             unsigned long num;
             unsigned long size;
-            unsigned long addr;
+            unsigned long address;
             unsigned long shndx;
         } ELF;
 
-       unsigned long mmap_length;
-       unsigned long mmap_addr;
+       unsigned long mmapLength;
+       unsigned long mmapAddress;
     };
 
     struct Module {
@@ -43,7 +45,7 @@ class Boot
     };
 
   private:
-    Info _info;
+    Info* _info;
 
   public:
     Boot (void* information);

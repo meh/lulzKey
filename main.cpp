@@ -1,4 +1,5 @@
 #include <Type.h>
+#include <Boot/Boot.h>
 #include <Memory/Memory.h>
 
 #include <Tools/Shell/Shell.h>

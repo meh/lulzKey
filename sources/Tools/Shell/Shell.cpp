@@ -190,6 +190,13 @@ Shell::print (unsigned long out)
 }
 
 unsigned int
+Shell::print (const void* out)
+{
+    return _hexadecimal((unsigned long) out);
+}
+
+
+unsigned int
 Shell::print (const char* out)
 {
     unsigned int printed = 0;
@@ -267,6 +274,7 @@ Shell::operator << (unsigned long out)
 Shell&
 Shell::operator << (const void* out)
 {
+    this->print(out);
     return *this;
 }
 

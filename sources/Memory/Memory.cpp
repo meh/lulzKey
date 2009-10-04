@@ -5,7 +5,9 @@ namespace Kernel {
 void*
 Memory::alloc (unsigned int size)
 {
-    /* OverMe */
+    if (size < 1) {
+        return NULL;
+    }
 
     return NULL;
 }
@@ -13,7 +15,9 @@ Memory::alloc (unsigned int size)
 void
 Memory::free (void* pointer)
 {
-    /* OverMe */
+    if (pointer == NULL) {
+
+    }
 }
 
 void

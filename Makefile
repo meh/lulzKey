@@ -4,7 +4,7 @@ NAME    = lulzKey
 LINKER_FILE = linker.ld
 
 CXX     = g++
-CFLAGS  = -m32 -Os -Wall -Wextra -pedantic -ffreestanding -nostartfiles -nostdlib -nodefaultlibs -fno-rtti -fno-exceptions -I./include -I./sources
+CFLAGS  = -m32 -Os -Wall -Wextra -Wno-long-long -pedantic -ffreestanding -nostartfiles -nostdlib -nodefaultlibs -fno-rtti -fno-exceptions -I./include -I./sources
 
 KERNEL_FILES = main.cpp sources/Boot/Boot.cpp \
 			   sources/Memory/Memory.cpp \
@@ -16,7 +16,7 @@ all: loader kernel
 	ld -s -melf_i386 -T ${LINKER_FILE} -o ${NAME} loader.o $(KERNEL_FILES:.cpp=.o)
 
 loader:
-	${CXX} ${CFLAGS} -o loader.o -c loader.s
+	${CXX} ${CFLAGS} -o loader.o -c loader.S
 
 kernel: $(KERNEL_FILES:.cpp=.o)
 

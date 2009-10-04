@@ -4,7 +4,7 @@ namespace Kernel {
 
 Boot::Boot (void* information)
 {
-    _info = (Info) { information };
+    _info = (Info*) information;
 }
 
 }

@@ -52,6 +52,8 @@ class Shell
     unsigned int print (long out);
     unsigned int print (unsigned long out);
 
+    unsigned int print (const void* out);
+
     unsigned int print (const char* out);
 
     unsigned int _binary      (unsigned long out);
