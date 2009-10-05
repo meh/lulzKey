@@ -38,6 +38,9 @@ class Boot
         Type::u32 modulesCount;     /*<< modules count */
         Type::u32 modulesAddress;   /*<< modules array address */
 
+        /**
+         * ELF symbols table.
+         */
         struct {
             Type::u32 num;
             Type::u32 size;
@@ -56,38 +59,87 @@ class Boot
         Type::u32 reserved;
     };
 
+    /**
+     * Multiboot memory simplifaction.
+     */
     struct Memory {
-        void* lower;
-        void* upper;
+        void* lower; /*<< lower memory */
+        void* upper; /*<< upper memory */
     };
 
+    /**
+     * Multiboot Modules list
+     */
     struct Modules {
-        Type::u32 length;
-        Module*   item;
+        Type::u32 length; /*<< modules list length */
+        Module*   item;   /*<< modules list items */
     };
 
   private:
-    Info* _info;
+    Boot::Info* _info;
 
   public:
     Boot (void* information);
 
+    /**
+     * Check if the memory addresses are valid.
+     */
     bool validMemory (void);
+
+    /**
+     * Check if the boot device is valid.
+     */
     bool validDevice (void);
+
+    /**
+     * Check if the modules list is valid.
+     */
     bool validModules (void);
+
+    /**
+     * Check if the ELF symbol table is valid.
+     */
     bool validELF (void);
+
+    /**
+     * Check if the mmap is valid.
+     */
     bool validMmap (void);
+
+    /**
+     * If this is true, something went deeply wrong.
+     */
     bool LOLNO (void);
 
+    /**
+     * Command line passed at boot time.
+     */
     const char* command (void);
 
+    /**
+     * Device from we were booting.
+     */
     void* device (void);
 
-    Memory* memory (void);
+    /**
+     * Boot memory bounds.
+     */
+    Boot::Memory* memory (void);
 
-    Modules* modules (void);
+    /**
+     * Boot modules.
+     */
+    Boot::Modules* modules (void);
 
   private:
+    /**
+     * Simple flag checking implementation.
+     *
+     * @param   flags   Flags variable.
+     * @param   bit     Bit to check.
+     *
+     * @return  Flags' bit value.
+     */
     bool _checkFlag (Type::u32 flags, char bit);
 };
 

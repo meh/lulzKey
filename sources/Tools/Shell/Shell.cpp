@@ -122,7 +122,7 @@ Shell::print (short out)
         printed = this->print('-') + this->print((unsigned long) -out);
     }
     else {
-        printed = this->print((unsigned long) -out);
+        printed = this->print((unsigned long) out);
     }
 
     return printed;
@@ -143,7 +143,7 @@ Shell::print (int out)
         printed = this->print('-') + this->print((unsigned long) -out);
     }
     else {
-        printed = this->print((unsigned long) -out);
+        printed = this->print((unsigned long) out);
     }
 
     return printed;
@@ -164,7 +164,7 @@ Shell::print (long out)
         printed = this->print('-') + this->print((unsigned long) -out);
     }
     else {
-        printed = this->print((unsigned long) -out);
+        printed = this->print((unsigned long) out);
     }
 
     return printed;
