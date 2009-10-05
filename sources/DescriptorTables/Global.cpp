@@ -31,20 +31,18 @@ Global::set (Type::s32 index, Type::u32 base, Type::u32 limit, Type::u8 access, 
 void
 Global::flush (void)
 {
-    /**
-     * Load the Global Descriptor Table.
-     */
+    /* Load the Global Descriptor Table. */
     asm volatile ("movl %0, %%eax" :: "r" (&_pointer) : "%eax");
     asm volatile ("lgdt (%eax)");
 
-    asm volatile ("mov %ax, 0x10");
+    asm volatile ("mov 0x10, %ax");
 
     /* Load all data segment selectors */
-    asm volatile ("mov %ds, %ax");
-    asm volatile ("mov %es, %ax");
-    asm volatile ("mov %fs, %ax");
-    asm volatile ("mov %gs, %ax");
-    asm volatile ("mov %ss, %ax");
+    asm volatile ("mov %ax, %ds");
+    asm volatile ("mov %ax, %es");
+    asm volatile ("mov %ax, %fs");
+    asm volatile ("mov %ax, %gs");
+    asm volatile ("mov %ax, %ss");
     asm volatile ("jmp 0x08");
 }
 

@@ -14,39 +14,41 @@ namespace Kernel {
 class Memory
 {
   public:
-    static void* alloc (unsigned int size);
+    static void* alloc (Type::u32 size);
     static void  free  (void* pointer);
-    static void  copy  (void* source, void* dest, unsigned int size);
+
+    static void copy (void* destination, void* source, Type::u32 size);
+    static void set  (void* destination, Type::u8 value, Type::u32 size); 
 
   private:
     void*       _memory;
-    unsigned int _size;
+    Type::u32 _size;
 
   public:
-    Memory (unsigned int size);
+    Memory (Type::u32 size);
     Memory (Memory& memory);
 
     virtual ~Memory ();
 
-    unsigned int size (void);
-    void         size (unsigned int size);
+    Type::u32 size (void);
+    void      size (Type::u32 size);
 
     const void* data (void);
-          void  data (Memory& memory, unsigned int offset = 0);
-          void  data (void* memory, unsigned int size, unsigned int offset = 0);
+    void        data (Memory& memory, Type::u32 offset = 0);
+    void        data (void* memory, Type::u32 size, Type::u32 offset = 0);
 
     void* pointer (void);
 
   public:
-    operator void*        ();
-    operator unsigned int ();
+    operator void*     ();
+    operator Type::u32 ();
 };
 
 }
 
 // Kernel space new's
-void* operator new   (unsigned int size);
-void* operator new[] (unsigned int size);
+void* operator new   (Type::u32 size);
+void* operator new[] (Type::u32 size);
 
 // Kernel space delete's
 void operator delete   (void* pointer);

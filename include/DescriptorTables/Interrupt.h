@@ -30,8 +30,16 @@ class Interrupt
         Type::u32 base;  /*<< The address of the first descriptor. */
     } __attribute__ ((packed));
 
+  private:
+    Entry   _entries[256];
+    Pointer _pointer;
+
   public:
     Interrupt (void);
+
+    void set (Type::u8 index, Type::u32 base, Type::u16 segmentSelector, Type::u8 flags);
+
+    void flush (void);
 };
 
 }
