@@ -18,5 +18,22 @@ main (Type::u32 magic, void* information)
     Shell shell;
 
     shell << "Boot options: " << boot.command() << Shell::endLine;
-    shell << "Boot device:  " << (void*) boot.device() << Shell::endLine;
+
+    shell << "Boot device:  ";
+    if (boot.validDevice()) {
+        shell << boot.device();
+    }
+    else {
+        shell << "Invalid device.";
+    }
+    shell << Shell::endLine;
+
+    shell << "Memory:       ";
+    if (boot.validMemory()) {
+        shell << "lower=" << boot.memory()->lower << " upper=" << boot.memory()->upper;
+    }
+    else {
+        shell << "Invalid memory bounds.";
+    }
+    shell << Shell::endLine;
 }

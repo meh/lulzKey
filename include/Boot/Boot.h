@@ -25,7 +25,7 @@ class Boot
      */
     static const Type::u32 Magic = 0x2BADB002;
 
-  private:
+  public:
     /**
      * Multiboot compliant boot information struct.
      */
@@ -56,6 +56,16 @@ class Boot
         Type::u32 reserved;
     };
 
+    struct Memory {
+        void* lower;
+        void* upper;
+    };
+
+    struct Modules {
+        Type::u32 length;
+        Module*   item;
+    };
+
   private:
     Info* _info;
 
@@ -72,6 +82,10 @@ class Boot
     const char* command (void);
 
     void* device (void);
+
+    Memory* memory (void);
+
+    Modules* modules (void);
 
   private:
     bool _checkFlag (Type::u32 flags, char bit);

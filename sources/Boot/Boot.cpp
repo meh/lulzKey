@@ -60,6 +60,18 @@ Boot::device (void)
     return (void*) _info->bootDevice;
 }
 
+Boot::Memory*
+Boot::memory (void)
+{
+    return (Boot::Memory*) &_info->memLower;
+}
+
+Boot::Modules*
+Boot::modules (void)
+{
+    return (Boot::Modules*) &_info->modulesCount;
+}
+
 bool
 Boot::_checkFlag (Type::u32 flags, char bit)
 {
