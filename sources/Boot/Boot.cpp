@@ -54,10 +54,10 @@ Boot::command (void)
     }
 }
 
-void*
+Boot::Device*
 Boot::device (void)
 {
-    return (void*) _info->bootDevice;
+    return (Boot::Device*) _info->bootDevice;
 }
 
 Boot::Memory*

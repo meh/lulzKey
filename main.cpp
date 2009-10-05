@@ -21,7 +21,8 @@ main (Type::u32 magic, void* information)
 
     shell << "Boot device:  ";
     if (boot.validDevice()) {
-        shell << boot.device();
+        shell << "BIOS=" << (Type::u32) boot.device()->BIOS << "; ";
+        shell << "Partition=" << (Type::u32) boot.device()->partition.topLevel << "; ";
     }
     else {
         shell << "Invalid device.";
@@ -30,10 +31,12 @@ main (Type::u32 magic, void* information)
 
     shell << "Memory:       ";
     if (boot.validMemory()) {
-        shell << "lower=" << boot.memory()->lower << " upper=" << boot.memory()->upper;
+        shell << "lower=" << boot.memory()->lower << "; upper=" << boot.memory()->upper;
     }
     else {
         shell << "Invalid memory bounds.";
     }
     shell << Shell::endLine;
+
+    shell << boot.modules()->length;
 }

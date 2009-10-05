@@ -2,6 +2,11 @@
  * @file Boot/Boot.h
  *
  * @brief Boot class and structs.
+ *
+ * I'd go with this:
+ * kernel /boot/kernel
+ * module /services/deviceDriver
+ * module /services/filesystem
  */
 
 #ifndef _LKEY_BOOT_H
@@ -31,10 +36,14 @@ class Boot
      */
     struct Info {
         Type::u32 flags;            /*<< multiboot flags */
-        Type::u32 memLower;         /*<< low memory address */
-        Type::u32 memUpper;         /*<< high memory address */
-        Type::u32 bootDevice;       /*<< boot device */
+
+        Type::u32 memLower;         /*<< low memory size */
+        Type::u32 memUpper;         /*<< high memory size */
+
+        Type::u32 bootDevice;       /*<< boot device informations */ 
+
         Type::u32 command;          /*<< command line passed through the boot loader */
+
         Type::u32 modulesCount;     /*<< modules count */
         Type::u32 modulesAddress;   /*<< modules array address */
 
@@ -48,23 +57,45 @@ class Boot
             Type::u32 shndx;
         } ELF;
 
-       Type::u32 mmapLength;
-       Type::u32 mmapAddress;
-    };
+       Type::u32 mmapLength;    /*<< memory map structures length */
+       Type::u32 mmapAddress;   /*<< memory map structures address */
 
-    struct Module {
-        Type::u32 start;
-        Type::u32 end;
-        Type::u32 string;
-        Type::u32 reserved;
+       Type::u32 drivesLength;  /*<< */
+       Type::u32 drivesAddress; /*<< */
     };
 
     /**
      * Multiboot memory simplifaction.
      */
     struct Memory {
-        void* lower; /*<< lower memory */
-        void* upper; /*<< upper memory */
+        Type::u32 lower; /*<< lower memory size in KB */
+        Type::u32 upper; /*<< upper memory size in KB */
+    };
+
+    /**
+     * Device abstraction.
+     */
+    struct Device {
+        /**
+         * Partition table abstraction.
+         */
+        struct Partition {
+            Type::u8 subSubLevel; /*<< third level */
+            Type::u8 subLevel;    /*<< second level */
+            Type::u8 topLevel;    /*<< first level */
+        } partition;
+
+        Type::u8 BIOS; /*<< BIOS drive number */
+    };
+
+    /**
+     * Module abstraction.
+     */
+    struct Module {
+        Type::u32 start;
+        Type::u32 end;
+        Type::u32 string;
+        Type::u32 reserved;
     };
 
     /**
@@ -74,6 +105,11 @@ class Boot
         Type::u32 length; /*<< modules list length */
         Module*   item;   /*<< modules list items */
     };
+
+    /**
+     *
+     */
+    struct Drive {};
 
   private:
     Boot::Info* _info;
@@ -117,9 +153,9 @@ class Boot
     const char* command (void);
 
     /**
-     * Device from we were booting.
+     * Device from where we're booting.
      */
-    void* device (void);
+    Boot::Device* device (void);
 
     /**
      * Boot memory bounds.
