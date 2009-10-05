@@ -8,8 +8,8 @@ namespace Kernel {
 
 namespace DescriptorTables {
 
-Global*    GDT;
-Interrupt* IDT;
+extern Global*    GDT;
+extern Interrupt* IDT;
 
 void init (void);
 

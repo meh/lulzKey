@@ -4,6 +4,9 @@ namespace Kernel {
 
 namespace DescriptorTables {
 
+Global*    GDT;
+Interrupt* IDT;
+
 void
 init (void)
 {

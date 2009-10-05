@@ -1,6 +1,7 @@
 #include <Type.h>
 #include <Boot/Boot.h>
 #include <Memory/Memory.h>
+#include <DescriptorTables/DescriptorTables.h>
 
 #include <Tools/Shell/Shell.h>
 
@@ -38,5 +39,5 @@ main (Type::u32 magic, void* information)
     }
     shell << Shell::endLine;
 
-    shell << boot.modules()->length;
+    DescriptorTables::init();
 }
