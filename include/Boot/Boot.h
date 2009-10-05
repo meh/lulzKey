@@ -62,7 +62,16 @@ class Boot
   public:
     Boot (void* information);
 
+    bool validMemory (void);
+    bool validDevice (void);
+    bool validModules (void);
+    bool validELF (void);
+    bool validMmap (void);
+    bool LOLNO (void);
+
     const char* command (void);
+
+    void* device (void);
 
   private:
     bool _checkFlag (Type::u32 flags, char bit);

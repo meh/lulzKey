@@ -7,6 +7,7 @@ Shell::Shell (const void* address)
     _video    = (unsigned char*) address;
     _line     = 0;
     _position = 0;
+    this->clear();
 }
 
 void
