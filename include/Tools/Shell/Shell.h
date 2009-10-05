@@ -18,6 +18,8 @@ class Shell
     #include <Tools/Shell/OutputMode.h>
 
   public:
+    static const Type::u16 VGA = 0x3D4;
+
     static const int Default = -1;
 
     static const unsigned char lines   = 25;
@@ -27,14 +29,16 @@ class Shell
 
   private:
     unsigned char* _video;
-    unsigned char  _line;
-    unsigned char  _position;
+    unsigned char  _y;
+    unsigned char  _x;
     Shell::Color   _color;
 
   public:
     Shell (const void* address = (void*) 0xb8000);
 
     void clear (void);
+
+    void moveCursor (char x, char y);
 
     void         color (Shell::Color color);
     void         color (char foreground, char background = Shell::Color::Black);

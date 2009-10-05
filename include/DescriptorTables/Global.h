@@ -1,0 +1,49 @@
+#ifndef _LKEY_DESCRIPTORS_GLOBAL_H
+#define _LKEY_DESCRIPTORS_GLOBAL_H
+
+#include <Type.h>
+
+namespace Kernel {
+
+namespace DescriptorTables {
+
+class Global
+{
+  public:
+    /**
+     * Global Entry Descriptor
+     */
+    struct Entry {
+        Type::u16 limitLow;     /*<< The lower 16 bits of the limit */
+        Type::u16 baseLow;      /*<< The lower 16 bits of the base. */
+        Type::u8  baseMiddle;   /*<< The next 8 bits of the base. */
+        Type::u8  access;       /*<< Access flags, determine what ring this segment can be used in. */
+        Type::u8  granularity;
+        Type::u8  baseHigh;     /*<< The last 8 bits of the base. */
+    } __attribute__ ((packed));
+
+    /**
+     * Global Descriptor Table pointer.
+     */
+    struct Pointer {
+        Type::u16 limit; /*<< The upper 16 bits of all selector limits. */
+        Type::u32 base;  /*<< The address of the first descriptor. */
+    } __attribute__ ((packed));
+
+  private:
+    Entry   _entries[5];
+    Pointer _pointer;
+
+  public:
+    Global (void);
+
+    void set (Type::s32 index, Type::u32 base, Type::u32 limit, Type::u8 access, Type::u8 granularity);
+
+    void flush (void);
+};
+
+}
+
+}
+
+#endif

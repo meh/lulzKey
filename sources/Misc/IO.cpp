@@ -13,7 +13,7 @@ namespace Misc {
 void
 out (Type::u16 port, Type::u8 value)
 {
-    asm volatile ("outb %0, %1" :: "dN" (port), "a" (value));
+    asm volatile ("outb %0, %1" :: "a" (value), "dN" (port));
 }
 
 Type::u8
@@ -26,7 +26,7 @@ in (Type::u16 port, Type::u8 type)
 void
 out (Type::u16 port, Type::u16 value)
 {
-    asm volatile ("outw %0, %1" :: "dN" (port), "a" (value));
+    asm volatile ("outw %0, %1" :: "a" (value), "dN" (port));
 }
 
 Type::u16
@@ -39,7 +39,7 @@ in (Type::u16 port, Type::u16 type)
 void
 out (Type::u16 port, Type::u32 value)
 {
-    asm volatile ("outl %0, %1" :: "dN" (port), "a" (value));
+    asm volatile ("outl %0, %1" :: "a" (value), "dN" (port));
 }
 
 Type::u32

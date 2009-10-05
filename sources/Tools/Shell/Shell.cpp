@@ -1,27 +1,41 @@
 #include <Tools/Shell/Shell.h>
+#include <Misc/IO.h>
 
 namespace Kernel {
 
 Shell::Shell (const void* address)
 {
-    _video    = (unsigned char*) address;
-    _line     = 0;
-    _position = 0;
+    _video = (unsigned char*) address;
+    _y     = 0;
+    _x     = 0;
     this->clear();
 }
 
 void
 Shell::clear (void)
 {
-    for (unsigned char i = 0; i < Shell::lines; i++) {
-        for (unsigned char h = 0; h < Shell::columns; h++) {
-            _video[(i * 2 * Shell::columns) + (h * 2)]     = ' ';
-            _video[(i * 2 * Shell::columns) + (h * 2) + 1] = 0x00;
+    for (unsigned char y = 0; y < Shell::lines; y++) {
+        for (unsigned char x = 0; x < Shell::columns; x++) {
+            _video[(x + y * Shell::columns) * 2]     = ' ';
+            _video[(x + y * Shell::columns) * 2 + 1] = 0x00;
         }
     }
 
-    _line     = 0;
-    _position = 0;
+    _y = 0;
+    _x = 0;
+
+    this->moveCursor(_x, _y);
+}
+
+void
+Shell::moveCursor (char x, char y)
+{
+    _video[(x + y * Shell::columns) * 2 + 1] = _color.value();
+
+    Misc::out(Shell::VGA,   (Type::u8) 14);
+    Misc::out(Shell::VGA+1, (Type::u8) ((x + y * Shell::columns) >> 8));
+    Misc::out(Shell::VGA,   (Type::u8) 15);
+    Misc::out(Shell::VGA+1, (Type::u8) (x + y * Shell::columns));
 }
 
 void
@@ -59,27 +73,27 @@ Shell::print (unsigned char out)
         break;
 
         case '\r':
-        _position = 0;
+        _x = 0;
         printed   = 1;
         break;
 
         case '\n':
-        _position = 0;
+        _x = 0;
 
-        if (_line < Shell::lines-1) {
-            _line++;
+        if (_y < Shell::lines-1) {
+            _y++;
         }
         else {
-            for (unsigned char i = 1; i < Shell::lines; i++) {
-                for (unsigned char h = 0; h < Shell::columns; h++) {
-                    _video[((i-1) * 2 * Shell::columns) + (h * 2)]     = _video[(i * Shell::columns) + (h * 2)];
-                    _video[((i-1) * 2 * Shell::columns) + (h * 2) + 1] = _video[(i * Shell::columns) + (h * 2) + 1];
+            for (unsigned char y = 1; y < Shell::lines; y++) {
+                for (unsigned char x = 0; x < Shell::columns; x++) {
+                    _video[(x + (y - 1) * Shell::columns) * 2]     = _video[x + y * Shell::columns * 2];
+                    _video[(x + (y - 1) * Shell::columns) * 2 + 1] = _video[x + y * Shell::columns * 2 + 1];
                 }
             }
 
-            for (unsigned char i = 0; i < Shell::columns; i += 2) {
-                _video[((Shell::lines-1) * 2 * Shell::columns) + (i * 2)]     = ' ';
-                _video[((Shell::lines-1) * 2 * Shell::columns) + (i * 2) + 1] = 0x00;
+            for (unsigned char x = 0; x < Shell::columns; x++) {
+                _video[(x + (Shell::lines-1) * Shell::columns) * 2]     = ' ';
+                _video[(x + (Shell::lines-1) * Shell::columns) * 2 + 1] = 0x00;
             }
         }
 
@@ -87,28 +101,30 @@ Shell::print (unsigned char out)
         break;
 
         case '\b':
-        if (_position > 0) {
-            _video[(_line * 2 * Shell::columns) + (_position * 2)]     = ' ';
-            _video[(_line * 2 * Shell::columns) + (_position * 2) + 1] = 0x00;
+        if (_x > 0) {
+            _video[(_x + _y * Shell::columns) * 2]     = ' ';
+            _video[(_x + _y * Shell::columns) * 2 + 1] = 0x00;
 
-            _position--;
+            _x--;
         }
 
         printed = 1;
         break;
 
         default:
-        if (_position == Shell::columns) {
+        if (_x == Shell::columns) {
             this->print('\n');
         }
 
-        _video[(_line * 2 * Shell::columns) + (_position * 2)]     = out;
-        _video[(_line * 2 * Shell::columns) + (_position * 2) + 1] = _color.value();
+        _video[(_x + _y * Shell::columns) * 2]     = out;
+        _video[(_x + _y * Shell::columns) * 2 + 1] = _color.value();
 
-        _position++;
+        _x++;
         printed = 1;
         break;
     }
+
+    this->moveCursor(_x, _y);
 
     return printed;
 }

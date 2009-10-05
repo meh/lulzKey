@@ -19,7 +19,7 @@ echo "boot"
 echo ""
 echo "Enjoy."
 
-qemu -cpu pentium3 -m 32M -fda "$FLOPPY" &> /dev/null
+qemu -d cpu_reset -cpu pentium3 -m 32M -fda "$FLOPPY" &> /dev/null
 
 rm "$TMP"
 rm "$FLOPPY"

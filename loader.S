@@ -35,6 +35,7 @@ _2:
    cmp  $end_ctors, %ebx
    jb   _1
 
+   cli
    call main
 
    # calling static destructors
