@@ -14,7 +14,9 @@ KERNEL_FILES = main.cpp sources/Boot/Boot.cpp \
 			   sources/Misc/IO.cpp \
 			   sources/Tools/Shell/Shell.cpp sources/Tools/Shell/Color.cpp
 
-ASM_FILES = loader.S sources/DescriptorTables/Global.S sources/Interrupt/ServiceRoutine.S
+ASM_FILES = loader.S \
+		    sources/DescriptorTables/Global.S sources/DescriptorTables/Interrupt.S \
+			sources/Interrupt/ServiceRoutine.S
 
 all: kernel_asm kernel
 	ld ${LDFLAGS} -o ${NAME} $(ASM_FILES:.S=_.o) $(KERNEL_FILES:.cpp=.o)

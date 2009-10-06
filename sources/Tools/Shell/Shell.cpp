@@ -3,12 +3,24 @@
 
 namespace Kernel {
 
+Shell* Shell::_object = (Shell*) NULL;
+
 Shell::Shell (const void* address)
 {
-    _video = (unsigned char*) address;
-    _y     = 0;
-    _x     = 0;
-    this->clear();
+    if (!Shell::_object) {
+        _video = (unsigned char*) address;
+        _y     = 0;
+        _x     = 0;
+
+        this->clear();
+
+        Shell::_object = this;
+    }
+    else {
+        _video = Shell::_object->_video;
+        _y     = Shell::_object->_y;
+        _x     = Shell::_object->_x;
+    }
 }
 
 void

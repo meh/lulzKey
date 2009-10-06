@@ -4,17 +4,19 @@ namespace Kernel {
 
 namespace DescriptorTables {
 
-Global*    GDT;
-Interrupt* IDT;
+Global*    GDT = 0;
+Interrupt* IDT = 0;
 
 void
 init (void)
 {
-    Global gdt;
-    GDT = &gdt;
+    if (!GDT && !IDT) {
+        Global gdt;
+        GDT = &gdt;
 
-    Interrupt idt;
-    IDT = &idt;
+        Interrupt idt;
+        IDT = &idt;
+    }
 }
 
 }

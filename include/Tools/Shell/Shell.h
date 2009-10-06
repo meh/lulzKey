@@ -28,6 +28,9 @@ class Shell
     static const unsigned char endLine = '\n';
 
   private:
+    static Shell* _object;
+
+  private:
     unsigned char* _video;
     unsigned char  _y;
     unsigned char  _x;

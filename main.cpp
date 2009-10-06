@@ -2,7 +2,6 @@
 #include <Boot/Boot.h>
 #include <Memory/Memory.h>
 #include <DescriptorTables/DescriptorTables.h>
-#include <Interrupt/ServiceRoutine.h>
 
 #include <Tools/Shell/Shell.h>
 
@@ -42,5 +41,6 @@ main (Type::u32 magic, void* information)
 
     DescriptorTables::init();
 
-    shell << (Type::u32) __ISR(0) << Shell::endLine;
+    asm volatile ("int $0x31");
 }
+

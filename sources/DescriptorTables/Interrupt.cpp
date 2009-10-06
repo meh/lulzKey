@@ -2,6 +2,8 @@
 #include <Interrupt/ServiceRoutine.h>
 #include <Memory/Memory.h>
 
+extern "C" void __idt_flush (Type::u32 address);
+
 namespace Kernel {
 
 namespace DescriptorTables {
@@ -13,7 +15,6 @@ Interrupt::Interrupt (void)
 
     Memory::set(_entries, 0, sizeof(Interrupt::Entry) * 256);
 
-#if 0
     this->set(0,  (Type::u32) __ISR(0),  0x08, 0x8E);
     this->set(1,  (Type::u32) __ISR(1),  0x08, 0x8E);
     this->set(2,  (Type::u32) __ISR(2),  0x08, 0x8E);
@@ -46,7 +47,6 @@ Interrupt::Interrupt (void)
     this->set(29, (Type::u32) __ISR(29), 0x08, 0x8E);
     this->set(30, (Type::u32) __ISR(30), 0x08, 0x8E);
     this->set(31, (Type::u32) __ISR(31), 0x08, 0x8E);
-#endif
 
     this->flush();
 }
@@ -68,9 +68,7 @@ Interrupt::set (Type::u8 index, Type::u32 base, Type::u16 segmentSelector, Type:
 void
 Interrupt::flush (void)
 {
-    /* Load the Interrupt Descriptor Table. */
-    asm volatile ("movl %0, %%eax" :: "r" (&_pointer) : "%eax");
-    asm volatile ("lidt (%eax)");
+    ::__idt_flush((Type::u32) &_pointer);
 }
 
 }
