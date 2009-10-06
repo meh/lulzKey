@@ -19,11 +19,11 @@
 loader:
    movl  $(stack + STACKSIZE), %esp # set up the stack
 
-   pushl $0
+   push $0
    popf
 
-   pushl %ebx
-   pushl %eax
+   push %ebx
+   push %eax
 
    # calling static constructors
    mov  $start_ctors, %ebx

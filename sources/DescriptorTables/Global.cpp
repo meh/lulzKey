@@ -1,5 +1,7 @@
 #include <DescriptorTables/Global.h>
 
+extern void __gdt_flush (Type::u32 address);
+
 namespace Kernel {
 
 namespace DescriptorTables {
@@ -31,19 +33,7 @@ Global::set (Type::s32 index, Type::u32 base, Type::u32 limit, Type::u8 access, 
 void
 Global::flush (void)
 {
-    /* Load the Global Descriptor Table. */
-    asm volatile ("movl %0, %%eax" :: "r" (&_pointer) : "%eax");
-    asm volatile ("lgdt (%eax)");
-
-    asm volatile ("mov 0x10, %ax");
-
-    /* Load all data segment selectors */
-    asm volatile ("mov %ax, %ds");
-    asm volatile ("mov %ax, %es");
-    asm volatile ("mov %ax, %fs");
-    asm volatile ("mov %ax, %gs");
-    asm volatile ("mov %ax, %ss");
-    asm volatile ("jmp 0x08");
+    ::__gdt_flush((Type::u32) &_pointer);
 }
 
 }

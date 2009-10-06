@@ -13,13 +13,20 @@ KERNEL_FILES = main.cpp sources/Boot/Boot.cpp \
 			   sources/Misc/IO.cpp \
 			   sources/Tools/Shell/Shell.cpp sources/Tools/Shell/Color.cpp
 
-all: loader kernel
-	ld ${LDFLAGS} -o ${NAME} loader.o $(KERNEL_FILES:.cpp=.o)
+ASM_FILES = loader.S sources/DescriptorTables/Global.S
 
-loader:
-	${CXX} ${CFLAGS} -o loader.o -c loader.S
+all: kernel_asm kernel
+	ld ${LDFLAGS} -o ${NAME} $(ASM_FILES:.S=_.o) $(KERNEL_FILES:.cpp=.o)
+
+kernel_asm: $(ASM_FILES:.S=_.o)
+
+$(ASM_FILES:.S=_.o): $(ASM_FILES)
+	${CXX} ${CFLAGS} -o $*.o -c $(shell echo "$*" | sed 's/_$$//').S
 
 kernel: $(KERNEL_FILES:.cpp=.o)
+
+$(KERNEL_FILES:.cpp=.o): $(KERNEL_FILES)
+	${CXX} ${CFLAGS} -o $*.o -c $*.cpp
 
 clean:
 	find . | egrep "\.o" | xargs rm -f
