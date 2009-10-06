@@ -1,6 +1,6 @@
 #include <DescriptorTables/Global.h>
 
-extern void __gdt_flush (Type::u32 address);
+extern "C" void __gdt_flush (Type::u32 address);
 
 namespace Kernel {
 
@@ -11,7 +11,11 @@ Global::Global (void)
     _pointer.limit = (sizeof(Global::Entry) * 5) - 1;
     _pointer.base  = (Type::u32) &_entries;
 
-    this->set(0, 0, 0, 0, 0);
+    this->set(0, 0, 0, 0, 0);                // Null segment
+    this->set(1, 0, 0xFFFFFFFF, 0x9A, 0xCF); // Code segment
+    this->set(2, 0, 0xFFFFFFFF, 0x92, 0xCF); // Data segment
+    this->set(3, 0, 0xFFFFFFFF, 0xFA, 0xCF); // User mode code segment
+    this->set(4, 0, 0xFFFFFFFF, 0xF2, 0xCF); // User mode data segment
 
     this->flush();
 }
