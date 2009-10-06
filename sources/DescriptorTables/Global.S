@@ -1,4 +1,5 @@
 .global __gdt_flush
+.type __gdt_flush, @function
 
 __gdt_flush:
     mov  4(%esp), %eax # Get the pointer to the GDT, passed as a parameter.

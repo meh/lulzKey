@@ -1,6 +1,7 @@
 .macro ISRErrorCode number
 .global __isr\number
 .type __isr\number, @function
+__isr\number:
     cli
     push $\number
     jmp ISRCommonStub
@@ -9,6 +10,7 @@
 .macro ISRNoErrorCode number
 .global __isr\number
 .type __isr\number, @function
+__isr\number:
     cli
     push $0
     push $\number
