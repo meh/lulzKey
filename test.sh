@@ -1,4 +1,10 @@
 #! /bin/bash
+
+if [ ! -e lulzKey ]; then
+    echo "The kernel is missing."
+    exit;
+fi
+
 STAGE1=`stat -c %s test/stage1`
 STAGE2=`stat -c %s test/stage2`
 KERNEL=`stat -c %s lulzKey`

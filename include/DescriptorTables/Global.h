@@ -31,7 +31,7 @@ class Global
     } __attribute__ ((packed));
 
   private:
-    Entry   _entries[5];
+    Entry   _entries[7];
     Pointer _pointer;
 
   public:
