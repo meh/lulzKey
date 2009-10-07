@@ -59,10 +59,10 @@ class Interrupt
         Request
     };
 
-    typedef void (*Handler)(Registers);
+    typedef void (*Handler)(Registers&);
 
   public:
-    static void handle (Type type, Registers registers);
+    static void handle (Type type, Registers& registers);
     static void define (Type::u8 number, Handler handler);
 
   private:

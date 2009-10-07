@@ -27,11 +27,11 @@
 
 using namespace Kernel;
 
-void FORTYTWO (Interrupt::Registers registers)
+void FORTYTWO (Interrupt::Registers& registers)
 {
     Shell shell;
 
-    shell << "LOL YOU'RE A FAGGOT!1!" << Shell::endLine;
+    shell << Shell::endLine << Shell::Color(Shell::Color::Pink) << "LOL YOU'RE A " << registers.eax << " FAGGOT!1!" << Shell::Color(Shell::Color::White) << Shell::endLine;
 }
 
 extern "C"
@@ -45,10 +45,19 @@ main (Type::u32 magic, void* information)
     Boot boot(information);
     Shell shell;
 
+    shell << "Booting from: ";
+    if (boot.bootLoader()) {
+        shell << boot.bootLoader();
+    }
+    else {
+        shell << "Unknown";
+    }
+    shell << Shell::endLine;
+
     shell << "Boot options: " << boot.command() << Shell::endLine;
 
     shell << "Boot device:  ";
-    if (boot.validDevice()) {
+    if (boot.device()) {
         shell << "BIOS=" << (Type::u32) boot.device()->BIOS << "; ";
         shell << "Partition=" << (Type::u32) boot.device()->partition.topLevel << "; ";
     }
@@ -58,7 +67,7 @@ main (Type::u32 magic, void* information)
     shell << Shell::endLine;
 
     shell << "Memory:       ";
-    if (boot.validMemory()) {
+    if (boot.memory()) {
         shell << "lower=" << boot.memory()->lower << "; upper=" << boot.memory()->upper;
     }
     else {
@@ -70,6 +79,7 @@ main (Type::u32 magic, void* information)
 
     Interrupt::define(0x42, &FORTYTWO);
 
+    asm volatile ("mov $1337, %eax");
     asm volatile ("int $0x42");
 }
 

@@ -22,7 +22,7 @@
 
 namespace Kernel {
 
-Shell* Shell::_object = (Shell*) NULL;
+Shell* Shell::_object = NULL;
 
 Shell::Shell (const void* address)
 {

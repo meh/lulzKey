@@ -26,73 +26,88 @@ Boot::Boot (void* information)
     _info = (Info*) information;
 }
 
-bool
-Boot::validMemory (void)
+Boot::Memory*
+Boot::memory (void)
 {
-    return _checkFlag(_info->flags, 0);
-}
-
-bool
-Boot::validDevice (void)
-{
-    return _checkFlag(_info->flags, 1);
-}
-
-bool
-Boot::validModules (void)
-{
-    return _checkFlag(_info->flags, 3);
-}
-
-bool
-Boot::validELF (void)
-{
-    return _checkFlag(_info->flags, 5);
-}
-
-bool
-Boot::validMmap (void)
-{
-    return _checkFlag(_info->flags, 6);
-}
-
-bool
-Boot::LOLNO (void)
-{
-    return _checkFlag(_info->flags, 4) && _checkFlag(_info->flags, 5);
-}
-
-const char*
-Boot::command (void)
-{
-    if (_checkFlag(_info->flags, 2)) {
-        return (const char*) _info->command;
-    }
-    else {
-        return (const char*) NULL;
-    }
+    return _checkFlag(_info->flags, 0)
+        ? (Boot::Memory*) &_info->memLower
+        : NULL;
 }
 
 Boot::Device*
 Boot::device (void)
 {
-    return (Boot::Device*) _info->bootDevice;
+    return _checkFlag(_info->flags, 1)
+        ? (Boot::Device*) _info->bootDevice
+        : NULL;
 }
 
-Boot::Memory*
-Boot::memory (void)
+const char*
+Boot::command (void)
 {
-    return (Boot::Memory*) &_info->memLower;
+    return _checkFlag(_info->flags, 2)
+        ? (const char*) _info->command
+        : NULL;
 }
 
 Boot::Modules*
 Boot::modules (void)
 {
-    return (Boot::Modules*) &_info->modulesCount;
+    return _checkFlag(_info->flags, 3)
+        ? (Boot::Modules*) &_info->modulesCount
+        : NULL;
+}
+
+Boot::MemoryMaps*
+Boot::memoryMaps (void)
+{
+    return _checkFlag(_info->flags, 6)
+        ? (Boot::MemoryMaps*) &_info->mmapLength
+        : NULL;
+}
+
+Boot::Drives*
+Boot::drives (void)
+{
+    return _checkFlag(_info->flags, 7)
+        ? (Boot::Drives*) &_info->drivesLength
+        : NULL;
+}
+
+void*
+Boot::configTable (void)
+{
+    return _checkFlag(_info->flags, 8)
+        ? (void*) _info->configTable
+        : NULL;
+}
+
+const char*
+Boot::bootLoader (void)
+{
+    return _checkFlag(_info->flags, 9)
+        ? (const char*) _info->bootLoader
+        : NULL;
+}
+
+Boot::APM*
+Boot::APMTable (void)
+{
+    return _checkFlag(_info->flags, 10)
+        ? (Boot::APM*) _info->APMTable
+        : NULL;
+}
+
+Boot::VBE*
+Boot::graphicsTable (void)
+{
+    return _checkFlag(_info->flags, 11)
+        ? (Boot::VBE*) &_info->graphicsTable
+        : NULL;
 }
 
 bool
-Boot::_checkFlag (Type::u32 flags, char bit)
+Boot::_checkFlag (Type::u32 flags, Type::u8 bit)
 {
     return (flags) & (1 << (bit));
 }

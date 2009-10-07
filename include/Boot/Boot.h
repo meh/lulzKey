@@ -54,17 +54,17 @@ class Boot
      * Multiboot compliant boot information struct.
      */
     struct Info {
-        Type::u32 flags;            /*<< multiboot flags */
+        Type::u32 flags;          /*<< multiboot flags */
 
-        Type::u32 memLower;         /*<< low memory size */
-        Type::u32 memUpper;         /*<< high memory size */
+        Type::u32 memLower;       /*<< low memory size */
+        Type::u32 memUpper;       /*<< high memory size */
 
-        Type::u32 bootDevice;       /*<< boot device informations */ 
+        Type::u32 bootDevice;     /*<< boot device informations */ 
 
-        Type::u32 command;          /*<< command line passed through the boot loader */
+        Type::u32 command;        /*<< command line passed through the boot loader */
 
-        Type::u32 modulesCount;     /*<< modules count */
-        Type::u32 modulesAddress;   /*<< modules array address */
+        Type::u32 modulesCount;   /*<< modules count */
+        Type::u32 modulesAddress; /*<< modules array address */
 
         /**
          * ELF symbols table.
@@ -76,11 +76,19 @@ class Boot
             Type::u32 shndx;
         } ELF;
 
-       Type::u32 mmapLength;    /*<< memory map structures length */
-       Type::u32 mmapAddress;   /*<< memory map structures address */
+        Type::u32 mmapLength;     /*<< memory map structures length */
+        Type::u32 mmapAddress;    /*<< memory map structures address */
 
-       Type::u32 drivesLength;  /*<< */
-       Type::u32 drivesAddress; /*<< */
+        Type::u32 drivesLength;   /*<< drives array length */
+        Type::u32 drivesAddress;  /*<< drives array address */
+
+        Type::u32 configTable;    /*<< address of the ROM configuration table returned by the GET CONFIGURATION bios  call */
+
+        Type::u32 bootLoader;     /*<< boot loader name */
+
+        Type::u32 APMTable;       /*<< Advanced Power Management table */
+
+        Type::u32 graphicsTable;  /*<< VESA BIOS Extensions table */
     };
 
     /**
@@ -109,11 +117,14 @@ class Boot
 
     /**
      * Module abstraction.
+     *
+     * Dump of the whole file in memory.
+     * So basically just read with the ELF header the init symbol and call it.
      */
     struct Module {
-        Type::u32 start;
-        Type::u32 end;
-        Type::u32 string;
+        Type::u32 start;    /*<< start address */
+        Type::u32 end;      /*<< end address */
+        Type::u32 string;   /*<< string associated with the module */
         Type::u32 reserved;
     };
 
@@ -126,45 +137,99 @@ class Boot
     };
 
     /**
-     *
+     * Memory map abstraction.
      */
-    struct Drive {};
+    struct MemoryMap {
+        Type::u32 baseAddressLow;
+        Type::u32 baseAddressHigh;
+        Type::u32 lengthLow;
+        Type::u32 lengthHigh;
+        Type::u32 type;
+    };
+
+    /**
+     * Memory map list.
+     */
+    struct MemoryMaps {
+        Type::u32  length;
+        MemoryMap* item;
+    };
+
+    /**
+     * Drive abstraction.
+     */
+    struct Drive {
+        Type::u32 size;      /*<< size of the struct */
+        Type::u8  number;    /*<< BIOS drive numbe */
+
+        /**
+         * Access mode:
+         * 0: CHS mode (traditional cylinder/head/sector addressing mode). 
+         * 1: LBA mode (Logical Block Addressing mode).
+         */
+        Type::u8 mode;
+
+        Type::u16  cylinders; /*<< drive's cylinders */
+        Type::u8   heads;     /*<< drive's heads */
+        Type::u8   sectors;   /*<< drive's sectors */
+        Type::u16* ports;     /*<< I/O ports array, ends with a 0 */
+    };
+
+    /**
+     * Drive list.
+     */
+    struct Drives {
+        Type::u32 length;
+        Drive*    item;
+    };
+
+    /**
+     * Advanced Power Management table
+     */
+    struct APM {
+        Type::u16 version;             /*<< version number */
+        Type::u16 codeSegment;         /*<< protected mode 32-bit code segment */
+        Type::u32 offset;              /*<< offset of the entry point */
+        Type::u16 codeSegment16;       /*<< protected mode 16-bit code segment */
+        Type::u16 dataSegment;         /*<< protected mode 16-bit data segment */
+        Type::u16 flags;               /*<< flags? */
+        Type::u16 codeSegmentLength;   /*<< length of the protected mode 32-bit code segment */
+        Type::u16 codeSegment16Length; /*<< length of the protected mode 16-bit code segment */
+        Type::u16 dataSegmentLength;   /*<< ength of the protected mode 16-bit data segment */
+    };
+
+    /**
+     * VESA BIOS Extensions table
+     */
+    struct VBE {
+        Type::u32 controlInfo;      /*<< physical addresses of VBE control information returned by the VBE Function 00h */
+        Type::u32 modeInfo;         /*<< VBE mode information returned by the VBE Function 01h */
+        Type::u16 mode;             /*<< current video mode in the format specified in vbe 3.0 */
+        Type::u16 interfaceSegment; /*<< segment of a protected mode interface defined in VBE 2.0+ */
+        Type::u16 interfaceOffset;  /*<< offset of a protected mode interface defined in VBE 2.0+ */
+        Type::u16 interfaceLength;  /*<< length of a protected mode interface defined in VBE 2.0+ */
+    };
 
   private:
-    Boot::Info* _info;
+    Info* _info;
 
   public:
+    /**
+     * Create the Boot object.
+     *
+     * @param   information     Address to the Multiboot header.
+     */
     Boot (void* information);
 
     /**
-     * Check if the memory addresses are valid.
+     * Memory bounds.
      */
-    bool validMemory (void);
+    Memory* memory (void);
 
     /**
-     * Check if the boot device is valid.
+     * Device from where we're booting.
      */
-    bool validDevice (void);
-
-    /**
-     * Check if the modules list is valid.
-     */
-    bool validModules (void);
-
-    /**
-     * Check if the ELF symbol table is valid.
-     */
-    bool validELF (void);
-
-    /**
-     * Check if the mmap is valid.
-     */
-    bool validMmap (void);
-
-    /**
-     * If this is true, something went deeply wrong.
-     */
-    bool LOLNO (void);
+    Device* device (void);
 
     /**
      * Command line passed at boot time.
@@ -172,19 +237,39 @@ class Boot
     const char* command (void);
 
     /**
-     * Device from where we're booting.
-     */
-    Boot::Device* device (void);
-
-    /**
-     * Boot memory bounds.
-     */
-    Boot::Memory* memory (void);
-
-    /**
      * Boot modules.
      */
-    Boot::Modules* modules (void);
+    Modules* modules (void);
+
+    /**
+     * Memory maps infos.
+     */
+    MemoryMaps* memoryMaps (void);
+
+    /**
+     * Drives list.
+     */
+    Drives* drives (void);
+
+    /**
+     * BIOS config table.
+     */
+    void* configTable (void);
+
+    /**
+     * Boot loader name.
+     */
+    const char* bootLoader (void);
+
+    /**
+     * APM table.
+     */
+    APM* APMTable (void);
+
+    /**
+     * VBE table.
+     */
+    VBE* graphicsTable (void);
 
   private:
     /**
@@ -195,7 +280,7 @@ class Boot
      *
      * @return  Flags' bit value.
      */
-    bool _checkFlag (Type::u32 flags, char bit);
+    bool _checkFlag (Type::u32 flags, Type::u8 bit);
 };
 
 }
