@@ -2,10 +2,18 @@
 #include <Boot/Boot.h>
 #include <Memory/Memory.h>
 #include <DescriptorTables/DescriptorTables.h>
+#include <Interrupt/Interrupt.h>
 
 #include <Tools/Shell/Shell.h>
 
 using namespace Kernel;
+
+void FORTYTWO (Interrupt::Registers registers)
+{
+    Shell shell;
+
+    shell << "LOL YOU'RE A FAGGOT!1!" << Shell::endLine;
+}
 
 extern "C"
 void
@@ -41,6 +49,8 @@ main (Type::u32 magic, void* information)
 
     DescriptorTables::init();
 
-    asm volatile ("int $0x31");
+    Interrupt::define(0x42, &FORTYTWO);
+
+    asm volatile ("int $0x42");
 }
 

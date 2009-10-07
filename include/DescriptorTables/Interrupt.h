@@ -9,11 +9,13 @@ namespace DescriptorTables {
 
 class Interrupt
 {
+  protected:
+    Interrupt (void) {};
+
   public:
     /**
      * Interrupt Entry Descriptor
      */
-
     struct Entry {
         Type::u16 baseLow;         /*<< The lower 16 bits of the address to jump to when this interrupt fires. */
         Type::u16 segmentSelector; /*<< Kernel segment selector. */
@@ -31,15 +33,15 @@ class Interrupt
     } __attribute__ ((packed));
 
   private:
-    Entry   _entries[256];
-    Pointer _pointer;
+    static Entry   _entries[256];
+    static Pointer _pointer;
 
   public:
-    Interrupt (void);
+    static void init (void);
 
-    void set (Type::u8 index, Type::u32 base, Type::u16 segmentSelector, Type::u8 flags);
+    static void set (Type::u8 index, Type::u32 base, Type::u16 segmentSelector, Type::u8 flags);
 
-    void flush (void);
+    static void flush (void);
 };
 
 }

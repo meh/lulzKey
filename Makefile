@@ -16,7 +16,7 @@ KERNEL_FILES = main.cpp sources/Boot/Boot.cpp \
 
 ASM_FILES = loader.S \
 		    sources/DescriptorTables/Global.S sources/DescriptorTables/Interrupt.S \
-			sources/Interrupt/ServiceRoutine.S
+			sources/Interrupt/ServiceRoutine.S sources/Interrupt/Request.S
 
 all: kernel_asm kernel
 	ld ${LDFLAGS} -o ${NAME} $(ASM_FILES:.S=_.o) $(KERNEL_FILES:.cpp=.o)
@@ -32,5 +32,6 @@ $(KERNEL_FILES:.cpp=.o): $(KERNEL_FILES)
 	${CXX} ${CFLAGS} -o $*.o -c $*.cpp
 
 clean:
+	rm ${NAME}
 	find . | egrep "\.o" | xargs rm -f
 

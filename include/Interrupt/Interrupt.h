@@ -7,6 +7,9 @@ namespace Kernel {
 
 class Interrupt
 {
+  protected:
+    Interrupt (void) {};
+
   public:
     struct Registers {
         Type::u32 ds; /*<< data segment selector */
@@ -32,14 +35,19 @@ class Interrupt
         Type::u32 ss;
     };
 
+    enum Type {
+        ServiceRoutine,
+        Request
+    };
+
+    typedef void (*Handler)(Registers);
+
   public:
-    static void Handler (Registers registers);
+    static void handle (Type type, Registers registers);
+    static void define (Type::u8 number, Handler handler);
 
   private:
-    Registers _registers;
-
-  public:
-    Interrupt (Registers registers);
+    static Handler _handlers[256];
 };
 
 }

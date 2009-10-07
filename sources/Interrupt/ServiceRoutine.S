@@ -50,6 +50,8 @@ ISRNoErrorCode 29
 ISRNoErrorCode 30
 ISRNoErrorCode 31
 
+ISRNoErrorCode 66
+
 ISRCommonStub:
     pusha
     
@@ -62,7 +64,7 @@ ISRCommonStub:
     mov %ax, %fs
     mov %ax, %gs
     
-    call __Interrupt_Handler
+    call __Interrupt_ISR_Handler
     
     pop %eax         # reload the original data segment descriptor
     mov %ax, %ds

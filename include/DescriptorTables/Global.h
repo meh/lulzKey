@@ -9,6 +9,9 @@ namespace DescriptorTables {
 
 class Global
 {
+  protected:
+    Global (void) {};
+
   public:
     /**
      * Global Entry Descriptor
@@ -31,15 +34,15 @@ class Global
     } __attribute__ ((packed));
 
   private:
-    Entry   _entries[7];
-    Pointer _pointer;
+    static Entry   _entries[7];
+    static Pointer _pointer;
 
   public:
-    Global (void);
+    static void init (void);
 
-    void set (Type::s32 index, Type::u32 base, Type::u32 limit, Type::u8 access, Type::u8 granularity);
+    static void set (Type::s32 index, Type::u32 base, Type::u32 limit, Type::u8 access, Type::u8 granularity);
 
-    void flush (void);
+    static void flush (void);
 };
 
 }
