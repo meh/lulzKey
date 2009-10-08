@@ -133,7 +133,7 @@ class Boot
      */
     struct Modules {
         Type::u32 length; /*<< modules list length */
-        Module*   item;   /*<< modules list items */
+        Module**  item;   /*<< modules list items */
     };
 
     /**
@@ -151,8 +151,8 @@ class Boot
      * Memory map list.
      */
     struct MemoryMaps {
-        Type::u32  length;
-        MemoryMap* item;
+        Type::u32   length;
+        MemoryMap** item;
     };
 
     /**
@@ -173,7 +173,7 @@ class Boot
         Type::u8  heads;     /*<< drive's heads */
         Type::u8  sectors;   /*<< drive's sectors */
 
-        Type::u16* ports;     /*<< I/O ports array, ends with a 0 */
+        Type::u16* ports;    /*<< I/O ports array, ends with a 0 */
     };
 
     /**
@@ -241,6 +241,7 @@ class Boot
      * Boot modules.
      */
     Modules* modules (void);
+    void     modules (void (*function)(Boot::Module*));
 
     /**
      * Memory maps infos.

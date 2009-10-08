@@ -111,8 +111,8 @@ Shell::print (unsigned char out)
         else {
             for (unsigned char y = 1; y < Shell::lines; y++) {
                 for (unsigned char x = 0; x < Shell::columns; x++) {
-                    Shell::_object->_video[(x + (y - 1) * Shell::columns) * 2]     = Shell::_object->_video[x + y * Shell::columns * 2];
-                    Shell::_object->_video[(x + (y - 1) * Shell::columns) * 2 + 1] = Shell::_object->_video[x + y * Shell::columns * 2 + 1];
+                    Shell::_object->_video[(x + (y - 1) * Shell::columns) * 2]     = Shell::_object->_video[(x + y * Shell::columns) * 2];
+                    Shell::_object->_video[(x + (y - 1) * Shell::columns) * 2 + 1] = Shell::_object->_video[(x + y * Shell::columns) * 2 + 1];
                 }
             }
 

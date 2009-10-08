@@ -60,6 +60,16 @@ Boot::modules (void)
         : NULL;
 }
 
+void
+Boot::modules (void (*function)(Boot::Module* module))
+{
+    Boot::Modules* modules = this->modules();
+
+    for (Type::u32 i = 0; i < modules->length; i++) {
+        function(modules->item[i]);
+    }
+}
+
 Boot::MemoryMaps*
 Boot::memoryMaps (void)
 {
