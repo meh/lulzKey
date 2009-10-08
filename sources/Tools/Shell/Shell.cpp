@@ -27,7 +27,7 @@ Shell* Shell::_object = NULL;
 Shell::Shell (const void* address)
 {
     if (!Shell::_object) {
-        _video = (unsigned char*) address;
+        _video = (Type::u8*) address;
         _y     = 0;
         _x     = 0;
 
@@ -39,8 +39,8 @@ Shell::Shell (const void* address)
 void
 Shell::clear (void)
 {
-    for (unsigned char y = 0; y < Shell::lines; y++) {
-        for (unsigned char x = 0; x < Shell::columns; x++) {
+    for (Type::u8 y = 0; y < Shell::lines; y++) {
+        for (Type::u8 x = 0; x < Shell::columns; x++) {
             Shell::_object->_video[(x + y * Shell::columns) * 2]     = ' ';
             Shell::_object->_video[(x + y * Shell::columns) * 2 + 1] = 0x00;
         }
@@ -50,6 +50,24 @@ Shell::clear (void)
     Shell::_object->_x = 0;
 
     this->moveCursor(Shell::_object->_x, Shell::_object->_y);
+}
+
+void
+Shell::scroll (Type::u32 lines)
+{
+    for (Type::u8 y = lines; y < Shell::lines; y++) {
+        for (Type::u8 x = 0; x < Shell::columns; x++) {
+            Shell::_object->_video[(x + (y - 1) * Shell::columns) * 2]     = Shell::_object->_video[(x + y * Shell::columns) * 2];
+            Shell::_object->_video[(x + (y - 1) * Shell::columns) * 2 + 1] = Shell::_object->_video[(x + y * Shell::columns) * 2 + 1];
+        }
+    }
+
+    for (Type::u8 y = Shell::lines; y > Shell::lines - lines; y--) {
+        for (Type::u8 x = 0; x < Shell::columns; x++) {
+            Shell::_object->_video[(x + (y-1) * Shell::columns) * 2]     = ' ';
+            Shell::_object->_video[(x + (y-1) * Shell::columns) * 2 + 1] = 0x00;
+        }
+    }
 }
 
 void
@@ -81,16 +99,16 @@ Shell::color (void)
     return _color;
 }
 
-unsigned int
+Type::u32
 Shell::print (char out)
 {
-    return this->print((unsigned char) out);
+    return this->print((Type::u8) out);
 }
 
-unsigned int
+Type::u32
 Shell::print (unsigned char out)
 {
-    unsigned int printed = 0;
+    Type::u32 printed = 0;
 
     switch (out) {
         case '\t':
@@ -109,17 +127,7 @@ Shell::print (unsigned char out)
             Shell::_object->_y++;
         }
         else {
-            for (unsigned char y = 1; y < Shell::lines; y++) {
-                for (unsigned char x = 0; x < Shell::columns; x++) {
-                    Shell::_object->_video[(x + (y - 1) * Shell::columns) * 2]     = Shell::_object->_video[(x + y * Shell::columns) * 2];
-                    Shell::_object->_video[(x + (y - 1) * Shell::columns) * 2 + 1] = Shell::_object->_video[(x + y * Shell::columns) * 2 + 1];
-                }
-            }
-
-            for (unsigned char x = 0; x < Shell::columns; x++) {
-                Shell::_object->_video[(x + (Shell::lines-1) * Shell::columns) * 2]     = ' ';
-                Shell::_object->_video[(x + (Shell::lines-1) * Shell::columns) * 2 + 1] = 0x00;
-            }
+            this->scroll();
         }
 
         printed = 1;
@@ -154,10 +162,10 @@ Shell::print (unsigned char out)
     return printed;
 }
 
-unsigned int
+Type::u32
 Shell::print (short out)
 {
-    unsigned int printed;
+    Type::u32 printed;
 
     if (out < 0) {
         printed = this->print('-') + this->print((unsigned long) -out);
@@ -169,16 +177,16 @@ Shell::print (short out)
     return printed;
 }
 
-unsigned int
+Type::u32
 Shell::print (unsigned short out)
 {
     return this->print((unsigned long) out);
 }
 
-unsigned int
+Type::u32
 Shell::print (int out)
 {
-    unsigned int printed;
+    Type::u32 printed;
 
     if (out < 0) {
         printed = this->print('-') + this->print((unsigned long) -out);
@@ -190,16 +198,16 @@ Shell::print (int out)
     return printed;
 }
 
-unsigned int
+Type::u32
 Shell::print (unsigned int out)
 {
     return this->print((unsigned long) out);
 }
 
-unsigned int
+Type::u32
 Shell::print (long out)
 {
-    unsigned int printed;
+    Type::u32 printed;
 
     if (out < 0) {
         printed = this->print('-') + this->print((unsigned long) -out);
@@ -211,7 +219,7 @@ Shell::print (long out)
     return printed;
 }
 
-unsigned int
+Type::u32
 Shell::print (unsigned long out)
 {
     char output[21] = {0};
@@ -230,19 +238,19 @@ Shell::print (unsigned long out)
     return count;
 }
 
-unsigned int
+Type::u32
 Shell::print (const void* out)
 {
     return _hexadecimal((unsigned long) out);
 }
 
 
-unsigned int
+Type::u32
 Shell::print (const char* out)
 {
-    unsigned int printed = 0;
+    Type::u32 printed = 0;
 
-    for (unsigned int i = 0; out[i] != '\0'; i++) {
+    for (Type::u32 i = 0; out[i] != '\0'; i++) {
         printed += this->print(out[i]);
     }
 
@@ -325,7 +333,7 @@ Shell& operator << (Shell& shell, const char* string)
     return shell;
 }
 
-unsigned int
+Type::u32
 Shell::_binary (unsigned long out)
 {
     unsigned long filter = 0x80000000;
@@ -343,11 +351,11 @@ Shell::_binary (unsigned long out)
     return 32;
 }
 
-unsigned int
+Type::u32
 Shell::_octal (unsigned long out)
 {
     int           shift    = 30;
-    unsigned int  returned = 0;
+    Type::u32  returned = 0;
     unsigned long filter   = 0xC0000000;
     char          cipher;
 
@@ -380,11 +388,11 @@ Shell::_octal (unsigned long out)
     return returned;
 }
 
-unsigned int
+Type::u32
 Shell::_hexadecimal (unsigned long out)
 {
     int           shift    = 28;
-    unsigned int  returned = 0;
+    Type::u32     returned = 0;
     unsigned long filter   = 0xf0000000;
     char          cipher;
 

@@ -44,10 +44,5 @@ main (Type::u32 magic, void* information)
 
     DescriptorTables::init();
 //    Memory::Paging::init(boot.memory()->upper);
-
-    for (char ch = 'A'; ch != 'Z'; ch++) {
-        shell << ch << Shell::endLine;
-    }
-
 }
 

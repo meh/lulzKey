@@ -41,24 +41,26 @@ class Shell
 
     static const int Default = -1;
 
-    static const unsigned char lines   = 25;
-    static const unsigned char columns = 80;
+    static const Type::u8 lines   = 25;
+    static const Type::u8 columns = 80;
 
-    static const unsigned char endLine = '\n';
+    static const Type::u8 endLine = '\n';
 
   private:
     static Shell* _object;
 
   private:
-    unsigned char* _video;
-    unsigned char  _y;
-    unsigned char  _x;
-    Shell::Color   _color;
+    Type::u8*    _video;
+    Type::u8     _y;
+    Type::u8     _x;
+    Shell::Color _color;
 
   public:
     Shell (const void* address = (void*) 0xb8000);
 
     void clear (void);
+
+    void scroll (Type::u32 lines = 1);
 
     void moveCursor (char x, char y);
 
