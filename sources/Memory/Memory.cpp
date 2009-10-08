@@ -80,7 +80,7 @@ Memory::_alloc (Type::u32 size, void* physical, bool align)
         *(Type::u32*) physical = Memory::_address;
     }
 
-    void* tmp = (void*) Memory::_address;
+    void* tmp         = (void*) Memory::_address;
     Memory::_address += size;
 
     return tmp;

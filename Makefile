@@ -6,7 +6,7 @@ CFLAGS   = -m32 -Os -Wall -Wextra -Wno-long-long -pedantic -ffreestanding -nosta
 CXXFLAGS = ${CFLAGS}
 LDFLAGS  = -Tlinker.ld -s -melf_i386
 
-KERNEL_FILES = main.cpp sources/Kernel.cpp sources/Boot/Boot.cpp \
+KERNEL_FILES = sources/main.cpp sources/Kernel.cpp sources/Boot/Boot.cpp \
 			   sources/DescriptorTables/DescriptorTables.cpp sources/DescriptorTables/Global.cpp sources/DescriptorTables/Interrupt.cpp \
 			   sources/Interrupt/Interrupt.cpp \
 			   sources/Memory/Memory.cpp sources/Memory/Paging.cpp sources/Memory/Frame.cpp \
@@ -15,7 +15,7 @@ KERNEL_FILES = main.cpp sources/Kernel.cpp sources/Boot/Boot.cpp \
 			   sources/Tools/Shell/Shell.cpp sources/Tools/Shell/Color.cpp \
 			   sources/Tools/Debug/Debug.cpp
 
-ASM_FILES = loader.S \
+ASM_FILES = sources/loader.S \
 		    sources/DescriptorTables/Global.S sources/DescriptorTables/Interrupt.S \
 			sources/Interrupt/ServiceRoutine.S sources/Interrupt/Request.S
 

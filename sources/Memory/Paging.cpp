@@ -32,6 +32,8 @@ Memory::Paging::Directory* Memory::Paging::_current = NULL;
 void
 Memory::Paging::init (Type::u32 upperMemory)
 {
+    upperMemory = 0x1000000;
+
     Memory::Paging::Frame::frameNumber = (upperMemory * 1024) / 0x1000;
     Memory::Paging::Frame::frames      = (Type::u32*) Memory::alloc(INDEX_FROM_BIT(Memory::Paging::Frame::frameNumber));
     Memory::set(Memory::Paging::Frame::frames, 0, INDEX_FROM_BIT(Memory::Paging::Frame::frameNumber));
