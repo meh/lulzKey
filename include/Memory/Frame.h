@@ -17,29 +17,34 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.    *
  ****************************************************************************/
 
-/**
- * @file Type.h
- *
- * @brief Default kernel types.
- */
+#ifdef  _LKEY_MEMORY_H
+#ifdef  _LKEY_MEMORY_PAGING_H
+#ifndef _LKEY_MEMORY_FRAME_H
+#define _LKEY_MEMORY_FRAME_H
 
-#ifndef _LKEY_TYPE_H
-#define _LKEY_TYPE_H
+class Frame
+{
+  protected:
+    Frame (void) {};
 
-namespace Type {
-    typedef unsigned char      u8;
-    typedef unsigned short     u16;
-    typedef unsigned int       u32;
-    typedef unsigned long long u64;
+  public:
+    static Type::u32* frames;
+    static Type::u32  frameNumber;
 
-    typedef signed char      s8;
-    typedef signed short     s16;
-    typedef signed int       s32;
-    typedef signed long long s64;
-}
+  public:
+    static void alloc (Page* page, bool isKernel, bool isWriteable);
 
-#define NULL 0
+    static void free (Page* page);
 
-#define CHECK_FLAG(flags, bit) ((flags) & (1 << (bit)))
+    static void set (Type::u32 address);
 
+    static void clear (Type::u32 address);
+
+    static bool test (Type::u32 address);
+
+    static Type::u32 findFirst (void);
+};
+
+#endif
+#endif
 #endif

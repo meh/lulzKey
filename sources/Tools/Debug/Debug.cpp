@@ -17,29 +17,51 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.    *
  ****************************************************************************/
 
-/**
- * @file Type.h
- *
- * @brief Default kernel types.
- */
+#include <Tools/Debug/Debug.h>
 
-#ifndef _LKEY_TYPE_H
-#define _LKEY_TYPE_H
+#include <Tools/Shell/Shell.h>
 
-namespace Type {
-    typedef unsigned char      u8;
-    typedef unsigned short     u16;
-    typedef unsigned int       u32;
-    typedef unsigned long long u64;
+namespace Kernel {
 
-    typedef signed char      s8;
-    typedef signed short     s16;
-    typedef signed int       s32;
-    typedef signed long long s64;
+namespace Debug {
+
+void
+dump (Boot& boot)
+{
+    Shell shell;
+
+    shell << "Booting from: ";
+    if (boot.bootLoader()) {
+        shell << boot.bootLoader();
+    }
+    else {
+        shell << "Unknown";
+    }
+    shell << Shell::endLine;
+
+    shell << "Boot options: " << boot.command() << Shell::endLine;
+
+    shell << "Boot device:  ";
+    if (boot.device()) {
+        shell << "BIOS=" << (Type::u32) boot.device()->BIOS << "; ";
+        shell << "Partition=" << (Type::u32) boot.device()->partition.topLevel << "; ";
+    }
+    else {
+        shell << "Invalid device.";
+    }
+    shell << Shell::endLine;
+
+    shell << "Memory:       ";
+    if (boot.memory()) {
+        shell << "lower=" << boot.memory()->lower << "; upper=" << boot.memory()->upper;
+    }
+    else {
+        shell << "Invalid memory bounds.";
+    }
+    shell << Shell::endLine;
 }
 
-#define NULL 0
+}
 
-#define CHECK_FLAG(flags, bit) ((flags) & (1 << (bit)))
+}
 
-#endif

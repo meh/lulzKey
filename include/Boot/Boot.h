@@ -270,17 +270,6 @@ class Boot
      * VBE table.
      */
     VBE* graphicsTable (void);
-
-  private:
-    /**
-     * Simple flag checking implementation.
-     *
-     * @param   flags   Flags variable.
-     * @param   bit     Bit to check.
-     *
-     * @return  Flags' bit value.
-     */
-    bool _checkFlag (Type::u32 flags, Type::u8 bit);
 };
 
 }

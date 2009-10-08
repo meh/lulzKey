@@ -69,6 +69,8 @@ ISRNoErrorCode 29
 ISRNoErrorCode 30
 ISRNoErrorCode 31
 
+/* To 32-47 is IRQ handling */
+
 ISRNoErrorCode 66
 
 ISRCommonStub:

@@ -29,7 +29,7 @@ Boot::Boot (void* information)
 Boot::Memory*
 Boot::memory (void)
 {
-    return _checkFlag(_info->flags, 0)
+    return CHECK_FLAG(_info->flags, 0)
         ? (Boot::Memory*) &_info->memLower
         : NULL;
 }
@@ -37,7 +37,7 @@ Boot::memory (void)
 Boot::Device*
 Boot::device (void)
 {
-    return _checkFlag(_info->flags, 1)
+    return CHECK_FLAG(_info->flags, 1)
         ? (Boot::Device*) _info->bootDevice
         : NULL;
 }
@@ -45,7 +45,7 @@ Boot::device (void)
 const char*
 Boot::command (void)
 {
-    return _checkFlag(_info->flags, 2)
+    return CHECK_FLAG(_info->flags, 2)
         ? (const char*) _info->command
         : NULL;
 }
@@ -53,7 +53,7 @@ Boot::command (void)
 Boot::Modules*
 Boot::modules (void)
 {
-    return _checkFlag(_info->flags, 3)
+    return CHECK_FLAG(_info->flags, 3)
         ? (Boot::Modules*) &_info->modulesCount
         : NULL;
 }
@@ -61,7 +61,7 @@ Boot::modules (void)
 Boot::MemoryMaps*
 Boot::memoryMaps (void)
 {
-    return _checkFlag(_info->flags, 6)
+    return CHECK_FLAG(_info->flags, 6)
         ? (Boot::MemoryMaps*) &_info->mmapLength
         : NULL;
 }
@@ -69,7 +69,7 @@ Boot::memoryMaps (void)
 Boot::Drives*
 Boot::drives (void)
 {
-    return _checkFlag(_info->flags, 7)
+    return CHECK_FLAG(_info->flags, 7)
         ? (Boot::Drives*) &_info->drivesLength
         : NULL;
 }
@@ -77,7 +77,7 @@ Boot::drives (void)
 void*
 Boot::configTable (void)
 {
-    return _checkFlag(_info->flags, 8)
+    return CHECK_FLAG(_info->flags, 8)
         ? (void*) _info->configTable
         : NULL;
 }
@@ -85,7 +85,7 @@ Boot::configTable (void)
 const char*
 Boot::bootLoader (void)
 {
-    return _checkFlag(_info->flags, 9)
+    return CHECK_FLAG(_info->flags, 9)
         ? (const char*) _info->bootLoader
         : NULL;
 }
@@ -93,7 +93,7 @@ Boot::bootLoader (void)
 Boot::APM*
 Boot::APMTable (void)
 {
-    return _checkFlag(_info->flags, 10)
+    return CHECK_FLAG(_info->flags, 10)
         ? (Boot::APM*) _info->APMTable
         : NULL;
 }
@@ -101,15 +101,9 @@ Boot::APMTable (void)
 Boot::VBE*
 Boot::graphicsTable (void)
 {
-    return _checkFlag(_info->flags, 11)
+    return CHECK_FLAG(_info->flags, 11)
         ? (Boot::VBE*) &_info->graphicsTable
         : NULL;
-}
-
-bool
-Boot::_checkFlag (Type::u32 flags, Type::u8 bit)
-{
-    return (flags) & (1 << (bit));
 }
 
 }

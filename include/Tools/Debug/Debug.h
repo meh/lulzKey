@@ -17,29 +17,19 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.    *
  ****************************************************************************/
 
-/**
- * @file Type.h
- *
- * @brief Default kernel types.
- */
+#ifndef _LKEY_DEBUG_H
+#define _LKEY_DEBUG_H
 
-#ifndef _LKEY_TYPE_H
-#define _LKEY_TYPE_H
+#include <Boot/Boot.h>
 
-namespace Type {
-    typedef unsigned char      u8;
-    typedef unsigned short     u16;
-    typedef unsigned int       u32;
-    typedef unsigned long long u64;
+namespace Kernel {
 
-    typedef signed char      s8;
-    typedef signed short     s16;
-    typedef signed int       s32;
-    typedef signed long long s64;
+namespace Debug {
+
+void dump (Boot& boot);
+
 }
 
-#define NULL 0
-
-#define CHECK_FLAG(flags, bit) ((flags) & (1 << (bit)))
+}
 
 #endif

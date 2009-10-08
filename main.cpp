@@ -24,62 +24,25 @@
 #include <Interrupt/Interrupt.h>
 
 #include <Tools/Shell/Shell.h>
+#include <Tools/Debug/Debug.h>
 
 using namespace Kernel;
-
-void FORTYTWO (Interrupt::Registers& registers)
-{
-    Shell shell;
-
-    shell << Shell::endLine << Shell::Color(Shell::Color::Pink) << "LOL YOU'RE A " << registers.eax << " FAGGOT!1!" << Shell::Color(Shell::Color::White) << Shell::endLine;
-}
 
 extern "C"
 void
 main (Type::u32 magic, void* information)
 {
+    Shell shell; 
+
     if (magic != Boot::Magic) {
+        shell << "What, it's not a Multiboot-compliant boot loader :(" << Shell::endLine;
         return;
     }
 
     Boot boot(information);
-    Shell shell;
-
-    shell << "Booting from: ";
-    if (boot.bootLoader()) {
-        shell << boot.bootLoader();
-    }
-    else {
-        shell << "Unknown";
-    }
-    shell << Shell::endLine;
-
-    shell << "Boot options: " << boot.command() << Shell::endLine;
-
-    shell << "Boot device:  ";
-    if (boot.device()) {
-        shell << "BIOS=" << (Type::u32) boot.device()->BIOS << "; ";
-        shell << "Partition=" << (Type::u32) boot.device()->partition.topLevel << "; ";
-    }
-    else {
-        shell << "Invalid device.";
-    }
-    shell << Shell::endLine;
-
-    shell << "Memory:       ";
-    if (boot.memory()) {
-        shell << "lower=" << boot.memory()->lower << "; upper=" << boot.memory()->upper;
-    }
-    else {
-        shell << "Invalid memory bounds.";
-    }
-    shell << Shell::endLine;
+    Debug::dump(boot);
 
     DescriptorTables::init();
-
-    Interrupt::define(0x42, &FORTYTWO);
-
-    asm volatile ("mov $1337, %eax");
-    asm volatile ("int $0x42");
+    Memory::Paging::init(boot.memory()->upper);
 }
 

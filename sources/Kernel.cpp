@@ -17,29 +17,22 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.    *
  ****************************************************************************/
 
-/**
- * @file Type.h
- *
- * @brief Default kernel types.
- */
+#include <Kernel.h>
+#include <Tools/Shell/Shell.h>
 
-#ifndef _LKEY_TYPE_H
-#define _LKEY_TYPE_H
+namespace Kernel {
 
-namespace Type {
-    typedef unsigned char      u8;
-    typedef unsigned short     u16;
-    typedef unsigned int       u32;
-    typedef unsigned long long u64;
+void
+panic (const char* message)
+{
+    asm volatile ("cli");
 
-    typedef signed char      s8;
-    typedef signed short     s16;
-    typedef signed int       s32;
-    typedef signed long long s64;
+    Shell shell;
+
+    shell << message << Shell::endLine;
+
+    while (true);
 }
 
-#define NULL 0
+}
 
-#define CHECK_FLAG(flags, bit) ((flags) & (1 << (bit)))
-
-#endif

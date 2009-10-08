@@ -21,14 +21,28 @@
 
 namespace Kernel {
 
+extern "C" Type::u32 __end;
+
+Type::u32 Memory::_address = __end;
+
 void*
-Memory::alloc (Type::u32 size)
+Memory::alloc (Type::u32 size, bool aligned)
 {
     if (size < 1) {
         return NULL;
     }
 
-    return NULL;
+    return Memory::_alloc(size, NULL, aligned);
+}
+
+void*
+Memory::alloc (Type::u32 size, void** physical, bool aligned)
+{
+    if (size < 1) {
+        return NULL;
+    }
+
+    return Memory::_alloc(size, physical, aligned);
 }
 
 void
@@ -53,6 +67,24 @@ Memory::set (void* destination, Type::u8 value, Type::u32 size)
     for (Type::u32 i = 0; i < size; i++) {
         ((Type::u8*) destination)[i] = value;
     }
+}
+
+void*
+Memory::_alloc (Type::u32 size, void** physical, bool align)
+{
+    if (align && (Memory::_address & 0xFFFFF000)) {
+        Memory::_address &= 0xFFFFF000;
+        Memory::_address += 0x1000;
+    }
+
+    if (physical) {
+        *physical = (void*) Memory::_address;
+    }
+
+    void* tmp = (void*) Memory::_address;
+    Memory::_address += size;
+
+    return tmp;
 }
 
 Memory::Memory (Type::u32 size)

@@ -27,20 +27,32 @@
 #define _LKEY_MEMORY_H
 
 #include <Type.h>
+#include <Interrupt/Interrupt.h>
 
 namespace Kernel {
 
 class Memory
 {
   public:
-    static void* alloc (Type::u32 size);
+    #include <Memory/Paging.h>
+
+  private:
+    static Type::u32 _address;
+
+  public:
+    static void* alloc (Type::u32 size, bool aligned = false);
+    static void* alloc (Type::u32 size, void** physical, bool aligned = false);
+
     static void  free  (void* pointer);
 
     static void copy (void* destination, void* source, Type::u32 size);
     static void set  (void* destination, Type::u8 value, Type::u32 size); 
 
   private:
-    void*       _memory;
+    static void* _alloc (Type::u32 size, void** physical, bool align);
+
+  private:
+    void*     _memory;
     Type::u32 _size;
 
   public:

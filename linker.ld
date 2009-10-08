@@ -28,4 +28,6 @@ SECTIONS {
         *(.bss)
         ebss = .;
     }
+
+    __end = .;
 }
