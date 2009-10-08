@@ -31,14 +31,8 @@ Shell::Shell (const void* address)
         _y     = 0;
         _x     = 0;
 
-        this->clear();
-
         Shell::_object = this;
-    }
-    else {
-        _video = Shell::_object->_video;
-        _y     = Shell::_object->_y;
-        _x     = Shell::_object->_x;
+        this->clear();
     }
 }
 
@@ -47,21 +41,21 @@ Shell::clear (void)
 {
     for (unsigned char y = 0; y < Shell::lines; y++) {
         for (unsigned char x = 0; x < Shell::columns; x++) {
-            _video[(x + y * Shell::columns) * 2]     = ' ';
-            _video[(x + y * Shell::columns) * 2 + 1] = 0x00;
+            Shell::_object->_video[(x + y * Shell::columns) * 2]     = ' ';
+            Shell::_object->_video[(x + y * Shell::columns) * 2 + 1] = 0x00;
         }
     }
 
-    _y = 0;
-    _x = 0;
+    Shell::_object->_y = 0;
+    Shell::_object->_x = 0;
 
-    this->moveCursor(_x, _y);
+    this->moveCursor(Shell::_object->_x, Shell::_object->_y);
 }
 
 void
 Shell::moveCursor (char x, char y)
 {
-    _video[(x + y * Shell::columns) * 2 + 1] = _color.value();
+    Shell::_object->_video[(x + y * Shell::columns) * 2 + 1] = _color.value();
 
     Misc::out(Shell::VGA,   (Type::u8) 14);
     Misc::out(Shell::VGA+1, (Type::u8) ((x + y * Shell::columns) >> 8));
@@ -104,27 +98,27 @@ Shell::print (unsigned char out)
         break;
 
         case '\r':
-        _x = 0;
+        Shell::_object->_x = 0;
         printed   = 1;
         break;
 
         case '\n':
-        _x = 0;
+        Shell::_object->_x = 0;
 
-        if (_y < Shell::lines-1) {
-            _y++;
+        if (Shell::_object->_y < Shell::lines-1) {
+            Shell::_object->_y++;
         }
         else {
             for (unsigned char y = 1; y < Shell::lines; y++) {
                 for (unsigned char x = 0; x < Shell::columns; x++) {
-                    _video[(x + (y - 1) * Shell::columns) * 2]     = _video[x + y * Shell::columns * 2];
-                    _video[(x + (y - 1) * Shell::columns) * 2 + 1] = _video[x + y * Shell::columns * 2 + 1];
+                    Shell::_object->_video[(x + (y - 1) * Shell::columns) * 2]     = Shell::_object->_video[x + y * Shell::columns * 2];
+                    Shell::_object->_video[(x + (y - 1) * Shell::columns) * 2 + 1] = Shell::_object->_video[x + y * Shell::columns * 2 + 1];
                 }
             }
 
             for (unsigned char x = 0; x < Shell::columns; x++) {
-                _video[(x + (Shell::lines-1) * Shell::columns) * 2]     = ' ';
-                _video[(x + (Shell::lines-1) * Shell::columns) * 2 + 1] = 0x00;
+                Shell::_object->_video[(x + (Shell::lines-1) * Shell::columns) * 2]     = ' ';
+                Shell::_object->_video[(x + (Shell::lines-1) * Shell::columns) * 2 + 1] = 0x00;
             }
         }
 
@@ -132,30 +126,30 @@ Shell::print (unsigned char out)
         break;
 
         case '\b':
-        if (_x > 0) {
-            _video[(_x + _y * Shell::columns) * 2]     = ' ';
-            _video[(_x + _y * Shell::columns) * 2 + 1] = 0x00;
+        if (Shell::_object->_x > 0) {
+            Shell::_object->_video[(Shell::_object->_x + Shell::_object->_y * Shell::columns) * 2]     = ' ';
+            Shell::_object->_video[(Shell::_object->_x + Shell::_object->_y * Shell::columns) * 2 + 1] = 0x00;
 
-            _x--;
+            Shell::_object->_x--;
         }
 
         printed = 1;
         break;
 
         default:
-        if (_x == Shell::columns) {
+        if (Shell::_object->_x == Shell::columns) {
             this->print('\n');
         }
 
-        _video[(_x + _y * Shell::columns) * 2]     = out;
-        _video[(_x + _y * Shell::columns) * 2 + 1] = _color.value();
+        Shell::_object->_video[(Shell::_object->_x + Shell::_object->_y * Shell::columns) * 2]     = out;
+        Shell::_object->_video[(Shell::_object->_x + Shell::_object->_y * Shell::columns) * 2 + 1] = _color.value();
 
-        _x++;
+        Shell::_object->_x++;
         printed = 1;
         break;
     }
 
-    this->moveCursor(_x, _y);
+    this->moveCursor(Shell::_object->_x, Shell::_object->_y);
 
     return printed;
 }

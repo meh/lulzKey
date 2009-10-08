@@ -28,6 +28,8 @@
 
 using namespace Kernel;
 
+extern "C" Type::u32 __end;
+
 extern "C"
 void
 main (Type::u32 magic, void* information)

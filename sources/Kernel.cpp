@@ -29,7 +29,7 @@ panic (const char* message)
 
     Shell shell;
 
-    shell << message << Shell::endLine;
+    shell << "PANIC: " << message << Shell::endLine;
 
     while (true);
 }
