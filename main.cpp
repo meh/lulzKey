@@ -28,8 +28,6 @@
 
 using namespace Kernel;
 
-extern "C" Type::u32 __end;
-
 extern "C"
 void
 main (Type::u32 magic, void* information)
@@ -45,6 +43,6 @@ main (Type::u32 magic, void* information)
     Debug::dump(boot);
 
     DescriptorTables::init();
-    Memory::Paging::init(boot.memory()->upper);
+//    Memory::Paging::init(boot.memory()->upper);
 }
 

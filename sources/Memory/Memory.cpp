@@ -22,8 +22,7 @@
 namespace Kernel {
 
 extern "C" Type::u32 __end;
-
-Type::u32 Memory::_address = __end;
+Type::u32 Memory::_address = (Type::u32) &__end;
 
 void*
 Memory::alloc (Type::u32 size, bool aligned)

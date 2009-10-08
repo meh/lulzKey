@@ -40,10 +40,8 @@ Memory::Paging::init (Type::u32 upperMemory)
     Memory::Paging::_kernel  = (Memory::Paging::Directory*) Memory::alloc(sizeof(Memory::Paging::Directory));
     Memory::Paging::_current = Memory::Paging::_kernel;
 
-    Type::u32 i = 0;
-    while (i < Memory::_address) {
+    for (Type::u32 i = 0; i < Memory::_address; i += 0x1000) {
         Memory::Paging::Frame::alloc(Memory::Paging::getPage(Memory::Paging::_kernel, i, true), false, false);
-        i += 0x1000;
     }
 
     Interrupt::define(14, &Memory::Paging::fault);

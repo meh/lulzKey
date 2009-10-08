@@ -24,6 +24,8 @@ namespace Kernel {
 Boot::Boot (void* information)
 {
     _info = (Info*) information;
+
+
 }
 
 Boot::Memory*
@@ -72,6 +74,21 @@ Boot::drives (void)
     return CHECK_FLAG(_info->flags, 7)
         ? (Boot::Drives*) &_info->drivesLength
         : NULL;
+}
+
+void
+Boot::drives (void (*function)(Boot::Drive*))
+{
+    Type::u32    size   = this->drives()->size;
+    Boot::Drive* first  = this->drives()->first;
+    Type::u32    offset = 0;
+    
+    while (offset < size) {
+        Boot::Drive* drive = (Boot::Drive*) (((Type::u8*) first) + offset);
+        offset            += drive->size;
+
+        function(drive);
+    }
 }
 
 void*

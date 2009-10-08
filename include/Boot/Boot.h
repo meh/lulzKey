@@ -56,8 +56,8 @@ class Boot
     struct Info {
         Type::u32 flags;          /*<< multiboot flags */
 
-        Type::u32 memLower;       /*<< low memory size */
-        Type::u32 memUpper;       /*<< high memory size */
+        Type::u32 memLower;       /*<< low memory size in KB */
+        Type::u32 memUpper;       /*<< high memory size in KB */
 
         Type::u32 bootDevice;     /*<< boot device informations */ 
 
@@ -169,9 +169,10 @@ class Boot
          */
         Type::u8 mode;
 
-        Type::u16  cylinders; /*<< drive's cylinders */
-        Type::u8   heads;     /*<< drive's heads */
-        Type::u8   sectors;   /*<< drive's sectors */
+        Type::u16 cylinders; /*<< drive's cylinders */
+        Type::u8  heads;     /*<< drive's heads */
+        Type::u8  sectors;   /*<< drive's sectors */
+
         Type::u16* ports;     /*<< I/O ports array, ends with a 0 */
     };
 
@@ -179,8 +180,8 @@ class Boot
      * Drive list.
      */
     struct Drives {
-        Type::u32 length;
-        Drive*    item;
+        Type::u32 size;
+        Drive*    first;
     };
 
     /**
@@ -250,6 +251,7 @@ class Boot
      * Drives list.
      */
     Drives* drives (void);
+    void    drives (void (*function)(Drive*));
 
     /**
      * BIOS config table.
