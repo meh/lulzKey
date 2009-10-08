@@ -17,10 +17,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.    *
  ****************************************************************************/
 
+#include <Kernel.h>
 #include <Memory/Memory.h>
 #include <Interrupt/Interrupt.h>
-
-#include <Tools/Shell/Shell.h>
 
 #define INDEX_FROM_BIT(x)  (x / (8 * 4))
 #define OFFSET_FROM_BIT(x) (x % (8 * 4))
@@ -34,10 +33,10 @@ void
 Memory::Paging::init (Type::u32 upperMemory)
 {
     Memory::Paging::Frame::frameNumber = (upperMemory * 1024) / 0x1000;
-    Memory::Paging::Frame::frames      = (Type::u32*) Memory::alloc(INDEX_FROM_BIT(Memory::Paging::Frame::frameNumber), 0, false);
+    Memory::Paging::Frame::frames      = (Type::u32*) Memory::alloc(INDEX_FROM_BIT(Memory::Paging::Frame::frameNumber));
     Memory::set(Memory::Paging::Frame::frames, 0, INDEX_FROM_BIT(Memory::Paging::Frame::frameNumber));
 
-    Memory::Paging::_kernel  = (Memory::Paging::Directory*) Memory::alloc(sizeof(Memory::Paging::Directory), 0, true);
+    Memory::Paging::_kernel  = (Memory::Paging::Directory*) Memory::alloc(sizeof(Memory::Paging::Directory), true);
     Memory::Paging::_current = Memory::Paging::_kernel;
 
     for (Type::u32 i = 0; i < Memory::_address; i += 0x1000) {
@@ -59,7 +58,7 @@ Memory::Paging::switchPage (Memory::Paging::Directory* directory)
     // Enable paging
     asm volatile("movl %%cr0, %%eax" ::: "eax");
     asm volatile("orl $0x80000000, %%eax" ::: "eax");
-    asm volatile("movl %eax, %cr0");
+    asm volatile("movl %%eax, %%cr0" ::: "eax");
 }
 
 Memory::Paging::Page*
@@ -94,9 +93,7 @@ Memory::Paging::getPage (Memory::Paging::Directory* directory, Type::u32 address
 void
 Memory::Paging::fault (Interrupt::Registers& registers)
 {
-    Shell shell;
-
-    shell << registers.errorCode << Shell::endLine;
+    Kernel::panic("OMG PAGEFAULT!1!");
 }
 
 }
