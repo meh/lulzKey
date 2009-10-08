@@ -55,13 +55,13 @@ dump (Boot& boot)
     shell << "Boot device:  ";
     if (boot.device()) {
         shell << "BIOS=" << (void*) boot.device()->BIOS << "; ";
-        shell << "Partition=" << (void*) boot.device()->partition.topLevel;
+        shell << "Partition=" << (Type::u32) boot.device()->partition.topLevel;
 
         if (boot.device()->partition.subLevel != 0xFF) {
-            shell << "," << (void*) boot.device()->partition.subLevel;
+            shell << "," << (Type::u32) boot.device()->partition.subLevel;
 
             if (boot.device()->partition.subSubLevel != 0xFF) {
-                shell << "," << (void*) boot.device()->partition.subSubLevel;
+                shell << "," << (Type::u32) boot.device()->partition.subSubLevel;
             }
         }
         shell << ";"; 

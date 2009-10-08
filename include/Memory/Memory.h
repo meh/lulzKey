@@ -41,7 +41,7 @@ class Memory
 
   public:
     static void* alloc (Type::u32 size, bool aligned = false);
-    static void* alloc (Type::u32 size, void** physical, bool aligned = false);
+    static void* alloc (Type::u32 size, void* physical, bool aligned = false);
 
     static void  free  (void* pointer);
 
@@ -49,7 +49,7 @@ class Memory
     static void set  (void* destination, Type::u8 value, Type::u32 size); 
 
   private:
-    static void* _alloc (Type::u32 size, void** physical, bool align);
+    static void* _alloc (Type::u32 size, void* physical, bool align);
 
   private:
     void*     _memory;

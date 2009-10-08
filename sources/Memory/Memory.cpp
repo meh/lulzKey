@@ -35,7 +35,7 @@ Memory::alloc (Type::u32 size, bool aligned)
 }
 
 void*
-Memory::alloc (Type::u32 size, void** physical, bool aligned)
+Memory::alloc (Type::u32 size, void* physical, bool aligned)
 {
     if (size < 1) {
         return NULL;
@@ -69,7 +69,7 @@ Memory::set (void* destination, Type::u8 value, Type::u32 size)
 }
 
 void*
-Memory::_alloc (Type::u32 size, void** physical, bool align)
+Memory::_alloc (Type::u32 size, void* physical, bool align)
 {
     if (align && (Memory::_address & 0xFFFFF000)) {
         Memory::_address &= 0xFFFFF000;
@@ -77,7 +77,7 @@ Memory::_alloc (Type::u32 size, void** physical, bool align)
     }
 
     if (physical) {
-        *physical = (void*) Memory::_address;
+        *(Type::u32*) physical = Memory::_address;
     }
 
     void* tmp = (void*) Memory::_address;

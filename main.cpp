@@ -43,6 +43,6 @@ main (Type::u32 magic, void* information)
     Debug::dump(boot);
 
     DescriptorTables::init();
-//    Memory::Paging::init(boot.memory()->upper);
+    Memory::Paging::init(boot.memory()->upper);
 }
 

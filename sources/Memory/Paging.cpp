@@ -34,10 +34,10 @@ void
 Memory::Paging::init (Type::u32 upperMemory)
 {
     Memory::Paging::Frame::frameNumber = (upperMemory * 1024) / 0x1000;
-    Memory::Paging::Frame::frames      = (Type::u32*) Memory::alloc(INDEX_FROM_BIT(Memory::Paging::Frame::frameNumber));
+    Memory::Paging::Frame::frames      = (Type::u32*) Memory::alloc(INDEX_FROM_BIT(Memory::Paging::Frame::frameNumber), 0, false);
     Memory::set(Memory::Paging::Frame::frames, 0, INDEX_FROM_BIT(Memory::Paging::Frame::frameNumber));
 
-    Memory::Paging::_kernel  = (Memory::Paging::Directory*) Memory::alloc(sizeof(Memory::Paging::Directory));
+    Memory::Paging::_kernel  = (Memory::Paging::Directory*) Memory::alloc(sizeof(Memory::Paging::Directory), 0, true);
     Memory::Paging::_current = Memory::Paging::_kernel;
 
     for (Type::u32 i = 0; i < Memory::_address; i += 0x1000) {
@@ -72,9 +72,8 @@ Memory::Paging::getPage (Memory::Paging::Directory* directory, Type::u32 address
         return &directory->tables[index]->pages[address % 1024];
     }
     else if (make) {
-        Type::u32 tmp = 0;
-        directory->tables[index] = (Memory::Paging::Table*) Memory::alloc(sizeof(Memory::Paging::Table), (void**) &tmp);
-        Memory::set(directory->tables[index], 0, 0x1000);
+        Type::u32 tmp                    = 0;
+        directory->tables[index]         = (Memory::Paging::Table*) Memory::alloc(sizeof(Memory::Paging::Table), (void*) &tmp, true);
         directory->tablesPhysical[index] = tmp | 0x7;
 
         return &directory->tables[index]->pages[address % 1024];
