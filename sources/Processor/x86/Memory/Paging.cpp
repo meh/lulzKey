@@ -34,15 +34,15 @@ Memory::Paging::init (Type::u32 upperMemory)
 {
     upperMemory = 0x1000000;
 
-    Memory::Paging::Frame::frameNumber = (upperMemory * 1024) / 0x1000;
-    Memory::Paging::Frame::frames      = (Type::u32*) Memory::alloc(INDEX_FROM_BIT(Memory::Paging::Frame::frameNumber));
-    Memory::set(Memory::Paging::Frame::frames, 0, INDEX_FROM_BIT(Memory::Paging::Frame::frameNumber));
+    Frame::frameNumber = (upperMemory * 1024) / 0x1000;
+    Frame::frames      = (Type::u32*) Memory::alloc(INDEX_FROM_BIT(Frame::frameNumber));
+    Memory::set(Memory::Paging::Frame::frames, 0, INDEX_FROM_BIT(Frame::frameNumber));
 
-    Memory::Paging::_kernel  = (Memory::Paging::Directory*) Memory::alloc(sizeof(Memory::Paging::Directory), true);
-    Memory::Paging::_current = Memory::Paging::_kernel;
+    _kernel  = (Directory*) Memory::alloc(sizeof(Directory), true);
+    _current = _kernel;
 
     for (Type::u32 i = 0; i < Memory::_address; i += 0x1000) {
-        Memory::Paging::Frame::alloc(Memory::Paging::getPage(Memory::Paging::_kernel, i, true), false, false);
+        Frame::alloc(Paging::getPage(_kernel, i, true), false, false);
     }
 
     Interrupt::define(14, &Memory::Paging::fault);

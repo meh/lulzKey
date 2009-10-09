@@ -18,17 +18,16 @@
  ****************************************************************************/
 
 #include <Tools/Debug/Debug.h>
-
 #include <Tools/Shell/Shell.h>
 
 namespace Kernel {
 
 namespace Debug {
 
-void _dumpBootDrives (Boot::Drive* drive);
+void _dumpBootDrives (Multiboot::Drive* drive);
 
 void
-dump (Boot& boot)
+dump (Multiboot& boot)
 {
     Shell shell;
 
@@ -84,7 +83,7 @@ dump (Boot& boot)
 }
 
 void
-_dumpBootDrives (Boot::Drive* drive)
+_dumpBootDrives (Multiboot::Drive* drive)
 {
     Shell shell;
 

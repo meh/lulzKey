@@ -17,32 +17,19 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.    *
  ****************************************************************************/
 
-#include <Type.h>
-#include <Boot/Multiboot.h>
-
-#include <Processor/Processor.h>
 #include <Services/Services.h>
 
-#include <Tools/Shell/Shell.h>
-#include <Tools/Debug/Debug.h>
+namespace Kernel {
 
-using namespace Kernel;
+namespace Services {
 
-extern "C"
 void
-main (Type::u32 magic, void* information)
+init (Multiboot& boot)
 {
-    Shell shell; 
 
-    if (magic != Multiboot::Magic) {
-        shell << "What, it's not a Multiboot-compliant boot loader :(" << Shell::endLine;
-        return;
-    }
+}
 
-    Multiboot boot(information);
-    Debug::dump(boot);
+}
 
-    Processor::init(boot);
-    Services::init(boot);
 }
 

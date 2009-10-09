@@ -18,9 +18,9 @@
  ****************************************************************************/
 
 /**
- * @file Boot/Boot.h
+ * @file Boot/Multiboot.h
  *
- * @brief Boot class and structs.
+ * @brief Multiboot-compliant class and structs.
  *
  * I'd go with this:
  * kernel /boot/kernel
@@ -36,12 +36,12 @@
 namespace Kernel {
 
 /**
- * MultiBoot compliant class.
+ * Multiboot compliant class.
  *
  * Class used to simplify and abstract the multiboot specification:
  * http://www.gnu.org/software/grub/manual/multiboot/
  */
-class Boot
+class Multiboot
 {
   public:
     /**
@@ -220,7 +220,7 @@ class Boot
      *
      * @param   information     Address to the Multiboot header.
      */
-    Boot (void* information);
+    Multiboot (void* information);
 
     /**
      * Memory bounds.
@@ -241,7 +241,7 @@ class Boot
      * Boot modules.
      */
     Modules* modules (void);
-    void     modules (void (*function)(Boot::Module*));
+    void     modules (void (*function)(Module*));
 
     /**
      * Memory maps infos.

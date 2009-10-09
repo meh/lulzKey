@@ -6,18 +6,22 @@ CFLAGS   = -m32 -Os -Wall -Wextra -Wno-long-long -pedantic -ffreestanding -nosta
 CXXFLAGS = ${CFLAGS}
 LDFLAGS  = -Tlinker.ld -s -melf_i386
 
-KERNEL_FILES = sources/main.cpp sources/Kernel.cpp sources/Boot/Boot.cpp \
-			   sources/DescriptorTables/DescriptorTables.cpp sources/DescriptorTables/Global.cpp sources/DescriptorTables/Interrupt.cpp \
-			   sources/Interrupt/Interrupt.cpp \
-			   sources/Memory/Memory.cpp sources/Memory/Paging.cpp sources/Memory/Frame.cpp \
-			   sources/Process/Process.cpp sources/Process/State.cpp sources/Process/Context.cpp \
+KERNEL_FILES = sources/main.cpp sources/Boot/Multiboot.cpp sources/Kernel.cpp \
+			   sources/Services/Services.cpp \
 			   sources/Misc/IO.cpp \
 			   sources/Tools/Shell/Shell.cpp sources/Tools/Shell/Color.cpp \
 			   sources/Tools/Debug/Debug.cpp
 
-ASM_FILES = sources/loader.S \
-		    sources/DescriptorTables/Global.S sources/DescriptorTables/Interrupt.S \
-			sources/Interrupt/ServiceRoutine.S sources/Interrupt/Request.S
+ASM_FILES    = sources/loader.S
+
+ARCH = x86
+
+ifeq ("${ARCH}", "x86")
+CFLAGS += -D_LKEY_X86
+
+KERNEL_FILES += sources/Processor/x86/Processor.cpp
+ASM_FILES    +=
+endif
 
 all: kernel_asm kernel
 	ld ${LDFLAGS} -o ${NAME} $(ASM_FILES:.S=_.o) $(KERNEL_FILES:.cpp=.o)

@@ -20,13 +20,13 @@
 #ifndef _LKEY_DEBUG_H
 #define _LKEY_DEBUG_H
 
-#include <Boot/Boot.h>
+#include <Boot/Multiboot.h>
 
 namespace Kernel {
 
 namespace Debug {
 
-void dump (Boot& boot);
+void dump (Multiboot& boot);
 
 }
 

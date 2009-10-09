@@ -17,92 +17,90 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.    *
  ****************************************************************************/
 
-#include <Boot/Boot.h>
+#include <Boot/Multiboot.h>
 
 namespace Kernel {
 
-Boot::Boot (void* information)
+Multiboot::Multiboot (void* information)
 {
     _info = (Info*) information;
-
-
 }
 
-Boot::Memory*
-Boot::memory (void)
+Multiboot::Memory*
+Multiboot::memory (void)
 {
     return CHECK_FLAG(_info->flags, 0)
-        ? (Boot::Memory*) &_info->memLower
+        ? (Memory*) &_info->memLower
         : NULL;
 }
 
-Boot::Device*
-Boot::device (void)
+Multiboot::Device*
+Multiboot::device (void)
 {
     return CHECK_FLAG(_info->flags, 1)
-        ? (Boot::Device*) _info->bootDevice
+        ? (Device*) _info->bootDevice
         : NULL;
 }
 
 const char*
-Boot::command (void)
+Multiboot::command (void)
 {
     return CHECK_FLAG(_info->flags, 2)
         ? (const char*) _info->command
         : NULL;
 }
 
-Boot::Modules*
-Boot::modules (void)
+Multiboot::Modules*
+Multiboot::modules (void)
 {
     return CHECK_FLAG(_info->flags, 3)
-        ? (Boot::Modules*) &_info->modulesCount
+        ? (Modules*) &_info->modulesCount
         : NULL;
 }
 
 void
-Boot::modules (void (*function)(Boot::Module* module))
+Multiboot::modules (void (*function)(Multiboot::Module* module))
 {
-    Boot::Modules* modules = this->modules();
+    Modules* modules = this->modules();
 
     for (Type::u32 i = 0; i < modules->length; i++) {
         function(modules->item[i]);
     }
 }
 
-Boot::MemoryMaps*
-Boot::memoryMaps (void)
+Multiboot::MemoryMaps*
+Multiboot::memoryMaps (void)
 {
     return CHECK_FLAG(_info->flags, 6)
-        ? (Boot::MemoryMaps*) &_info->mmapLength
+        ? (MemoryMaps*) &_info->mmapLength
         : NULL;
 }
 
-Boot::Drives*
-Boot::drives (void)
+Multiboot::Drives*
+Multiboot::drives (void)
 {
     return CHECK_FLAG(_info->flags, 7)
-        ? (Boot::Drives*) &_info->drivesLength
+        ? (Drives*) &_info->drivesLength
         : NULL;
 }
 
 void
-Boot::drives (void (*function)(Boot::Drive*))
+Multiboot::drives (void (*function)(Multiboot::Drive*))
 {
-    Type::u32    size   = this->drives()->size;
-    Boot::Drive* first  = this->drives()->first;
-    Type::u32    offset = 0;
+    Type::u32 size   = this->drives()->size;
+    Drive*    first  = this->drives()->first;
+    Type::u32 offset = 0;
     
     while (offset < size) {
-        Boot::Drive* drive = (Boot::Drive*) (((Type::u8*) first) + offset);
-        offset            += drive->size;
+        Drive* drive = (Drive*) (((Type::u8*) first) + offset);
+        offset      += drive->size;
 
         function(drive);
     }
 }
 
 void*
-Boot::configTable (void)
+Multiboot::configTable (void)
 {
     return CHECK_FLAG(_info->flags, 8)
         ? (void*) _info->configTable
@@ -110,26 +108,26 @@ Boot::configTable (void)
 }
 
 const char*
-Boot::bootLoader (void)
+Multiboot::bootLoader (void)
 {
     return CHECK_FLAG(_info->flags, 9)
         ? (const char*) _info->bootLoader
         : NULL;
 }
 
-Boot::APM*
-Boot::APMTable (void)
+Multiboot::APM*
+Multiboot::APMTable (void)
 {
     return CHECK_FLAG(_info->flags, 10)
-        ? (Boot::APM*) _info->APMTable
+        ? (APM*) _info->APMTable
         : NULL;
 }
 
-Boot::VBE*
-Boot::graphicsTable (void)
+Multiboot::VBE*
+Multiboot::graphicsTable (void)
 {
     return CHECK_FLAG(_info->flags, 11)
-        ? (Boot::VBE*) &_info->graphicsTable
+        ? (VBE*) &_info->graphicsTable
         : NULL;
 }
 

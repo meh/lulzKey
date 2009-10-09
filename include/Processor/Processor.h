@@ -17,32 +17,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.    *
  ****************************************************************************/
 
-#include <Type.h>
-#include <Boot/Multiboot.h>
+#ifndef _LKEY_PROCESSOR_H
+#define _LKEY_PROCESSOR_H
 
-#include <Processor/Processor.h>
-#include <Services/Services.h>
+#ifdef _LKEY_X86
+#   include <Processor/x86/Processor.h>
+#else
+#   error "You didn't choose any architecture. Faggot."
+#endif
 
-#include <Tools/Shell/Shell.h>
-#include <Tools/Debug/Debug.h>
-
-using namespace Kernel;
-
-extern "C"
-void
-main (Type::u32 magic, void* information)
-{
-    Shell shell; 
-
-    if (magic != Multiboot::Magic) {
-        shell << "What, it's not a Multiboot-compliant boot loader :(" << Shell::endLine;
-        return;
-    }
-
-    Multiboot boot(information);
-    Debug::dump(boot);
-
-    Processor::init(boot);
-    Services::init(boot);
-}
-
+#endif
