@@ -17,12 +17,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.    *
  ****************************************************************************/
 
-#ifndef _LKEY_DESCRIPTORS_INTERRUPT_H
-#define _LKEY_DESCRIPTORS_INTERRUPT_H
+#ifndef _LKEY_PROCESSOR_X86_DESCRIPTORTABLES_INTERRUPT_H
+#define _LKEY_PROCESSOR_X86_DESCRIPTORTABLES_INTERRUPT_H
 
 #include <Type.h>
 
 namespace Kernel {
+
+namespace Processor {
 
 namespace DescriptorTables {
 
@@ -62,6 +64,8 @@ class Interrupt
 
     static void flush (void);
 };
+
+}
 
 }
 

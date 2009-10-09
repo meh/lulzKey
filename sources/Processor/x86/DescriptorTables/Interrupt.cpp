@@ -17,10 +17,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.    *
  ****************************************************************************/
 
-#include <DescriptorTables/Interrupt.h>
+#include <Processor/x86/DescriptorTables/Interrupt.h>
 
-#include <Interrupt/ServiceRoutine.h>
-#include <Interrupt/Request.h>
+#include <Processor/x86/Interrupt/ServiceRoutine.h>
+#include <Processor/x86/Interrupt/Request.h>
 
 #include <Memory/Memory.h>
 #include <Misc/IO.h>
@@ -28,6 +28,8 @@
 extern "C" void __idt_flush (Type::u32 address);
 
 namespace Kernel {
+
+namespace Processor {
 
 namespace DescriptorTables {
 
@@ -127,6 +129,8 @@ void
 Interrupt::flush (void)
 {
     ::__idt_flush((Type::u32) &Interrupt::_pointer);
+}
+
 }
 
 }

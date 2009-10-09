@@ -17,17 +17,21 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.    *
  ****************************************************************************/
 
-#ifndef _LKEY_DESCRIPTORTABLES_H
-#define _LKEY_DESCRIPTORTABLES_H
+#ifndef _LKEY_PROCESSOR_X86_DESCRIPTORTABLES_H
+#define _LKEY_PROCESSOR_X86_DESCRIPTORTABLES_H
 
-#include <DescriptorTables/Global.h>
-#include <DescriptorTables/Interrupt.h>
+#include <Processor/x86/DescriptorTables/Global.h>
+#include <Processor/x86/DescriptorTables/Interrupt.h>
 
 namespace Kernel {
+
+namespace Processor {
 
 namespace DescriptorTables {
 
 void init (void);
+
+}
 
 }
 

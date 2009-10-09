@@ -17,12 +17,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.    *
  ****************************************************************************/
 
-#ifndef _LKEY_DESCRIPTORS_GLOBAL_H
-#define _LKEY_DESCRIPTORS_GLOBAL_H
+#ifndef _LKEY_PROCESSOR_X86_DESCRIPTORTABLES_GLOBAL_H
+#define _LKEY_PROCESSOR_X86_DESCRIPTORTABLES_GLOBAL_H
 
 #include <Type.h>
 
 namespace Kernel {
+
+namespace Processor {
 
 namespace DescriptorTables {
 
@@ -63,6 +65,8 @@ class Global
 
     static void flush (void);
 };
+
+}
 
 }
 

@@ -27,9 +27,9 @@ Interrupt::Handler Interrupt::_handlers[256] = {0};
 void
 Interrupt::handle (Interrupt::Type type, Interrupt::Registers& registers)
 {
-    if (type == Interrupt::ServiceRoutine) {
-        if (Interrupt::_handlers[registers.number]) {
-            Interrupt::_handlers[registers.number](registers);
+    if (type == ServiceRoutine) {
+        if (_handlers[registers.number]) {
+            _handlers[registers.number](registers);
         }
     }
     else {
@@ -39,8 +39,8 @@ Interrupt::handle (Interrupt::Type type, Interrupt::Registers& registers)
 
         Misc::out(0x20, (Type::u8) 0x20);
 
-        if (Interrupt::_handlers[registers.number]) {
-            Interrupt::_handlers[registers.number](registers);
+        if (_handlers[registers.number]) {
+            _handlers[registers.number](registers);
         }
     }
 }
@@ -48,7 +48,7 @@ Interrupt::handle (Interrupt::Type type, Interrupt::Registers& registers)
 void
 Interrupt::define (Type::u8 number, Handler handler)
 {
-    Interrupt::_handlers[number] = handler;
+    _handlers[number] = handler;
 }
 
 }

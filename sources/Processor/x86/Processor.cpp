@@ -22,6 +22,7 @@
 #endif
 
 #include <Processor/Processor.h>
+#include <Processor/x86/DescriptorTables/DescriptorTables.h>
 
 namespace Kernel {
 
@@ -30,7 +31,7 @@ namespace Processor {
 void
 init (Multiboot& boot)
 {
-
+    DescriptorTables::init();
 }
 
 }

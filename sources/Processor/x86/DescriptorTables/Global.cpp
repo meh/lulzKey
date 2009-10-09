@@ -17,11 +17,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.    *
  ****************************************************************************/
 
-#include <DescriptorTables/Global.h>
+#include <Processor/x86/DescriptorTables/Global.h>
 
 extern "C" void __gdt_flush (Type::u32 address);
 
 namespace Kernel {
+
+namespace Processor {
 
 namespace DescriptorTables {
 
@@ -63,6 +65,8 @@ void
 Global::flush (void)
 {
     ::__gdt_flush((Type::u32) &Global::_pointer);
+}
+
 }
 
 }

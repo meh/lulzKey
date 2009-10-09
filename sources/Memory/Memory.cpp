@@ -17,23 +17,24 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.    *
  ****************************************************************************/
 
-#include <Processor/x86/DescriptorTables/DescriptorTables.h>
+#include <Memory/Memory.h>
 
 namespace Kernel {
 
-namespace Processor {
-
-namespace DescriptorTables {
+void
+Memory::copy (void* destination, void* source, Type::u32 size)
+{
+    for (Type::u32 i = 0; i < size; i++) {
+        ((Type::u8*) destination)[i] = ((Type::u8*) source)[i];
+    }
+}
 
 void
-init (void)
+Memory::set (void* destination, Type::u8 value, Type::u32 size)
 {
-    Global::init();
-    Interrupt::init();
-}
-
-}
-
+    for (Type::u32 i = 0; i < size; i++) {
+        ((Type::u8*) destination)[i] = value;
+    }
 }
 
 }

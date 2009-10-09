@@ -6,21 +6,30 @@ CFLAGS   = -m32 -Os -Wall -Wextra -Wno-long-long -pedantic -ffreestanding -nosta
 CXXFLAGS = ${CFLAGS}
 LDFLAGS  = -Tlinker.ld -s -melf_i386
 
-KERNEL_FILES = sources/main.cpp sources/Boot/Multiboot.cpp sources/Kernel.cpp \
-			   sources/Services/Services.cpp \
-			   sources/Misc/IO.cpp \
-			   sources/Tools/Shell/Shell.cpp sources/Tools/Shell/Color.cpp \
-			   sources/Tools/Debug/Debug.cpp
+DIR = sources
 
-ASM_FILES    = sources/loader.S
+KERNEL_FILES = ${DIR}/main.cpp ${DIR}/Boot/Multiboot.cpp ${DIR}/Kernel.cpp \
+			   ${DIR}/Memory/Memory.cpp \
+			   ${DIR}/Services/Services.cpp \
+			   ${DIR}/Interrupt/Interrupt.cpp \
+			   ${DIR}/Misc/IO.cpp \
+			   ${DIR}/Tools/Shell/Shell.cpp ${DIR}/Tools/Shell/Color.cpp \
+			   ${DIR}/Tools/Debug/Debug.cpp
+
+ASM_FILES    = ${DIR}/loader.S
 
 ARCH = x86
 
 ifeq ("${ARCH}", "x86")
 CFLAGS += -D_LKEY_X86
 
-KERNEL_FILES += sources/Processor/x86/Processor.cpp
-ASM_FILES    +=
+x86_DIR = sources/Processor/x86
+
+KERNEL_FILES += ${x86_DIR}/Processor.cpp \
+				${x86_DIR}/DescriptorTables/DescriptorTables.cpp ${x86_DIR}/DescriptorTables/Global.cpp ${x86_DIR}/DescriptorTables/Interrupt.cpp
+
+ASM_FILES    += ${x86_DIR}/DescriptorTables/Global.S ${x86_DIR}/DescriptorTables/Interrupt.S \
+				${x86_DIR}/Interrupt/ServiceRoutine.S ${x86_DIR}/Interrupt/Request.S
 endif
 
 all: kernel_asm kernel

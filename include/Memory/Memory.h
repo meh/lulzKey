@@ -17,24 +17,26 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.    *
  ****************************************************************************/
 
-#include <Processor/x86/DescriptorTables/DescriptorTables.h>
+/**
+ * @file Memory.h
+ *
+ * @brief Memory management namespace.
+ */
+
+#ifndef _LKEY_MEMORY_H
+#define _LKEY_MEMORY_H
+
+#include <Type.h>
 
 namespace Kernel {
 
-namespace Processor {
-
-namespace DescriptorTables {
-
-void
-init (void)
+class Memory
 {
-    Global::init();
-    Interrupt::init();
-}
+  public:
+    static void copy (void* destination, void* source, Type::u32 size);
+    static void set  (void* destination, Type::u8 value, Type::u32 size); 
+};
 
 }
 
-}
-
-}
-
+#endif
