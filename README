@@ -1,3 +1,9 @@
 LOL MICROKERNEL.
 
 Yes yes I know, another gay OS, just trying something to learn stuff about kernel land ^_^
+
+Used software:
+    - app-emulation/qemu-0.10.6
+    - sys-devel/gcc-4.4.1
+
+If you have problems ensure that you're using those versions or don't bother meh.

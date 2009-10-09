@@ -26,6 +26,28 @@ namespace Kernel {
 namespace Processor {
 
 struct Registers {
+    Type::u32 eax;
+    Type::u32 ecx;
+    Type::u32 edx;
+    Type::u32 ebx;
+
+    Type::u32 esp;
+    Type::u32 ebp;
+    Type::u32 esi;
+    Type::u32 edi;
+
+    Type::u32 eflags;
+    Type::u32 eip;
+
+    Type::u16 cs;
+    Type::u16 ds;
+    Type::u16 ss;
+    Type::u16 es;
+    Type::u16 fs;
+    Type::u16 gs;
+};
+
+struct InterruptRegisters {
     Type::u32 ds; /*<< data segment selector */
     
     // Pushed by pusha.

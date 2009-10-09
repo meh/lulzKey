@@ -32,7 +32,7 @@ class Interrupt
     Interrupt (void) {};
 
   public:
-    typedef Processor::Registers Registers;
+    typedef Processor::InterruptRegisters Registers;
 
     enum Type {
         ServiceRoutine,
