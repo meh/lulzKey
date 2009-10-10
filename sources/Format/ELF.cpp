@@ -17,34 +17,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.    *
  ****************************************************************************/
 
-#include <Type.h>
-#include <Boot/Multiboot.h>
+#include <Format/ELF.h>
 
-#include <Processor/Processor.h>
-#include <Services/Services.h>
+namespace Format {
 
-#include <Tools/Shell/Shell.h>
-#include <Tools/Debug/Debug.h>
-
-using namespace Kernel;
-
-extern "C"
-void
-main (Type::u32 magic, void* information)
+ELF::ELF (void* start, void* end, int arch)
 {
-    Shell shell; 
-
-    shell << "O HAI! DIS BEE LULZKEY-" << ___VERSION___ << "! ENJOY YOUR TRIPLE FAULTS!" << Shell::endLine << Shell::endLine;
-
-    if (magic != Multiboot::Magic) {
-        shell << "What, it's not a Multiboot-compliant boot loader :(" << Shell::endLine;
-        return;
+    if (arch != 32 && arch != 64) {
+        arch = 32;
     }
-
-    Multiboot boot(information);
-    Debug::dump(boot);
-
-    Processor::init(boot);
-    Services::init(boot);
 }
 
+}

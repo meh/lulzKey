@@ -31,6 +31,8 @@ dump (Multiboot& boot)
 {
     Shell shell;
 
+    shell << "Boot dump..." << Shell::endLine;
+
     shell << "Booting from: ";
     if (boot.bootLoader()) {
         shell << boot.bootLoader();
@@ -70,10 +72,9 @@ dump (Multiboot& boot)
     }
     shell << Shell::endLine;
 
-    shell << Shell::endLine;
     shell << "Drives: ";
     if (boot.drives()->size == 0) {
-        shell << "None.";
+        shell << "      None.";
     }
     else {
         shell << Shell::endLine;
