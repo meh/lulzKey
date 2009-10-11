@@ -21,14 +21,46 @@
 
 namespace Format {
 
+ELF::Header::Header (void* data)
+{
+    _init(data);
+}
+
 ELF::Header::Header (ELF::Header::_32* data)
 {
-
+    _init(data);
 }
 
 ELF::Header::Header (ELF::Header::_64* data)
 {
+    _init(data);
+}
 
+ELF::Header::_init (void* data)
+{
+    Type::u8* ident = (Type::u8*) data;
+
+    if (ident[IdentArch] == Arch32) {
+        _arch = 32;
+    }
+    else if (ident[IdentArch] == Arch64) {
+        _arch = 64;
+    }
+
+    _data = data;
+}
+
+Arch
+ELF::Header::arch (void)
+{
+    return _arch;
+}
+
+Endianess
+ELF::Header::arch (void)
+{
+    return ((Type::u8*) _data)->ident[IdentEndianess];
 }
 
 }
+

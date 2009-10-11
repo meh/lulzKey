@@ -36,6 +36,10 @@ namespace Format {
 class ELF
 {
   public:
+    typedef Type::u8 Arch;
+    typedef Type::u8 Endianess;
+
+  public:
     #include <Format/ELF/Header.h>
     #include <Format/ELF/ProgramHeader.h>
     #include <Format/ELF/SectionHeader.h>
