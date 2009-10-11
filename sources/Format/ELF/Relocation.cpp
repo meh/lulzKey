@@ -21,14 +21,14 @@
 
 namespace Format {
 
-ELF::ELF (void* start, void* end)
+ELF::Relocation::Relocation (ELF::Relocation::_32* data, Type::s32 addend)
 {
+
 }
 
-void*
-ELF::find (const char* symbol)
+ELF::Relocation::Relocation (ELF::Relocation::_64* data, Type::s64 addend)
 {
-    return NULL;
+
 }
 
 }

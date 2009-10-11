@@ -6,7 +6,8 @@ CFLAGS   = -Os -m32 -Wall -Wextra -Wno-long-long -pedantic -ffreestanding -nosta
 CXXFLAGS = ${CFLAGS}
 LDFLAGS  = -Tlinker.ld -s -melf_i386
 
-DIR = sources
+DIR        = sources
+FORMAT_DIR = ${DIR}/Format
 
 KERNEL_FILES = ${DIR}/main.cpp ${DIR}/Boot/Multiboot.cpp ${DIR}/Kernel.cpp \
 			   ${DIR}/Memory/Memory.cpp \
@@ -16,7 +17,11 @@ KERNEL_FILES = ${DIR}/main.cpp ${DIR}/Boot/Multiboot.cpp ${DIR}/Kernel.cpp \
 			   ${DIR}/Tools/Shell/Shell.cpp ${DIR}/Tools/Shell/Color.cpp \
 			   ${DIR}/Tools/Debug/Debug.cpp
 
-ASM_FILES    = ${DIR}/loader.S
+ASM_FILES = ${DIR}/loader.S
+
+ELF_FILES = ${FORMAT_DIR}/ELF/ELF.cpp \
+			${FORMAT_DIR}/ELF/Header.cpp ${FORMAT_DIR}/ELF/ProgramHeader.cpp ${FORMAT_DIR}/ELF/SectionHeader.cpp \
+			${FORMAT_DIR}/ELF/Symbol.cpp ${FORMAT_DIR}/ELF/Relocation.cpp ${FORMAT_DIR}/ELF/Dynamic.cpp
 
 ARCH = x86
 
@@ -25,11 +30,13 @@ CFLAGS += -D_LKEY_X86
 
 x86_DIR = sources/Processor/x86
 
-KERNEL_FILES += ${x86_DIR}/Processor.cpp ${DIR}/Format/ELF.cpp \
+KERNEL_FILES += ${x86_DIR}/Processor.cpp \
 				${x86_DIR}/DescriptorTables/DescriptorTables.cpp ${x86_DIR}/DescriptorTables/Global.cpp ${x86_DIR}/DescriptorTables/Interrupt.cpp
 
 ASM_FILES    += ${x86_DIR}/DescriptorTables/Global.S ${x86_DIR}/DescriptorTables/Interrupt.S \
 				${x86_DIR}/Interrupt/ServiceRoutine.S ${x86_DIR}/Interrupt/Request.S
+
+KERNEL_FILES += ${ELF_FILES}
 endif
 
 all: kernel_asm kernel

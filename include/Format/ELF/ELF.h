@@ -49,7 +49,7 @@ class ELF
     void* _end;
 
   public:
-    ELF (void* start, void* end, int arch);
+    ELF (void* start, void* end);
 
     void* find (const char* symbol);
 };

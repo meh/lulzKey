@@ -21,14 +21,14 @@
 
 namespace Format {
 
-ELF::ELF (void* start, void* end)
+ELF::SectionHeader::SectionHeader (ELF::SectionHeader::_32* data)
 {
+
 }
 
-void*
-ELF::find (const char* symbol)
+ELF::SectionHeader::SectionHeader (ELF::SectionHeader::_64* data)
 {
-    return NULL;
+
 }
 
 }

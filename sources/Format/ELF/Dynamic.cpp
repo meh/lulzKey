@@ -21,14 +21,14 @@
 
 namespace Format {
 
-ELF::ELF (void* start, void* end)
+ELF::Dynamic::Dynamic (ELF::Dynamic::_32* data)
 {
+
 }
 
-void*
-ELF::find (const char* symbol)
+ELF::Dynamic::Dynamic (ELF::Dynamic::_64* data)
 {
-    return NULL;
+
 }
 
 }
