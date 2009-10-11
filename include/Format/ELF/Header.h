@@ -24,11 +24,11 @@ class Header
   public:
     static const int IdentSize = 16;
 
-    static const int IdentArch = 4;
-    static const int IdentData = 5;
+    static const int IdentArch      = 4;
+    static const int IdentEndianess = 5;
 
-    static const int      MagicLength        = 4;
-    static const Type::u8 Magic[MagicLength] = "\x7fELF";
+    static const int      MagicLength = 4;
+    static const Type::u8 Magic[MagicLength]; /* "\x7f" "ELF" */
 
     static const Type::u8 ArchInvalid = 0;
     static const Type::u8 Arch32      = 1;

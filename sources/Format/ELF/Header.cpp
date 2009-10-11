@@ -21,6 +21,8 @@
 
 namespace Format {
 
+const Type::u8 ELF::Header::Magic[ELF::Header::MagicLength] = { '\x7f', 'E', 'L', 'F' };
+
 ELF::Header::Header (void* data)
 {
     _init(data);
@@ -36,6 +38,7 @@ ELF::Header::Header (ELF::Header::_64* data)
     _init(data);
 }
 
+void
 ELF::Header::_init (void* data)
 {
     Type::u8* ident = (Type::u8*) data;
@@ -50,16 +53,16 @@ ELF::Header::_init (void* data)
     _data = data;
 }
 
-Arch
+ELF::Arch
 ELF::Header::arch (void)
 {
     return _arch;
 }
 
-Endianess
-ELF::Header::arch (void)
+ELF::Endianess
+ELF::Header::endianess (void)
 {
-    return ((Type::u8*) _data)->ident[IdentEndianess];
+    return ((Type::u8*) _data)[IdentEndianess];
 }
 
 }
