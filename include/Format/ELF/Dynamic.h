@@ -17,43 +17,36 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.    *
  ****************************************************************************/
 
-/**
- * @file Format/ELF.h
- *
- * @brief ELF
- */
+#ifdef _LKEY_FORMAT_ELF_H
 
-#ifndef _LKEY_FORMAT_ELF_H
-#define _LKEY_FORMAT_ELF_H
-
-#include <Type.h>
-
-namespace Format {
-
-/**
- * ELF headers.
- */
-class ELF
+class Dynamic 
 {
   public:
-    #include <Format/ELF/Header.h>
-    #include <Format/ELF/ProgramHeader.h>
-    #include <Format/ELF/SectionHeader.h>
-    #include <Format/ELF/Symbol.h>
-    #include <Format/ELF/Relocation.h>
-    #include <Format/ELF/Dynamic.h>
+    struct _32 {
+        Type::s32 tag;
+
+        union {
+            Type::u32 value;
+            Type::u32 pointer;
+        } un;
+    };
+
+    struct _64 {
+        Type::s64 tag;
+
+        union {
+            Type::u64 value;
+            Type::u64 pointer;
+        } un;
+    };
 
   private:
-    int   _arch;
-    void* _start;
-    void* _end;
+    Type::u8 _arch;
+    void*    _data;
 
   public:
-    ELF (void* start, void* end, int arch);
-
-    void* find (const char* symbol);
+    Dynamic(_32* data);
+    Dynamic(_64* data);
 };
-
-}
 
 #endif

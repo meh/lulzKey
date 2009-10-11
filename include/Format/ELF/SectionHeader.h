@@ -17,43 +17,44 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.    *
  ****************************************************************************/
 
-/**
- * @file Format/ELF.h
- *
- * @brief ELF
- */
+#ifdef _LKEY_FORMAT_ELF_H
 
-#ifndef _LKEY_FORMAT_ELF_H
-#define _LKEY_FORMAT_ELF_H
-
-#include <Type.h>
-
-namespace Format {
-
-/**
- * ELF headers.
- */
-class ELF
+class SectionHeader 
 {
   public:
-    #include <Format/ELF/Header.h>
-    #include <Format/ELF/ProgramHeader.h>
-    #include <Format/ELF/SectionHeader.h>
-    #include <Format/ELF/Symbol.h>
-    #include <Format/ELF/Relocation.h>
-    #include <Format/ELF/Dynamic.h>
+    struct _32 {
+        Type::u32 name;
+        Type::u32 type;
+        Type::u32 flags;
+        Type::u32 address;
+        Type::u32 offset;
+        Type::u32 size;
+        Type::u32 link;
+        Type::u32 info;
+        Type::u32 addressAlign;
+        Type::u32 entrySize;
+    };
+
+    struct _64 {
+        Type::u32 name;
+        Type::u32 type;
+        Type::u64 flags;
+        Type::u64 address;
+        Type::u64 offset;
+        Type::u64 size;
+        Type::u32 link;
+        Type::u32 info;
+        Type::u64 addressAlign;
+        Type::u64 entrySize;
+    };
 
   private:
-    int   _arch;
-    void* _start;
-    void* _end;
+    Type::u8 _arch;
+    void*    _data;
 
   public:
-    ELF (void* start, void* end, int arch);
-
-    void* find (const char* symbol);
+    SectionHeader(_32* data);
+    SectionHeader(_64* data);
 };
-
-}
 
 #endif

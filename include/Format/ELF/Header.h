@@ -17,43 +17,56 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.    *
  ****************************************************************************/
 
-/**
- * @file Format/ELF.h
- *
- * @brief ELF
- */
+#ifdef _LKEY_FORMAT_ELF_H
 
-#ifndef _LKEY_FORMAT_ELF_H
-#define _LKEY_FORMAT_ELF_H
-
-#include <Type.h>
-
-namespace Format {
-
-/**
- * ELF headers.
- */
-class ELF
+class Header
 {
   public:
-    #include <Format/ELF/Header.h>
-    #include <Format/ELF/ProgramHeader.h>
-    #include <Format/ELF/SectionHeader.h>
-    #include <Format/ELF/Symbol.h>
-    #include <Format/ELF/Relocation.h>
-    #include <Format/ELF/Dynamic.h>
-
-  private:
-    int   _arch;
-    void* _start;
-    void* _end;
+    static const int IdentSize = 16;
 
   public:
-    ELF (void* start, void* end, int arch);
+    struct _32 {
+            Type::u8  ident[IdentSize];
+            Type::u16 type;
+            Type::u16 machine;
+            Type::u32 version;
+            Type::u32 entry;
+            Type::u32 programHeaderOffset;
+            Type::u32 sectionHeaderOffset;
+            Type::u32 flags;
+            Type::u16 headerSize;
+            Type::u16 programHeaderSize;
+            Type::u16 programHeaderLength;
+            Type::u16 sectionHeaderSize;
+            Type::u16 sectionHeaderLength;
+            Type::u16 sectionHeaderTableIndex;
 
-    void* find (const char* symbol);
+    };
+
+    struct _64 {
+        Type::u8  ident[IdentSize];
+        Type::u16 type;
+        Type::u16 machine;
+        Type::u32 version;
+        Type::u64 entry;
+        Type::u64 programHeaderOffset;
+        Type::u64 sectionHeaderOffset;
+        Type::u32 flags;
+        Type::u16 headerSize;
+        Type::u16 programHeaderSize;
+        Type::u16 programHeaderLength;
+        Type::u16 sectionHeaderSize;
+        Type::u16 sectionHeaderLength;
+        Type::u16 sectionHeaderTableIndex;
+    };
+
+  private:
+    Type::u8 _arch;
+    void*    _data;
+
+  public:
+    Header (_32* data);
+    Header (_64* data);
 };
-
-}
 
 #endif
