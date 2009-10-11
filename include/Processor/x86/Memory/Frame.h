@@ -17,34 +17,41 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.    *
  ****************************************************************************/
 
-#ifdef  _LKEY_MEMORY_H
-#ifdef  _LKEY_MEMORY_PAGING_H
-#ifndef _LKEY_MEMORY_FRAME_H
-#define _LKEY_MEMORY_FRAME_H
+#ifndef _LKEY_PROCESSOR_X86_MEMORY_FRAME_H
+#define _LKEY_PROCESSOR_X86_MEMORY_FRAME_H
 
-class Frame
-{
-  protected:
-    Frame (void) {};
+#include <Type.h>
+#include <Processor/x86/Memory/Paging.h>
 
-  public:
-    static Type::u32* frames;
-    static Type::u32  frameNumber;
+namespace Kernel {
 
-  public:
-    static void alloc (Page* page, bool isKernel, bool isWriteable);
+namespace Processor {
 
-    static void free (Page* page);
+namespace Memory {
 
-    static void set (Type::u32 address);
+namespace Frame {
 
-    static void clear (Type::u32 address);
+extern Type::u32* frames;
+extern Type::u32  frameNumber;
 
-    static bool test (Type::u32 address);
+void alloc (Paging::Page* page, bool isKernel, bool isWriteable);
 
-    static Type::u32 findFirst (void);
-};
+void free (Paging::Page* page);
 
-#endif
-#endif
+void set (Type::u32 address);
+
+void clear (Type::u32 address);
+
+bool test (Type::u32 address);
+
+Type::u32 findFirst (void);
+
+}
+
+}
+
+}
+
+}
+
 #endif

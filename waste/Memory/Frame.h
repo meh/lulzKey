@@ -17,25 +17,34 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.    *
  ****************************************************************************/
 
-#ifndef _LKEY_X86
-#   error "Why is this compiling? :)"
-#endif
+#ifdef  _LKEY_MEMORY_H
+#ifdef  _LKEY_MEMORY_PAGING_H
+#ifndef _LKEY_MEMORY_FRAME_H
+#define _LKEY_MEMORY_FRAME_H
 
-#include <Processor/Processor.h>
-#include <Processor/x86/DescriptorTables/DescriptorTables.h>
-#include <Processor/x86/Memory/Paging.h>
-
-namespace Kernel {
-
-namespace Processor {
-
-void
-init (Multiboot& boot)
+class Frame
 {
-    DescriptorTables::init();
-    Memory::Paging::init(boot.memory()->upper);
-}
+  protected:
+    Frame (void) {};
 
-}
+  public:
+    static Type::u32* frames;
+    static Type::u32  frameNumber;
 
-}
+  public:
+    static void alloc (Page* page, bool isKernel, bool isWriteable);
+
+    static void free (Page* page);
+
+    static void set (Type::u32 address);
+
+    static void clear (Type::u32 address);
+
+    static bool test (Type::u32 address);
+
+    static Type::u32 findFirst (void);
+};
+
+#endif
+#endif
+#endif

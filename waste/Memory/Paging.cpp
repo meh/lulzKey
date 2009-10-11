@@ -18,9 +18,7 @@
  ****************************************************************************/
 
 #include <Kernel.h>
-#include <Processor/x86/Memory/Memory.h>
-#include <Processor/x86/Memory/Paging.h>
-#include <Processor/x86/Memory/Frame.h>
+#include <Memory/Memory.h>
 #include <Interrupt/Interrupt.h>
 
 #define INDEX_FROM_BIT(x)  (x / (8 * 4))
@@ -28,40 +26,34 @@
 
 namespace Kernel {
 
-namespace Processor {
-
-namespace Memory {
-
-namespace Paging {
-
-Directory* _kernel  = NULL;
-Directory* _current = NULL;
+Memory::Paging::Directory* Memory::Paging::_kernel  = NULL;
+Memory::Paging::Directory* Memory::Paging::_current = NULL;
 
 void
-init (Type::u32 upperMemory)
+Memory::Paging::init (Type::u32 upperMemory)
 {
+    upperMemory = 0x1000000;
+
     Frame::frameNumber = (upperMemory * 1024) / 0x1000;
     Frame::frames      = (Type::u32*) Memory::alloc(INDEX_FROM_BIT(Frame::frameNumber));
-    Memory::set(Frame::frames, 0, INDEX_FROM_BIT(Frame::frameNumber));
+    Memory::set(Memory::Paging::Frame::frames, 0, INDEX_FROM_BIT(Frame::frameNumber));
 
-    _kernel = (Directory*) Memory::alloc(sizeof(Directory), true);
-    Memory::set(_kernel, 0, sizeof(Directory));
-
+    _kernel  = (Directory*) Memory::alloc(sizeof(Directory), true);
     _current = _kernel;
 
     for (Type::u32 i = 0; i < Memory::_address; i += 0x1000) {
         Frame::alloc(Paging::getPage(_kernel, i, true), false, false);
     }
 
-    Interrupt::define(14, &Paging::fault);
+    Interrupt::define(14, &Memory::Paging::fault);
 
-    Paging::switchPage(Paging::_kernel);
+    Memory::Paging::switchPage(Memory::Paging::_kernel);
 }
 
 void
-switchPage (Directory* directory)
+Memory::Paging::switchPage (Memory::Paging::Directory* directory)
 {
-    _current = directory;
+    Memory::Paging::_current = directory;
 
     asm volatile("movl %0, %%cr3" :: "r" (&directory->tablesPhysical));
 
@@ -71,8 +63,8 @@ switchPage (Directory* directory)
     asm volatile("movl %%eax, %%cr0" ::: "eax");
 }
 
-Page*
-getPage (Directory* directory, Type::u32 address, bool make)
+Memory::Paging::Page*
+Memory::Paging::getPage (Memory::Paging::Directory* directory, Type::u32 address, bool make)
 {
     address /= 0x1000;
 
@@ -82,7 +74,7 @@ getPage (Directory* directory, Type::u32 address, bool make)
     }
     else if (make) {
         Type::u32 tmp                    = 0;
-        directory->tables[index]         = (Table*) Memory::alloc(sizeof(Table), (void*) &tmp, true);
+        directory->tables[index]         = (Memory::Paging::Table*) Memory::alloc(sizeof(Memory::Paging::Table), (void*) &tmp, true);
         directory->tablesPhysical[index] = tmp | 0x7;
 
         return &directory->tables[index]->pages[address % 1024];
@@ -101,15 +93,9 @@ getPage (Directory* directory, Type::u32 address, bool make)
 #define INSTRUCTION_FETCH(flags)  ( CHECK_FLAG(flags, 4))
 
 void
-fault (Interrupt::Registers& registers)
+Memory::Paging::fault (Interrupt::Registers& registers)
 {
     Kernel::panic("OMG PAGEFAULT!1!");
-}
-
-}
-
-}
-
 }
 
 }

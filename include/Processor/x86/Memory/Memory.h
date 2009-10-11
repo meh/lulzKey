@@ -18,71 +18,38 @@
  ****************************************************************************/
 
 /**
- * @file Memory.h
+ * @file Processor/x86/Memory/Memory.h
  *
  * @brief Memory management namespace.
  */
 
-#ifndef _LKEY_MEMORY_H
-#define _LKEY_MEMORY_H
+#ifndef _LKEY_PROCESSOR_X86_MEMORY_H
+#define _LKEY_PROCESSOR_X86_MEMORY_H
 
 #include <Type.h>
-#include <Interrupt/Interrupt.h>
 
 namespace Kernel {
 
-class Memory
-{
-  public:
-    #include <Memory/Paging.h>
+namespace Processor {
 
-  private:
-    static Type::u32 _address;
+namespace Memory {
 
-  public:
-    static void* alloc (Type::u32 size, bool aligned = false);
-    static void* alloc (Type::u32 size, void* physical, bool aligned = false);
+extern Type::u32 _address;
 
-    static void  free  (void* pointer);
+void* alloc (Type::u32 size, bool aligned = false);
+void* alloc (Type::u32 size, void* physical, bool aligned = false);
 
-    static void copy (void* destination, void* source, Type::u32 size);
-    static void set  (void* destination, Type::u8 value, Type::u32 size); 
+void free  (void* pointer);
 
-  private:
-    static void* _alloc (Type::u32 size, void* physical, bool align);
+void copy (void* destination, void* source, Type::u32 size);
+void set  (void* destination, Type::u8 value, Type::u32 size); 
 
-  private:
-    void*     _memory;
-    Type::u32 _size;
-
-  public:
-    Memory (Type::u32 size);
-    Memory (Memory& memory);
-
-    virtual ~Memory ();
-
-    Type::u32 size (void);
-    void      size (Type::u32 size);
-
-    const void* data (void);
-    void        data (Memory& memory, Type::u32 offset = 0);
-    void        data (void* memory, Type::u32 size, Type::u32 offset = 0);
-
-    void* pointer (void);
-
-  public:
-    operator void*     ();
-    operator Type::u32 ();
-};
+void* _alloc (Type::u32 size, void* physical, bool align);
 
 }
 
-// Kernel space new's
-void* operator new   (Type::u32 size);
-void* operator new[] (Type::u32 size);
+}
 
-// Kernel space delete's
-void operator delete   (void* pointer);
-void operator delete[] (void* pointer);
+}
 
 #endif

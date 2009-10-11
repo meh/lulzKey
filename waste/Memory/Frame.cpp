@@ -18,37 +18,31 @@
  ****************************************************************************/
 
 #include <Kernel.h>
-#include <Processor/x86/Memory/Frame.h>
+#include <Memory/Memory.h>
 
 #define INDEX_FROM_BIT(x)  (x / (8 * 4))
 #define OFFSET_FROM_BIT(x) (x % (8 * 4))
 
 namespace Kernel {
 
-namespace Processor {
-
-namespace Memory {
-
-namespace Frame {
-
-Type::u32* frames      = 0;
-Type::u32  frameNumber = 0;
+Type::u32* Memory::Paging::Frame::frames      = 0;
+Type::u32  Memory::Paging::Frame::frameNumber = 0;
 
 void
-alloc (Paging::Page* page, bool isKernel, bool isWriteable)
+Memory::Paging::Frame::alloc (Memory::Paging::Page* page, bool isKernel, bool isWriteable)
 {
     if (page->frame != 0) {
         return;
     }
 
-    Type::u32 index = Frame::findFirst();
+    Type::u32 index = Memory::Paging::Frame::findFirst();
 
     // No more pages, we're fucked lol
     if (index == (Type::u32) -1) {
         Kernel::panic("OH GOD WHERE ARE ALL MY MEMORIES?!?!?!?");
     }
 
-    Frame::set(index * 0x1000);
+    Memory::Paging::Frame::set(index * 0x1000);
     page->present = true;
     page->rw      = isWriteable;
     page->user    = !isKernel;
@@ -56,7 +50,7 @@ alloc (Paging::Page* page, bool isKernel, bool isWriteable)
 }
 
 void
-free (Paging::Page* page)
+Memory::Paging::Frame::free (Memory::Paging::Page* page)
 {
     Type::u32 frame;
 
@@ -65,64 +59,58 @@ free (Paging::Page* page)
         return;
     }
 
-    Frame::clear(frame);
+    Memory::Paging::Frame::clear(frame);
     page->frame = NULL;
 }
 
 void
-set (Type::u32 address)
+Memory::Paging::Frame::set (Type::u32 address)
 {
     Type::u32 frame  = address / 0x1000;
     Type::u32 index  = INDEX_FROM_BIT(frame);
     Type::u32 offset = OFFSET_FROM_BIT(frame);
 
-    frames[index] |= (0x1 << offset);
+    Memory::Paging::Frame::frames[index] |= (0x1 << offset);
 }
 
 void
-clear (Type::u32 address)
+Memory::Paging::Frame::clear (Type::u32 address)
 {
     
     Type::u32 frame  = address / 0x1000;
     Type::u32 index  = INDEX_FROM_BIT(frame);
     Type::u32 offset = OFFSET_FROM_BIT(frame);
 
-    frames[index] &= ~(0x1 << offset);
+    Memory::Paging::Frame::frames[index] &= ~(0x1 << offset);
 }
 
 bool
-test (Type::u32 address)
+Memory::Paging::Frame::test (Type::u32 address)
 {
     Type::u32 frame  = address / 0x1000;
     Type::u32 index  = INDEX_FROM_BIT(frame);
     Type::u32 offset = OFFSET_FROM_BIT(frame);
 
-    return (frames[index] & (0x1 << offset));
+    return (Memory::Paging::Frame::frames[index] & (0x1 << offset));
 }
 
 Type::u32
-findFirst (void)
+Memory::Paging::Frame::findFirst (void)
 {
-    for (Type::u32 i = 0; i < INDEX_FROM_BIT(frameNumber); i++) {
-        if (frames[i] == 0xFFFFFFFF) {
+    for (Type::u32 i = 0; i < INDEX_FROM_BIT(Memory::Paging::Frame::frameNumber); i++) {
+        if (Memory::Paging::Frame::frames[i] == 0xFFFFFFFF) {
             continue;
         }
 
         // at least one bit is free
         for (Type::u32 h = 0; h < 32; h++) {
-            if (!(frames[i] & (0x1 << h))) {
+            if (!(Memory::Paging::Frame::frames[i] & (0x1 << h))) {
                 return h + (i * 4 * 8);
             }
         }
     }
 
     return 0;
-}
-
-}
-
-}
-
 }
 
 }

@@ -17,35 +17,40 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.    *
  ****************************************************************************/
 
-#include <Memory/Memory.h>
+#include <Processor/x86/Memory/Memory.h>
 
 namespace Kernel {
 
+namespace Processor {
+
+namespace Memory {
+
 extern "C" Type::u32 __end;
-Type::u32 Memory::_address = (Type::u32) &__end;
+
+Type::u32 _address = (Type::u32) &__end;
 
 void*
-Memory::alloc (Type::u32 size, bool aligned)
+alloc (Type::u32 size, bool aligned)
 {
     if (size < 1) {
         return NULL;
     }
 
-    return Memory::_alloc(size, NULL, aligned);
+    return _alloc(size, NULL, aligned);
 }
 
 void*
-Memory::alloc (Type::u32 size, void* physical, bool aligned)
+alloc (Type::u32 size, void* physical, bool aligned)
 {
     if (size < 1) {
         return NULL;
     }
 
-    return Memory::_alloc(size, physical, aligned);
+    return _alloc(size, physical, aligned);
 }
 
 void
-Memory::free (void* pointer)
+free (void* pointer)
 {
     if (pointer == NULL) {
 
@@ -53,7 +58,7 @@ Memory::free (void* pointer)
 }
 
 void
-Memory::copy (void* destination, void* source, Type::u32 size)
+copy (void* destination, void* source, Type::u32 size)
 {
     for (Type::u32 i = 0; i < size; i++) {
         ((Type::u8*) destination)[i] = ((Type::u8*) source)[i];
@@ -61,7 +66,7 @@ Memory::copy (void* destination, void* source, Type::u32 size)
 }
 
 void
-Memory::set (void* destination, Type::u8 value, Type::u32 size)
+set (void* destination, Type::u8 value, Type::u32 size)
 {
     for (Type::u32 i = 0; i < size; i++) {
         ((Type::u8*) destination)[i] = value;
@@ -69,125 +74,26 @@ Memory::set (void* destination, Type::u8 value, Type::u32 size)
 }
 
 void*
-Memory::_alloc (Type::u32 size, void* physical, bool align)
+_alloc (Type::u32 size, void* physical, bool align)
 {
-    if (align && (Memory::_address & 0xFFFFF000)) {
-        Memory::_address &= 0xFFFFF000;
-        Memory::_address += 0x1000;
+    if (align && (_address & 0xFFFFF000)) {
+        _address &= 0xFFFFF000;
+        _address += 0x1000;
     }
 
     if (physical) {
-        *(Type::u32*) physical = Memory::_address;
+        *(Type::u32*) physical = _address;
     }
 
-    void* tmp         = (void*) Memory::_address;
-    Memory::_address += size;
+    void* tmp         = (void*) _address;
+    _address += size;
 
     return tmp;
 }
 
-Memory::Memory (Type::u32 size)
-{
-    _size   = size;
-    _memory = Memory::alloc(_size);
-}
-
-Memory::Memory (Memory& memory)
-{
-    const void* data = memory.data();
-
-    _size   = memory.size();
-    _memory = Memory::alloc(_size);
-
-    for (Type::u32 i = 0; i < _size; i++) {
-        ((Type::u8*) _memory)[i] = ((Type::u8*) data)[i];
-    }
-}
-
-Memory::~Memory ()
-{
-    Memory::free(_memory);
-}
-
-Type::u32
-Memory::size (void)
-{
-    return _size;
-}
-
-void
-Memory::size (Type::u32 size)
-{
-    _size = size;
-}
-
-const void*
-Memory::data (void)
-{
-    return _memory;
-}
-
-void
-Memory::data (Memory& memory, Type::u32 offset)
-{
-    const void* data = memory.data();
-    Type::u32   size = memory.size();
-
-    for (Type::u32 i = offset; i < size; i++) {
-        ((Type::u8*) _memory)[i] = ((Type::u8*) data)[i];
-    }
-}
-
-void
-Memory::data (void* memory, Type::u32 size, Type::u32 offset)
-{
-    for (Type::u32 i = offset; i < size; i++) {
-        ((Type::u8*) _memory)[i] = ((Type::u8*) memory)[i];
-    }
-}
-
-void*
-Memory::pointer (void)
-{
-    return _memory;
-}
-
-/* operators */
-
-Memory::operator void* ()
-{
-    return _memory;
-}
-
-Memory::operator Type::u32 ()
-{
-    return _size;
 }
 
 }
 
-/* kernel space new/delete */
-
-void*
-operator new (Type::u32 size)
-{
-    return Kernel::Memory::alloc(size);
 }
 
-void*
-operator new[] (Type::u32 size)
-{
-    return Kernel::Memory::alloc(size);
-}
-
-void
-operator delete (void* pointer)
-{
-    Kernel::Memory::free(pointer);
-}
-
-void
-operator delete[] (void* pointer)
-{
-    Kernel::Memory::free(pointer);
-}

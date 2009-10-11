@@ -17,25 +17,72 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.    *
  ****************************************************************************/
 
-#ifndef _LKEY_X86
-#   error "Why is this compiling? :)"
-#endif
+/**
+ * @file Memory.h
+ *
+ * @brief Memory management namespace.
+ */
 
-#include <Processor/Processor.h>
-#include <Processor/x86/DescriptorTables/DescriptorTables.h>
-#include <Processor/x86/Memory/Paging.h>
+#ifndef _LKEY_MEMORY_H
+#define _LKEY_MEMORY_H
+
+#include <Type.h>
+#include <Interrupt/Interrupt.h>
 
 namespace Kernel {
 
-namespace Processor {
-
-void
-init (Multiboot& boot)
+class Memory
 {
-    DescriptorTables::init();
-    Memory::Paging::init(boot.memory()->upper);
-}
+  public:
+    #include <Memory/Paging.h>
+
+  private:
+    static Type::u32 _address;
+
+  public:
+    static void* alloc (Type::u32 size, bool aligned = false);
+    static void* alloc (Type::u32 size, void* physical, bool aligned = false);
+
+    static void  free  (void* pointer);
+
+    static void copy (void* destination, void* source, Type::u32 size);
+    static void set  (void* destination, Type::u8 value, Type::u32 size); 
+
+  private:
+    static void* _alloc (Type::u32 size, void* physical, bool align);
+
+  private:
+    void*     _memory;
+    Type::u32 _size;
+
+  public:
+    Memory (Type::u32 size);
+    Memory (Memory& memory);
+
+    virtual ~Memory ();
+
+    Type::u32 size (void);
+    void      size (Type::u32 size);
+
+    const void* data (void);
+    void        data (Memory& memory, Type::u32 offset = 0);
+    void        data (void* memory, Type::u32 size, Type::u32 offset = 0);
+
+    void* pointer (void);
+
+  public:
+    operator void*     ();
+    operator Type::u32 ();
+};
 
 }
 
-}
+// Kernel space new's
+void* operator new   (Type::u32 size);
+void* operator new[] (Type::u32 size);
+
+// Kernel space delete's
+void operator delete   (void* pointer);
+void operator delete[] (void* pointer);
+
+#endif
