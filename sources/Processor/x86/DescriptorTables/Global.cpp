@@ -36,13 +36,13 @@ Global::init (void)
     Global::_pointer.limit = (sizeof(Global::Entry) * 7) - 1;
     Global::_pointer.base  = (Type::u32) &Global::_entries;
 
-    Global::set(0, 0, 0, 0, 0);                // Null segment
-    Global::set(1, 0, 0xFFFFFFFF, 0x9A, 0xCF); // Code segment
-    Global::set(2, 0, 0xFFFFFFFF, 0x92, 0xCF); // Data segment
-    Global::set(3, 0, 0xFFFFFFFF, 0xBA, 0xCF); // Service code segment
-    Global::set(4, 0, 0xFFFFFFFF, 0xBA, 0xCF); // Service data segment
-    Global::set(5, 0, 0xFFFFFFFF, 0xFA, 0xCF); // User mode code segment
-    Global::set(6, 0, 0xFFFFFFFF, 0xF2, 0xCF); // User mode data segment
+    Global::set(0, 0, 0, 0, 0);                // Null segment              @ 0x00
+    Global::set(1, 0, 0xFFFFFFFF, 0x9A, 0xCF); // Code segment              @ 0x08
+    Global::set(2, 0, 0xFFFFFFFF, 0x92, 0xCF); // Data segment              @ 0x10
+    Global::set(3, 0, 0xFFFFFFFF, 0xBA, 0xCF); // Service code segment      @ 0x18
+    Global::set(4, 0, 0xFFFFFFFF, 0xBA, 0xCF); // Service data segment      @ 0x20
+    Global::set(5, 0, 0xFFFFFFFF, 0xFA, 0xCF); // User mode code segment    @ 0x28
+    Global::set(6, 0, 0xFFFFFFFF, 0xF2, 0xCF); // User mode data segment    @ 0x30
 
     Global::flush();
 }

@@ -49,11 +49,14 @@ init (Type::u32 upperMemory)
 
     _current = _kernel;
 
-    for (Type::u32 i = 0; i < Memory::_address; i += 0x1000) {
+    Type::u32 i = 0;
+    while (i < Memory::_address) {
         Frame::alloc(Paging::getPage(_kernel, i, true), false, false);
+        i += 0x1000;
     }
 
     Interrupt::define(14, &Paging::fault);
+    Interrupt::define(0, &Paging::fault);
 
     Paging::switchPage(Paging::_kernel);
 }
@@ -81,8 +84,11 @@ getPage (Directory* directory, Type::u32 address, bool make)
         return &directory->tables[index]->pages[address % 1024];
     }
     else if (make) {
-        Type::u32 tmp                    = 0;
-        directory->tables[index]         = (Table*) Memory::alloc(sizeof(Table), (void*) &tmp, true);
+        Type::u32 tmp = 0;
+
+        directory->tables[index] = (Table*) Memory::alloc(sizeof(Table), (void*) &tmp, true);
+        Memory::set(directory->tables[index], 0, 0x1000);
+
         directory->tablesPhysical[index] = tmp | 0x7;
 
         return &directory->tables[index]->pages[address % 1024];
