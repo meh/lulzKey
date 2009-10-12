@@ -49,10 +49,10 @@ alloc (Paging::Page* page, bool isKernel, bool isWriteable)
     }
 
     Frame::set(index * 0x1000);
-    page->present = true;
-    page->rw      = isWriteable;
-    page->user    = !isKernel;
-    page->frame   = index;
+    page->present   = true;
+    page->readWrite = isWriteable;
+    page->userMode  = !isKernel;
+    page->frame     = index;
 }
 
 void
