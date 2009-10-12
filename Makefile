@@ -2,7 +2,7 @@ VERSION = 0.0.1
 NAME    = lulzKey
 
 CXX      = g++
-CFLAGS   = -Os -m32 -Wall -Wextra -Wno-long-long -pedantic -ffreestanding -nostartfiles -nostdlib -nodefaultlibs -fno-stack-protector -fstrength-reduce -fomit-frame-pointer -finline-functions -fno-rtti -fno-exceptions -D___VERSION___='"${VERSION}"' -I./include -I./sources
+CFLAGS   = -m32 -Wall -Wextra -Wno-long-long -pedantic -ffreestanding -nostartfiles -nostdlib -nodefaultlibs -fno-stack-protector -fstrength-reduce -fomit-frame-pointer -finline-functions -fno-rtti -fno-exceptions -D___VERSION___='"${VERSION}"' -I./include -I./sources
 CXXFLAGS = ${CFLAGS}
 LDFLAGS  = -Tlinker.ld -s -melf_i386
 
