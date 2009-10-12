@@ -1,0 +1,3 @@
+The most important service. Process and memory management.
+
+The first service that's ran from kernel mode, it stays in kernel mode at first :)
