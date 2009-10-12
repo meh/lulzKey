@@ -22,6 +22,7 @@
 #include <Boot/Multiboot.h>
 
 #include <Processor/Processor.h>
+#include <Interrupt/Interrupt.h>
 #include <Services/Services.h>
 
 #include <Tools/Shell/Shell.h>
@@ -44,6 +45,7 @@ main (Type::u32 magic, void* information)
     Debug::dump(boot);
 
     Processor::init(boot);
+    Interrupt::init();
     Services::init(boot);
 }
 

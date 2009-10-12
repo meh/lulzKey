@@ -27,13 +27,13 @@ namespace Processor {
 
 namespace DescriptorTables {
 
-Global::Entry   Global::_entries[7];
+Global::Entry   Global::_entries[9];
 Global::Pointer Global::_pointer;
 
 void
 Global::init (void)
 {
-    Global::_pointer.limit = (sizeof(Global::Entry) * 7) - 1;
+    Global::_pointer.limit = (sizeof(Global::Entry) * 9) - 1;
     Global::_pointer.base  = (Type::u32) &Global::_entries;
 
     Global::set(0, 0, 0, 0, 0);                // Null segment              @ 0x00

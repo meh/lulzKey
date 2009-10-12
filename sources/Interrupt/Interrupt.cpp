@@ -25,6 +25,11 @@ namespace Kernel {
 Interrupt::Handler Interrupt::_handlers[256] = {0};
 
 void
+Interrupt::init (void)
+{
+}
+
+void
 Interrupt::handle (Interrupt::Type type, Interrupt::Registers& registers)
 {
     if (type == ServiceRoutine) {
