@@ -56,7 +56,6 @@ init (Type::u32 upperMemory)
     }
 
     Interrupt::define(14, &Paging::fault);
-    Interrupt::define(0, &Paging::fault);
 
     Paging::switchPage(Paging::_kernel);
 }

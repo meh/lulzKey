@@ -18,7 +18,7 @@
  ****************************************************************************/
 
 #include <Tools/Debug/Debug.h>
-#include <Tools/Shell/Shell.h>
+#include <Kernel.h>
 
 namespace Kernel {
 
@@ -29,90 +29,86 @@ void _dumpBootDrives (Multiboot::Drive* drive);
 void
 dump (Multiboot& boot)
 {
-    Shell shell;
+    Kernel::shell << "Boot dump..." << Shell::endLine;
 
-    shell << "Boot dump..." << Shell::endLine;
-
-    shell << "Booting from: ";
+    Kernel::shell << "Booting from: ";
     if (boot.bootLoader()) {
-        shell << boot.bootLoader();
+        Kernel::shell << boot.bootLoader();
     }
     else {
-        shell << "Unknown";
+        Kernel::shell << "Unknown";
     }
-    shell << Shell::endLine;
+    Kernel::shell << Shell::endLine;
 
-    shell << "Boot options: " << boot.command() << Shell::endLine;
+    Kernel::shell << "Boot options: " << boot.command() << Shell::endLine;
 
-    shell << "Memory:       ";
+    Kernel::shell << "Memory:       ";
     if (boot.memory()) {
-        shell << "lower=" << boot.memory()->lower << "KB; upper=" << boot.memory()->upper << "KB;";
+        Kernel::shell << "lower=" << boot.memory()->lower << "KB; upper=" << boot.memory()->upper << "KB;";
     }
     else {
-        shell << "Invalid memory bounds.";
+        Kernel::shell << "Invalid memory bounds.";
     }
-    shell << Shell::endLine;
+    Kernel::shell << Shell::endLine;
 
-    shell << "Boot device:  ";
+    Kernel::shell << "Boot device:  ";
     if (boot.device()) {
-        shell << "BIOS=" << (void*) boot.device()->BIOS << "; ";
-        shell << "Partition=" << (Type::u32) boot.device()->partition.topLevel;
+        Kernel::shell << "BIOS=" << (void*) boot.device()->BIOS << "; ";
+        Kernel::shell << "Partition=" << (Type::u32) boot.device()->partition.topLevel;
 
         if (boot.device()->partition.subLevel != 0xFF) {
-            shell << "," << (Type::u32) boot.device()->partition.subLevel;
+            Kernel::shell << "," << (Type::u32) boot.device()->partition.subLevel;
 
             if (boot.device()->partition.subSubLevel != 0xFF) {
-                shell << "," << (Type::u32) boot.device()->partition.subSubLevel;
+                Kernel::shell << "," << (Type::u32) boot.device()->partition.subSubLevel;
             }
         }
-        shell << ";"; 
+        Kernel::shell << ";"; 
     }
     else {
-        shell << "Invalid device.";
+        Kernel::shell << "Invalid device.";
     }
-    shell << Shell::endLine;
+    Kernel::shell << Shell::endLine;
 
-    shell << "Drives: ";
+    Kernel::shell << "Drives: ";
     if (boot.drives()->size == 0) {
-        shell << "      None.";
+        Kernel::shell << "      None.";
     }
     else {
-        shell << Shell::endLine;
+        Kernel::shell << Shell::endLine;
         boot.drives(&_dumpBootDrives);
     }
-    shell << Shell::endLine;
+    Kernel::shell << Shell::endLine;
 }
 
 void
 _dumpBootDrives (Multiboot::Drive* drive)
 {
-    Shell shell;
-
-    shell << "    ";
-    shell << (Type::u32) drive->number;
-    shell << " [C=" << drive->cylinders << ", H=" << (Type::u32) drive->heads << ", S=" << (Type::u32) drive->sectors << "]";
-    shell << " {" << (drive->mode == 0 ? "CHS" : "LBA") << "} ";
+    Kernel::shell << "    ";
+    Kernel::shell << (Type::u32) drive->number;
+    Kernel::shell << " [C=" << drive->cylinders << ", H=" << (Type::u32) drive->heads << ", S=" << (Type::u32) drive->sectors << "]";
+    Kernel::shell << " {" << (drive->mode == 0 ? "CHS" : "LBA") << "} ";
 
     if (drive->size > 10) {
         Type::u16* ports  = drive->ports;
         Type::u16  offset = 0;
 
-        shell << "(" << (void*) *ports;
+        Kernel::shell << "(" << (void*) *ports;
         ports++;
         offset++;
 
         while (((Type::u32) (10 + (offset * 2))) < drive->size) {
-            shell << ", " << (void*) *ports;
+            Kernel::shell << ", " << (void*) *ports;
             ports++;
             offset++;
         }
-        shell << ")";
+        Kernel::shell << ")";
     }
     else {
-        shell << "(N/A)";
+        Kernel::shell << "(N/A)";
     }
 
-    shell << Shell::endLine;
+    Kernel::shell << Shell::endLine;
 }
 
 }

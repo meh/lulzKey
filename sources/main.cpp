@@ -18,6 +18,7 @@
  ****************************************************************************/
 
 #include <Type.h>
+#include <Kernel.h>
 #include <Boot/Multiboot.h>
 
 #include <Processor/Processor.h>
@@ -32,9 +33,7 @@ extern "C"
 void
 main (Type::u32 magic, void* information)
 {
-    Shell shell; 
-
-    shell << "O HAI! DIS BEE LULZKEY-" << ___VERSION___ << "! ENJOY YOUR TRIPLE FAULTS!" << Shell::endLine << Shell::endLine;
+    Kernel::shell << "O HAI! DIS BEE LULZKEY-" << ___VERSION___ << "! ENJOY YOUR TRIPLE FAULTS!" << Shell::endLine << Shell::endLine;
 
     if (magic != Multiboot::Magic) {
         shell << "What, it's not a Multiboot-compliant boot loader :(" << Shell::endLine;
@@ -46,8 +45,5 @@ main (Type::u32 magic, void* information)
 
     Processor::init(boot);
     Services::init(boot);
-
-    Type::u32 *ptr          = (Type::u32*) 0xA0000000;
-    Type::u32 do_page_fault = *ptr;
 }
 

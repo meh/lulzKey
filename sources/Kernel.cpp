@@ -22,14 +22,14 @@
 
 namespace Kernel {
 
+Shell shell;
+
 void
 panic (const char* message)
 {
     asm volatile ("cli");
 
-    Shell shell;
-
-    shell << "PANIC: " << message << Shell::endLine;
+    Kernel::shell << "PANIC: " << message << Shell::endLine;
 
     while (true);
 }

@@ -85,8 +85,8 @@ _alloc (Type::u32 size, void* physical, bool align)
         *(Type::u32*) physical = _address;
     }
 
-    void* tmp         = (void*) _address;
-    _address += size;
+    void* tmp  = (void*) _address;
+    _address  += size;
 
     return tmp;
 }

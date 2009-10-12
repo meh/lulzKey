@@ -20,7 +20,11 @@
 #ifndef _LKEY_KERNEL_H
 #define _LKEY_KERNEL_H
 
+#include <Tools/Shell/Shell.h>
+
 namespace Kernel {
+
+extern Shell shell;
 
 void panic (const char* message);
 
