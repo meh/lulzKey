@@ -50,7 +50,7 @@ init (Type::u32 upperMemory)
     _current = _kernel;
 
     Type::u32 i = 0;
-    while (i < Memory::_address) {
+    while (i < Memory::address) {
         Frame::alloc(Paging::getPage(_kernel, i, true), false, false);
         i += 0x1000;
     }

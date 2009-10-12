@@ -31,6 +31,8 @@ dump (Multiboot& boot)
 {
     Kernel::shell << "Boot dump..." << Shell::endLine;
 
+    Kernel::shell << "Boot end:     " << boot.end() << Shell::endLine;
+
     Kernel::shell << "Booting from: ";
     if (boot.bootLoader()) {
         Kernel::shell << boot.bootLoader();

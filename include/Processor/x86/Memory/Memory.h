@@ -34,7 +34,7 @@ namespace Processor {
 
 namespace Memory {
 
-extern Type::u32 _address;
+extern Type::u32 address;
 
 void* alloc (Type::u32 size, bool aligned = false);
 void* alloc (Type::u32 size, void* physical, bool aligned = false);

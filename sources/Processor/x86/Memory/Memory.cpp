@@ -25,9 +25,7 @@ namespace Processor {
 
 namespace Memory {
 
-extern "C" Type::u32 __end;
-
-Type::u32 _address = (Type::u32) &__end;
+Type::u32 address = 0;
 
 void*
 alloc (Type::u32 size, bool aligned)
@@ -76,17 +74,17 @@ set (void* destination, Type::u8 value, Type::u32 size)
 void*
 _alloc (Type::u32 size, void* physical, bool align)
 {
-    if (align && (_address & 0xFFFFF000)) {
-        _address &= 0xFFFFF000;
-        _address += 0x1000;
+    if (align && (address & 0xFFFFF000)) {
+        address &= 0xFFFFF000;
+        address += 0x1000;
     }
 
     if (physical) {
-        *(Type::u32*) physical = _address;
+        *(Type::u32*) physical = address;
     }
 
-    void* tmp  = (void*) _address;
-    _address  += size;
+    void* tmp  = (void*) address;
+    address   += size;
 
     return tmp;
 }
