@@ -13,12 +13,44 @@ namespace Kernel {
 
 Shell shell;
 
+#define PADDING    "                        "
+#define BORDER     Shell::Color(Shell::Color::White, Shell::Color::LightRed)
+#define BACKGROUND Shell::Color(Shell::Color::White, Shell::Color::White)
+#define CONTENT    Shell::Color(Shell::Color::White, Shell::Color::Black)
+#define VOID       Shell::Color()
+
+void
+NAZI (void)
+{
+    shell.clear();
+
+    shell << Shell::endLine;
+    shell << PADDING << BORDER << "             " << "KERNEL" << "             " << VOID << Shell::endLine;
+    shell << PADDING << BORDER << "  " << BACKGROUND << "                            " << BORDER << "  " << VOID << Shell::endLine;
+    shell << PADDING << BORDER << "  " << BACKGROUND << "  " << CONTENT << "              " << BACKGROUND << "      " << CONTENT << "    " << BACKGROUND << "  " << BORDER << "  " << VOID << Shell::endLine;
+    shell << PADDING << BORDER << "  " << BACKGROUND << "  " << CONTENT << "              " << BACKGROUND << "      " << CONTENT << "    " << BACKGROUND << "  " << BORDER << "  " << VOID << Shell::endLine;
+    shell << PADDING << BORDER << "  " << BACKGROUND << "            " << CONTENT << "    " << BACKGROUND << "      " << CONTENT << "    " << BACKGROUND << "  " << BORDER << "  " << VOID << Shell::endLine;
+    shell << PADDING << BORDER << "  " << BACKGROUND << "            " << CONTENT << "    " << BACKGROUND << "      " << CONTENT << "    " << BACKGROUND << "  " << BORDER << "  " << VOID << Shell::endLine;
+    shell << PADDING << BORDER << "  " << BACKGROUND << "            " << CONTENT << "    " << BACKGROUND << "      " << CONTENT << "    " << BACKGROUND << "  " << BORDER << "  " << VOID << Shell::endLine;
+    shell << PADDING << BORDER << "  " << BACKGROUND << "  " << CONTENT << "                        " << BACKGROUND << "  " << BORDER << "  " << VOID << Shell::endLine;
+    shell << PADDING << BORDER << "  " << BACKGROUND << "  " << CONTENT << "                        " << BACKGROUND << "  " << BORDER << "  " << VOID << Shell::endLine;
+    shell << PADDING << BORDER << "  " << BACKGROUND << "  " << CONTENT << "    " << BACKGROUND << "      " << CONTENT << "    " << BACKGROUND << "            " << BORDER << "  " << VOID << Shell::endLine;
+    shell << PADDING << BORDER << "  " << BACKGROUND << "  " << CONTENT << "    " << BACKGROUND << "      " << CONTENT << "    " << BACKGROUND << "            " << BORDER << "  " << VOID << Shell::endLine;
+    shell << PADDING << BORDER << "  " << BACKGROUND << "  " << CONTENT << "    " << BACKGROUND << "      " << CONTENT << "    " << BACKGROUND << "            " << BORDER << "  " << VOID << Shell::endLine;
+    shell << PADDING << BORDER << "  " << BACKGROUND << "  " << CONTENT << "    " << BACKGROUND << "      " << CONTENT << "              " << BACKGROUND << "  " << BORDER << "  " << VOID << Shell::endLine;
+    shell << PADDING << BORDER << "  " << BACKGROUND << "  " << CONTENT << "    " << BACKGROUND << "      " << CONTENT << "              " << BACKGROUND << "  " << BORDER << "  " << VOID << Shell::endLine;
+    shell << PADDING << BORDER << "  " << BACKGROUND << "                            " << BORDER << "  " << VOID << Shell::endLine;
+    shell << PADDING << BORDER << "           " << "HOLOCAUST!" << "           " << VOID << Shell::endLine;
+}
+
 void
 panic (const char* message)
 {
     asm volatile ("cli");
 
-    Kernel::shell << "PANIC: " << message << Shell::endLine;
+    NAZI();
+
+    shell << Shell::endLine << message << Shell::endLine;
 
     while (true);
 }

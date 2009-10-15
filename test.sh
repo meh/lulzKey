@@ -25,7 +25,11 @@ echo "boot"
 echo ""
 echo "Enjoy."
 
-qemu -d cpu_reset,int -cpu pentium3 -m 32M -fda "$FLOPPY" &> /dev/null
+if [ "$1" ]; then
+    urxvt -e qemu -curses -d cpu_reset,int -cpu pentium3 -m 32M -fda "$FLOPPY"
+else
+    qemu -d cpu_reset,int -cpu pentium3 -m 32M -fda "$FLOPPY"
+fi
 
 rm "$TMP"
 rm "$FLOPPY"
