@@ -10,10 +10,25 @@
 
 namespace Kernel {
 
-Shell::Color::Color (char foreground, char background)
+Shell::Color::Color (char foreground, char background, bool blinking)
 {
-    _foreground = foreground;
-    _background = background;
+    if (foreground < 0) {
+        _foreground = White;
+    }
+    else {
+        _foreground = foreground;
+    }
+
+    if (background < 0) {
+        _background = Black;
+    }
+    else {
+        _background = background;
+    }
+
+    if (blinking) {
+        _background |= 0x80;
+    }
 }
 
 char

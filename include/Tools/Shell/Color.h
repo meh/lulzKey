@@ -18,8 +18,8 @@ class Color
     static const char Red        = 0x4;
     static const char Magenta    = 0x5;
     static const char Brown      = 0x6;
-    static const char Gray       = 0x7;
-    static const char LightGray  = 0x8;
+    static const char LightGray  = 0x7;
+    static const char Gray       = 0x8;
     static const char LightBlue  = 0x9;
     static const char LightGreen = 0xA;
     static const char LightCyan  = 0xB;
@@ -33,7 +33,7 @@ class Color
     char _background;
 
   public:
-    Color (char foreground = White, char background = Black);
+    Color (char foreground = White, char background = Black, bool blinking = false);
 
     char foreground (void);
     void foreground (char color);

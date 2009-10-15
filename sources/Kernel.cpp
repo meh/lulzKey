@@ -14,7 +14,7 @@ namespace Kernel {
 Shell shell;
 
 #define PADDING    "                        "
-#define BORDER     Shell::Color(Shell::Color::White, Shell::Color::LightRed)
+#define BORDER     Shell::Color(Shell::Color::White, Shell::Color::Red, true)
 #define BACKGROUND Shell::Color(Shell::Color::White, Shell::Color::White)
 #define CONTENT    Shell::Color(Shell::Color::White, Shell::Color::Black)
 #define VOID       Shell::Color()

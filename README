@@ -8,3 +8,5 @@ Used software:
     - sys-devel/binutils-2.19.1-r1
 
 If you have problems ensure that you're using those versions or don't bother meh.
+
+To compile remember to download lolibc [http://github.com/meh/lolibc] and extract it into lolibc/

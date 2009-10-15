@@ -24,8 +24,8 @@ void
 main (Type::u32 magic, void* information)
 {
     Kernel::shell << "O HAI! DIS BEE ";
-    Kernel::shell << Shell::Color(Shell::Color::LightRed) << "LULZKEY-" << ___VERSION___ << Shell::Color();
-    Kernel::shell << "! ENJOY YOUR TRIPLE FAULTS!" << Shell::endLine << Shell::endLine;
+    Kernel::shell << Shell::Color(Shell::Color::Red) << "LULZKEY-" << ___VERSION___ << Shell::Color();
+    Kernel::shell << "! ENJOY YOUR " << Shell::Color(-1, -1, true) << "TRIPLE FAULTS" << Shell::Color() << "!" << Shell::endLine << Shell::endLine;
 
     if (magic != Multiboot::Magic) {
         shell << "What, it's not a Multiboot-compliant boot loader :(" << Shell::endLine;
@@ -38,9 +38,5 @@ main (Type::u32 magic, void* information)
     Processor::init(boot);
     Interrupt::init();
     Services::init(boot);
-
-
-       Type::u32 *ptr = (Type::u32*)0xA0000000;
-          Type::u32 do_page_fault = *ptr;
 }
 
