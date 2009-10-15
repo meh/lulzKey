@@ -6,6 +6,8 @@
 * See COPYING or http://www.gnu.org/licenses/agpl-3.0.txt                   *
 ****************************************************************************/
 
+#include <lib/string.h>
+
 #include <Kernel.h>
 #include <Processor/x86/Memory/Memory.h>
 #include <Processor/x86/Memory/Paging.h>
@@ -97,7 +99,9 @@ getPage (Directory* directory, Type::u32 address, bool make)
 void
 fault (Interrupt::Registers& registers)
 {
-    Kernel::panic("OMG PAGEFAULT!1!");
+    char error[200] = "Pagefault happened, well, you're fucked :(\n";
+
+    Kernel::panic(error);
 }
 
 }

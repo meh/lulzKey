@@ -2,12 +2,16 @@ VERSION = 0.0.1
 NAME    = lulzKey
 
 CXX      = g++
-CFLAGS   = -m32 -Wall -Wextra -Wno-long-long -pedantic -ffreestanding -nostartfiles -nostdlib -nodefaultlibs -fno-stack-protector -fstrength-reduce -fomit-frame-pointer -finline-functions -fno-rtti -fno-exceptions -D___VERSION___='"${VERSION}"' -I./include -I./sources
+CFLAGS   = -m32 -Wall -Wextra -Wno-long-long -pedantic -ffreestanding -nostartfiles -nostdlib -nodefaultlibs -fno-stack-protector -fstrength-reduce -fomit-frame-pointer -finline-functions -fno-rtti -fno-exceptions -D___VERSION___='"${VERSION}"' -I./include -I./sources -I./lolibc/include
 CXXFLAGS = ${CFLAGS}
 LDFLAGS  = -Tlinker.ld -s -melf_i386
 
 DIR        = sources
 FORMAT_DIR = ${DIR}/Format
+LOLIBC_DIR = lolibc/sources
+
+
+LOLIBC_FILES = ${LOLIBC_DIR}/string.c
 
 KERNEL_FILES = ${DIR}/main.cpp ${DIR}/Boot/Multiboot.cpp ${DIR}/Kernel.cpp \
 			   ${DIR}/Memory/Memory.cpp \
@@ -40,8 +44,10 @@ ASM_FILES    += ${x86_DIR}/DescriptorTables/Global.S ${x86_DIR}/DescriptorTables
 KERNEL_FILES += ${ELF_FILES}
 endif
 
-all: kernel_asm kernel
+all: lolibc kernel_asm kernel
 	ld ${LDFLAGS} -o ${NAME} $(ASM_FILES:.S=_.o) $(KERNEL_FILES:.cpp=.o)
+
+lolibc: $(LOLIBC_FILES:.c=.o)
 
 kernel_asm: $(ASM_FILES:.S=_.o)
 

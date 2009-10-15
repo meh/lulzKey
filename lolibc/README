@@ -1,0 +1,3 @@
+lolibc - C library implementation.
+
+Will be completed when we'll get to run POSIX shit, for gcc purposes.
