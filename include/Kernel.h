@@ -15,7 +15,7 @@ namespace Kernel {
 
 extern Shell shell;
 
-void panic (const char* message);
+void panic (const char* message, ...);
 
 }
 

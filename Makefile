@@ -2,9 +2,9 @@ VERSION = 0.0.1
 NAME    = lulzKey
 
 CXX      = g++
-CFLAGS   = -m32 -Wall -Wextra -Wno-long-long -pedantic -ffreestanding -nostartfiles -nostdlib -nodefaultlibs -fno-stack-protector -fstrength-reduce -fomit-frame-pointer -finline-functions -fno-rtti -fno-exceptions -D___VERSION___='"${VERSION}"' -I./include -I./sources -I./lolibc/include
+CFLAGS   = -m32 -Wall -Wextra -Wno-long-long -pedantic -ffreestanding -nostartfiles -nostdlib -nodefaultlibs -fno-builtin -fno-stack-protector -fstrength-reduce -fomit-frame-pointer -finline-functions -fno-rtti -fno-exceptions -D___VERSION___='"${VERSION}"' -I./include -I./sources -I./lolibc/include
 CXXFLAGS = ${CFLAGS}
-LDFLAGS  = -T linker.ld -s
+LDFLAGS  = -T linker.ld -s -L./lolibc -static -llolibc
 
 ifdef OPTIMIZED
 CFLAGS   += -Os
@@ -31,7 +31,7 @@ ELF_FILES = ${FORMAT_DIR}/ELF/ELF.cpp \
 ARCH = x86
 
 ifeq ("${ARCH}", "x86")
-CFLAGS += -D_LKEY_X86
+CFLAGS += -D_LKEY_X86 -D_LOLIBC_X86
 
 x86_DIR = sources/Processor/x86
 
@@ -46,10 +46,7 @@ KERNEL_FILES += ${ELF_FILES}
 endif
 
 all: kernel_asm kernel
-	cd lolibc
-	make 32bit=1
-	cd ..
-	gcc -m32 ${CFLAGS} ${LDFLAGS} -o ${NAME} $(ASM_FILES:.S=_.o) $(KERNEL_FILES:.cpp=.o) lolibc/lolibc.a
+	gcc -m32 ${CFLAGS} ${LDFLAGS} -o ${NAME} $(ASM_FILES:.S=_.o) $(KERNEL_FILES:.cpp=.o)
 
 kernel_asm: $(ASM_FILES:.S=_.o)
 

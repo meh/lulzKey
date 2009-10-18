@@ -99,9 +99,35 @@ getPage (Directory* directory, Type::u32 address, bool make)
 void
 fault (Interrupt::Registers& registers)
 {
-    char error[200] = "Pagefault happened, well, you're fucked :(\n";
+    char error[51]    = {0};
+    Type::u32 address = 0;
 
-    Kernel::panic(error);
+    asm volatile("mov %%cr2, %0" : "=r" (address));
+
+    if (PAGE_NOT_PRESENT(registers.errorCode)) {
+        strcat(error, "!present ");
+    }
+
+    if (WRITE_FAULT(registers.errorCode)) {
+        strcat(error, "read-only ");
+    }
+
+    if (IN_USERMODE(registers.errorCode)) {
+        strcat(error, "user-mode ");
+    }
+    else {
+        strcat(error, "kernel-mode ");
+    }
+
+    if (REWRITTEN_RESERVED(registers.errorCode)) {
+        strcat(error, "reserved ");
+    }
+
+    if (INSTRUCTION_FETCH(registers.errorCode)) {
+        strcat(error, "executing ");
+    }
+
+    Kernel::panic("Pagefault happened, well, you're fucked :( %s): at 0x%x", error, address);
 }
 
 }

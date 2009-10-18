@@ -39,10 +39,10 @@ class Shell
     static Shell* _object;
 
   private:
-    Type::u8*    _video;
-    Type::u8     _y;
-    Type::u8     _x;
-    Shell::Color _color;
+    Type::u8* _video;
+    Type::u8  _y;
+    Type::u8  _x;
+    Color     _color;
 
   public:
     Shell (const void* address = (void*) 0xb8000);
@@ -53,9 +53,9 @@ class Shell
 
     void moveCursor (char x, char y);
 
-    void         color (Shell::Color color);
-    void         color (char foreground, char background = Shell::Color::Black);
-    Shell::Color color (void);
+    void   color (Color& color);
+    void   color (char foreground, char background = Shell::Color::Black, bool blinking = false);
+    Color& color (void);
 
     unsigned int print (char out);
     unsigned int print (unsigned char out);
@@ -78,7 +78,7 @@ class Shell
     unsigned int _hexadecimal (unsigned long out);
 
   public:
-    Shell& operator << (Shell::Color color);
+    Shell& operator << (Color color);
 
     Shell& operator << (char out);
     Shell& operator << (unsigned char out);

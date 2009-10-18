@@ -28,6 +28,9 @@ Shell::Shell (const void* address)
 void
 Shell::clear (void)
 {
+    Color tmp = _color;
+    _color    = Color();
+
     for (Type::u8 y = 0; y < Shell::lines; y++) {
         for (Type::u8 x = 0; x < Shell::columns; x++) {
             Shell::_object->_video[(x + y * Shell::columns) * 2]     = ' ';
@@ -39,6 +42,8 @@ Shell::clear (void)
     Shell::_object->_x = 0;
 
     this->moveCursor(Shell::_object->_x, Shell::_object->_y);
+
+    _color = tmp;
 }
 
 void
@@ -71,18 +76,18 @@ Shell::moveCursor (char x, char y)
 }
 
 void
-Shell::color (Shell::Color color)
+Shell::color (Shell::Color& color)
 {
     _color = color;
 }
 
 void
-Shell::color (char foreground, char background)
+Shell::color (char foreground, char background, bool blinking)
 {
-    _color = Color(foreground, background);
+    _color = Color(foreground, background, blinking);
 }
 
-Shell::Color
+Shell::Color&
 Shell::color (void)
 {
     return _color;
