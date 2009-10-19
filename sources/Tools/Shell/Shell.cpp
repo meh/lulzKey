@@ -94,6 +94,29 @@ Shell::color (void)
 }
 
 Type::u32
+Shell::printf (const char* message, ...)
+{
+    va_list   args;
+    Type::u32 printed;
+
+    va_start(args, message);
+
+    printed = this->printf(message, args);
+
+    va_end(args);
+
+    return printed;
+}
+
+Type::u32
+Shell::printf (const char* message, va_list args)
+{
+    Type::u32 printed = 0;
+
+    return printed;
+}
+
+Type::u32
 Shell::print (char out)
 {
     return this->print((Type::u8) out);

@@ -15,6 +15,8 @@
 #ifndef _LKEY_TOOLS_SHELL_H
 #define _LKEY_TOOLS_SHELL_H
 
+#include <stdarg.h>
+
 #include <Type.h>
 
 namespace Kernel {
@@ -53,29 +55,32 @@ class Shell
 
     void moveCursor (char x, char y);
 
+    Type::u32 printf (const char* message, ...);
+    Type::u32 printf (const char* message, va_list args);
+
     void   color (Color& color);
     void   color (char foreground, char background = Shell::Color::Black, bool blinking = false);
     Color& color (void);
 
-    unsigned int print (char out);
-    unsigned int print (unsigned char out);
+    Type::u32 print (char out);
+    Type::u32 print (unsigned char out);
 
-    unsigned int print (short out);
-    unsigned int print (unsigned short out);
+    Type::u32 print (short out);
+    Type::u32 print (unsigned short out);
 
-    unsigned int print (int out);
-    unsigned int print (unsigned int out);
+    Type::u32 print (int out);
+    Type::u32 print (unsigned int out);
 
-    unsigned int print (long out);
-    unsigned int print (unsigned long out);
+    Type::u32 print (long out);
+    Type::u32 print (unsigned long out);
 
-    unsigned int print (const void* out);
+    Type::u32 print (const void* out);
 
-    unsigned int print (const char* out);
+    Type::u32 print (const char* out);
 
-    unsigned int _binary      (unsigned long out);
-    unsigned int _octal       (unsigned long out);
-    unsigned int _hexadecimal (unsigned long out);
+    Type::u32 _binary      (unsigned long out);
+    Type::u32 _octal       (unsigned long out);
+    Type::u32 _hexadecimal (unsigned long out);
 
   public:
     Shell& operator << (Color color);

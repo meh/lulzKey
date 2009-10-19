@@ -53,7 +53,12 @@ panic (const char* message, ...)
 
     NAZI();
 
-    shell << Shell::endLine << message << Shell::endLine;
+    va_list args;
+    va_start(args, message);
+
+    shell.printf(message, args);
+
+    va_end(args);
 
     while (true);
 }
