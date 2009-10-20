@@ -127,7 +127,7 @@ fault (Interrupt::Registers& registers)
         strcat(error, "executing ");
     }
 
-    Kernel::panic("Pagefault happened, well, you're fucked :( %s): at 0x%x", error, address);
+    Kernel::panic("Pagefault happened, well, you're fucked :(\n\nAddress: 0x%x { %s}", address, error);
 }
 
 }

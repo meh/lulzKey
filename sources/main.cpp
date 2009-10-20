@@ -39,11 +39,7 @@ main (Type::u32 magic, void* information)
     Interrupt::init();
     Services::init(boot);
 
-#if 0
     Type::u32 *ptr          = (Type::u32*) 0xA0000000;
     Type::u32 do_page_fault = *ptr;
-#endif
-
-    Kernel::panic("lol %d %d %s wat 0x%x 0y%b", 23, 42, "omg", 0xaaa00ff, 0xff);
 }
 
