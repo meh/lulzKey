@@ -66,13 +66,13 @@ ISRCommonStub:
     pusha
     
     # Save the data segment
-    movw  %ds, %ax
-    pushw %ax
+    mov  %ds, %ax
+    push %eax
 
     # Save the ring level
-    movw  %cs, %ax
-    andw  $3,  %ax
-    pushw %ax
+#    movw  %cs, %ax
+#    andw  $3,  %ax
+#    pushw %ax
     
     # load the kernel data segment descriptor
     mov $0x10, %ax
@@ -84,7 +84,7 @@ ISRCommonStub:
     call __Interrupt_ISR_Handler
 
     # Pop the ring level
-    add $4, %esp
+#    add $4, %esp
     
     # reload the original data segment descriptor
     pop %eax

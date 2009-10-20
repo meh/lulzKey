@@ -46,7 +46,7 @@ KERNEL_FILES += ${ELF_FILES}
 endif
 
 all: kernel_asm kernel
-	gcc -m32 ${CFLAGS} -o ${NAME} $(ASM_FILES:.S=_.o) $(KERNEL_FILES:.cpp=.o) ${LDFLAGS} 
+	gcc ${CFLAGS} -o ${NAME} $(ASM_FILES:.S=_.o) $(KERNEL_FILES:.cpp=.o) ${LDFLAGS} 
 
 kernel_asm: $(ASM_FILES:.S=_.o)
 

@@ -56,6 +56,7 @@ panic (const char* message, ...)
     va_list args;
     va_start(args, message);
 
+    shell << Shell::endLine;
     shell.printf(message, args);
 
     va_end(args);

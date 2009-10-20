@@ -6,6 +6,8 @@
 * See COPYING or http://www.gnu.org/licenses/agpl-3.0.txt                   *
 ****************************************************************************/
 
+#include <string.h>
+
 #include <Tools/Shell/Shell.h>
 #include <Misc/IO.h>
 
@@ -112,6 +114,29 @@ Type::u32
 Shell::printf (const char* message, va_list args)
 {
     Type::u32 printed = 0;
+    size_t    length  = strlen(message);
+
+    for (size_t i = 0; i < length; i++) {
+        if (message[i] == '%') {
+            i++;
+
+            if (message[i] == 'd') {
+                this->print(va_arg(args, int));
+            }
+            else if (message[i] == 's') {
+                this->print(va_arg(args, const char*));
+            }
+            else if (message[i] == 'x') {
+                this->_hexadecimal(va_arg(args, unsigned long));
+            }
+            else if (message[i] == 'b') {
+                this->_binary(va_arg(args, unsigned long));
+            }
+        }
+        else {
+            this->print(message[i]);
+        }
+    }
 
     return printed;
 }
@@ -376,8 +401,7 @@ Shell::_octal (unsigned long out)
     unsigned long filter   = 0xC0000000;
     char          cipher;
 
-    returned += this->print('0');
-    cipher    = ((filter & out) >> shift);
+    cipher = ((filter & out) >> shift);
 
     if (cipher != 0) {
         returned += this->print((char) (cipher + '0'));
@@ -412,9 +436,6 @@ Shell::_hexadecimal (unsigned long out)
     Type::u32     returned = 0;
     unsigned long filter   = 0xf0000000;
     char          cipher;
-
-    returned += this->print('0');
-    returned += this->print('x');
 
     cipher = ((filter & out) >> shift);
 
