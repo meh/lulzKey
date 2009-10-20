@@ -65,25 +65,36 @@ ISRNoErrorCode 66
 ISRCommonStub:
     pusha
     
-    mov  %ds, %ax     # Lower 16-bits of eax = ds.
-    push %eax         # save the data segment descriptor
+    # Save the data segment
+    movw  %ds, %ax
+    pushw %ax
+
+    # Save the ring level
+    movw  %cs, %ax
+    andw  $3,  %ax
+    pushw %ax
     
-    mov  $0x10, %ax   # load the kernel data segment descriptor
+    # load the kernel data segment descriptor
+    mov $0x10, %ax
     mov %ax, %ds
     mov %ax, %es
     mov %ax, %fs
     mov %ax, %gs
     
     call __Interrupt_ISR_Handler
+
+    # Pop the ring level
+    add $4, %esp
     
-    pop %eax         # reload the original data segment descriptor
+    # reload the original data segment descriptor
+    pop %eax
     mov %ax, %ds
     mov %ax, %es
     mov %ax, %fs
     mov %ax, %gs
     
     popa
-    add $8, %esp     # Cleans up the pushed error code and pushed ISR number
+    add $8, %esp # Cleans up the pushed error code and pushed ISR number
     sti
-    iret             # pops 5 things at once: CS, EIP, EFLAGS, SS, and ESP
+    iret         # pops 5 things at once: CS, EIP, EFLAGS, SS, and ESP
 

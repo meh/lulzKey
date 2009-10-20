@@ -37,7 +37,8 @@ struct Registers {
 };
 
 struct InterruptRegisters {
-    Type::u32 ds; /*<< data segment selector */
+    Type::u32 ring; /*<< ring level */
+    Type::u32 ds;   /*<< data segment selector */
     
     // Pushed by pusha.
     Type::u32 edi;
