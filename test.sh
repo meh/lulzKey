@@ -15,8 +15,11 @@ FLOPPY=`mktemp`
 dd if=/dev/zero of="$TMP" bs=1 count=750 &> /dev/null
 cat test/stage1 test/stage2 "$TMP" lulzKey > "$FLOPPY"
 
+dd if=/dev/zero of="$TMP" bs=1 count=1024 &> /dev/null
+cat "$TMP" >> "$FLOPPY"
+
 # Uncomment these if the emulator whines about it doesn't have enough space.
-# dd if=/dev/zero of="$TMP" bs=1 count=$((1474560-$STAGE1-$STAGE2-$KERNEL-750)) &> /dev/null
+# dd if=/dev/zero of="$TMP" bs=1 count=$((1474560-$STAGE1-$STAGE2-$KERNEL-750-1024)) &> /dev/null
 # cat "$TMP" >> "$FLOPPY"
 
 echo "Now type:"

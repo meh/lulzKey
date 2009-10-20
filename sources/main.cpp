@@ -10,11 +10,9 @@
 #include <Kernel.h>
 #include <Boot/Multiboot.h>
 
-#if 0
 #include <Processor/Processor.h>
 #include <Interrupt/Interrupt.h>
 #include <Services/Services.h>
-#endif
 
 #include <Tools/Shell/Shell.h>
 #include <Tools/Debug/Debug.h>
@@ -37,13 +35,11 @@ main (Type::u32 magic, void* information)
     Multiboot boot(information);
     Debug::dump(boot);
 
-#if 0
     Processor::init(boot);
     Interrupt::init();
     Services::init(boot);
 
     Type::u32 *ptr = (Type::u32*)0xA0000000;
     Type::u32 do_page_fault = *ptr;
-#endif
 }
 
