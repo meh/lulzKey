@@ -1,3 +1,11 @@
 The most important service. Process and memory management.
 
 The first service that's ran from kernel mode, it stays in kernel mode at first :)
+
+------
+
+A new process starts with a thread, which has a standard priority level.
+
+The scheduler choose a process by looking at the priority etc and then chooses a thread with the same policy.
+
+A process can set the priority of its threads, so the most important are often executed.
