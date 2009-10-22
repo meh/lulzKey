@@ -11,6 +11,12 @@ CFLAGS   += -Os
 CXXFLAGS += -Os
 endif
 
+ifdef PANIC
+CFLAGS += -D_${PANIC}
+else
+CFLAGS += -D_NAZI
+endif
+
 DIR        = sources
 FORMAT_DIR = ${DIR}/Format
 

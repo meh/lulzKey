@@ -23,10 +23,11 @@ Shell shell;
 
 // Weird shell attitude here, someone find out why we need to clean after the VOID.
 void
-NAZI (void)
+_panicImage (void)
 {
     shell.clear();
 
+    #ifdef _NAZI
     shell << Shell::endLine;
     shell << PADDING << BORDER << "             " << "KERNEL" << "             " << VOID << " " << Shell::endLine;
     shell << PADDING << BORDER << "  " << BACKGROUND << "                            " << BORDER << "  " << VOID << " " << Shell::endLine;
@@ -44,6 +45,8 @@ NAZI (void)
     shell << PADDING << BORDER << "  " << BACKGROUND << "  " << CONTENT << "    " << BACKGROUND << "      " << CONTENT << "              " << BACKGROUND << "  " << BORDER << "  " << VOID << " " << Shell::endLine;
     shell << PADDING << BORDER << "  " << BACKGROUND << "                            " << BORDER << "  " << VOID << " " << Shell::endLine;
     shell << PADDING << BORDER << "           " << "HOLOCAUST!" << "           " << VOID << " " << Shell::endLine;
+    shell << Shell::endLine;
+    #endif
 }
 
 void
@@ -51,12 +54,11 @@ panic (const char* message, ...)
 {
     asm volatile ("cli");
 
-    NAZI();
+    _panicImage();
 
     va_list args;
     va_start(args, message);
 
-    shell << Shell::endLine;
     shell.printf(message, args);
 
     va_end(args);
