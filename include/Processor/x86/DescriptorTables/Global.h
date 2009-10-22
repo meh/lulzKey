@@ -44,7 +44,7 @@ class Global
     } __attribute__ ((packed));
 
   private:
-    static Entry   _entries[9];
+    static Entry   _entries[5];
     static Pointer _pointer;
 
   public:
