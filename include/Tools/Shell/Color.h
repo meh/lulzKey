@@ -31,6 +31,7 @@ class Color
   private:
     char _foreground;
     char _background;
+    bool _blinking;
 
   public:
     Color (char foreground = White, char background = Black, bool blinking = false);
@@ -40,6 +41,9 @@ class Color
 
     char background (void);
     void background (char color);
+
+    bool blinking (void);
+    void blinking (bool);
 
     unsigned char value (void);
 };

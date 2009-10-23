@@ -39,7 +39,9 @@ main (Type::u32 magic, void* information)
     Interrupt::init();
     Services::init(boot);
 
-    Type::u32 *ptr          = (Type::u32*) 0xA0000000;
+#if 0
+    Type::u32 *ptr = (Type::u32*) 0xA0000000;
     Type::u32 do_page_fault = *ptr;
+#endif
 }
 

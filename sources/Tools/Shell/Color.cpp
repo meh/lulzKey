@@ -26,9 +26,7 @@ Shell::Color::Color (char foreground, char background, bool blinking)
         _background = background;
     }
 
-    if (blinking) {
-        _background |= 0x80;
-    }
+    _blinking = blinking;
 }
 
 char
@@ -55,10 +53,22 @@ Shell::Color::background (char color)
     _background = color;
 }
 
+bool
+Shell::Color::blinking (void)
+{
+    return _blinking;
+}
+
+void
+Shell::Color::blinking (bool blinking)
+{
+    _blinking = blinking;
+}
+
 unsigned char
 Shell::Color::value (void)
 {
-    return (this->background() * 16) + this->foreground();
+    return (this->background() * 16) + this->foreground() | (this->blinking() ? 0x80 : 0);
 }
 
 }

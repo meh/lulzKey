@@ -14,8 +14,17 @@ namespace Kernel {
 Interrupt::Handler Interrupt::_handlers[256] = {0};
 
 void
+system (Interrupt::Registers& regs)
+{
+    if (regs.ring == 1) {
+
+    }
+}
+
+void
 Interrupt::init (void)
 {
+    Interrupt::define(0x42, &system);
 }
 
 void
@@ -40,7 +49,7 @@ Interrupt::handle (Interrupt::Type type, Interrupt::Registers& registers)
 }
 
 void
-Interrupt::define (Type::u8 number, Handler handler)
+Interrupt::define (Type::u8 number, Interrupt::Handler handler)
 {
     _handlers[number] = handler;
 }
