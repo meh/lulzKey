@@ -120,10 +120,4 @@ Multiboot::graphicsTable (void)
         : NULL;
 }
 
-void*
-Multiboot::end (void)
-{
-    return (void*) (_info + sizeof(Info));
-}
-
 }

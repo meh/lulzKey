@@ -18,16 +18,6 @@ Shell* Shell::_object = NULL;
 Shell::Shell (const void* address)
 {
     if (!Shell::_object) {
-        /* Disable light backgrounds */
-        asm volatile ("cli");
-        Misc::in(0x3DA, Misc::Byte);                 /* void the flip-flop register */
-        Type::u8 addr = Misc::in(0x3C0, Misc::Byte); /* save the old address/data */
-        Misc::out(0x3C0, (Type::u8) 0x10);           /* get the attribute mode control register */
-        Type::u8 data = Misc::in(0x3C1, Misc::Byte); /* get the current attribute bitmap */
-        Misc::out(0x3C0, (Type::u8) (data | 0x8));   /* set the blink attribute to 1 */
-        Misc::out(0x3C0, addr);                      /* repristinate address/data */
-        asm volatile ("sti");
-
         _video = (Type::u8*) address;
         _y     = 0;
         _x     = 0;
@@ -293,7 +283,9 @@ Shell::print (unsigned long out)
 Type::u32
 Shell::print (const void* out)
 {
-    return _hexadecimal((unsigned long) out);
+    Type::u32 tmp = this->print("0x");
+
+    return tmp + _hexadecimal((unsigned long) out);
 }
 
 

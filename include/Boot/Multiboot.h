@@ -262,11 +262,6 @@ class Multiboot
      * VBE table.
      */
     VBE* graphicsTable (void);
-
-    /**
-     * Get the end memory address of the bootloaded data.
-     */
-    void* end (void);
 };
 
 }
