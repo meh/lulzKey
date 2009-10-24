@@ -31,7 +31,7 @@ echo "Enjoy."
 if [ "$1" ]; then
     urxvt -e qemu -curses -d cpu_reset,int -cpu pentium3 -m 32M -fda "$FLOPPY"
 else
-    qemu -d cpu_reset,int -cpu pentium3 -m 32M -fda "$FLOPPY"
+    qemu -vga std -d cpu_reset,int -cpu pentium3 -m 32M -fda "$FLOPPY"
 fi
 
 rm "$TMP"
