@@ -56,14 +56,14 @@ switchPage (Directory* directory)
 {
     _current = directory;
 
-    asm volatile("movl %0, %%cr3" :: "r" (&directory->tablesPhysical));
-
-    // Enable paging
     asm volatile(
+        "movl %0, %%cr3 \n"
+
+        // Enable paging
         "movl %%cr0, %%eax \n"
         "orl $0x80000000, %%eax \n"
         "movl %%eax, %%cr0"
-    ::: "eax");
+    :: "r" (&directory->tablesPhysical) : "eax");
 }
 
 Page*

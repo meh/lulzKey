@@ -37,7 +37,6 @@ system (Interrupt::Registers& regs)
 {
     if (regs.ring == 1) {
         switch (regs.eax) {
-            // Disable paging
             case 1:
             asm volatile (
                 "mov %%cr0, %%eax \n"
@@ -46,7 +45,6 @@ system (Interrupt::Registers& regs)
             ::: "eax");
             break;
 
-            // Enable paging
             case 2:
             asm volatile(
                 "movl %%cr0, %%eax \n"
@@ -57,7 +55,7 @@ system (Interrupt::Registers& regs)
 
             case 3:
             asm volatile(
-                "movl %ebx, %cr3 \n"
+                "movl %0, %%cr3 \n" :: "r" (regs.ebx)
             );
             break;
         }
