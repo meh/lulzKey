@@ -25,38 +25,39 @@
 .comm stack, STACKSIZE, 32 # reserve 16k stack on a quadword boundary
 
 loader:
-   movl  $(stack + STACKSIZE), %esp # set up the stack
+    movl  $(stack + STACKSIZE), %esp # set up the stack
 
-   push $0
-   popf
+    push $0
+    popf
 
-   push %ebx
-   push %eax
+    push %esp
+    push %ebx
+    push %eax
 
-   # calling static constructors
-   mov  $start_ctors, %ebx
-   jmp  _2
+    # calling static constructors
+    mov $start_ctors, %ebx
+    jmp _2
 _1:
-   call *(%ebx)
-   add  $4, %ebx
+    call *(%ebx)
+    add  $4, %ebx
 _2:
-   cmp  $end_ctors, %ebx
-   jb   _1
+    cmp $end_ctors, %ebx
+    jb  _1
 
-   cli
-   call main
+    cli
+    call main
 
-   # calling static destructors
-   mov  $start_dtors, %ebx
-   jmp  _4
+    # calling static destructors
+    mov $start_dtors, %ebx
+    jmp _4
 _3:
-   call *(%ebx)
-   add  $4, %ebx
+    call *(%ebx)
+    add  $4, %ebx
 _4:
-   cmp  $end_dtors, %ebx
-   jb   _3
+    cmp $end_dtors, %ebx
+    jb  _3
 
 hang:
     hlt         # halt machine should kernel return
-    jmp   hang
+    jmp hang
 

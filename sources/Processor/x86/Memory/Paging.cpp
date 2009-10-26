@@ -59,9 +59,11 @@ switchPage (Directory* directory)
     asm volatile("movl %0, %%cr3" :: "r" (&directory->tablesPhysical));
 
     // Enable paging
-    asm volatile("movl %%cr0, %%eax" ::: "eax");
-    asm volatile("orl $0x80000000, %%eax" ::: "eax");
-    asm volatile("movl %%eax, %%cr0" ::: "eax");
+    asm volatile(
+        "movl %%cr0, %%eax \n"
+        "orl $0x80000000, %%eax \n"
+        "movl %%eax, %%cr0"
+    ::: "eax");
 }
 
 Page*

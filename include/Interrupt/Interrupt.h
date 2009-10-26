@@ -31,7 +31,7 @@ class Interrupt
     typedef void (*Handler)(Registers&);
 
   public:
-    static void init (void);
+    static void init (Handler system);
 
     static void handle (Type type, Registers& registers);
 

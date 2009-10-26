@@ -14,17 +14,9 @@ namespace Kernel {
 Interrupt::Handler Interrupt::_handlers[256] = {0};
 
 void
-system (Interrupt::Registers& regs)
+Interrupt::init (Interrupt::Handler system)
 {
-    if (regs.ring == 1) {
-
-    }
-}
-
-void
-Interrupt::init (void)
-{
-    Interrupt::define(0x42, &system);
+    Interrupt::define(0x42, system);
 }
 
 void

@@ -11,7 +11,6 @@
 #include <Boot/Multiboot.h>
 
 #include <Processor/Processor.h>
-#include <Interrupt/Interrupt.h>
 #include <Services/Services.h>
 
 #include <Tools/Shell/Shell.h>
@@ -21,7 +20,7 @@ using namespace Kernel;
 
 extern "C"
 void
-main (Type::u32 magic, void* information)
+main (Type::u32 magic, void* information, Type::u32 initialStack)
 {
     Kernel::shell << "O HAI! DIS BEE ";
     Kernel::shell << Shell::Color(Shell::Color::Red) << "LULZKEY-" << ___VERSION___ << Shell::Color();
@@ -36,7 +35,6 @@ main (Type::u32 magic, void* information)
     Debug::dump(boot);
 
     Processor::init(boot);
-    Interrupt::init();
     Services::init(boot);
 
 #if 0
