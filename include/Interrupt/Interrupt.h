@@ -31,8 +31,6 @@ class Interrupt
     typedef void (*Handler)(Registers&);
 
   public:
-    static void init (Handler system);
-
     static void handle (Type type, Registers& registers);
 
     static void define (Type::u8 number, Handler handler);

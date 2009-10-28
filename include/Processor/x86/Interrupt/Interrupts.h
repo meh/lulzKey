@@ -6,32 +6,26 @@
 * See COPYING or http://www.gnu.org/licenses/agpl-3.0.txt                   *
 ****************************************************************************/
 
-#ifndef _LKEY_X86
-#   error "Why is this compiling? :)"
-#endif
-
-#include <Kernel.h>
-
-#include <Processor/Processor.h>
-#include <Processor/x86/DescriptorTables/DescriptorTables.h>
-#include <Processor/x86/Interrupt/Interrupts.h>
-#include <Processor/x86/Memory/Memory.h>
-#include <Processor/x86/Memory/Paging.h>
+#include <Interrupt/Interrupt.h>
 
 namespace Kernel {
 
 namespace Processor {
 
-extern "C" int __end;
+namespace Interrupts {
 
-void
-init (Multiboot& boot)
-{
-    DescriptorTables::init();
-    Interrupts::init();
+void init (void);
 
-    Memory::address = (Type::u32) &__end; // boot.end();
-    Memory::Paging::init(boot.memory()->upper);
+/**
+ * System interrupts, only the god service can call them.
+ *
+ * 1 - disable paging                   { void (void) }
+ * 2 - enable paging                    { void (void) }
+ * 3 - set paging directory to the ebx  { void (physycal table address) }
+ * 4 - flush TLB                        { void (void) }
+ */
+void system (Interrupt::Registers& regs);
+
 }
 
 }

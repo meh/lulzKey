@@ -10,7 +10,7 @@ STAGE2=`stat -c %s test/stage2`
 KERNEL=`stat -c %s lulzKey`
 
 TMP=`mktemp`
-FLOPPY=`mktemp`
+FLOPPY=`mktemp /tmp/qemu.XXXXXX`
 
 dd if=/dev/zero of="$TMP" bs=1 count=750 &> /dev/null
 cat test/stage1 test/stage2 "$TMP" lulzKey > "$FLOPPY"

@@ -43,6 +43,7 @@ x86_DIR = sources/Processor/x86
 
 KERNEL_FILES += ${x86_DIR}/Processor.cpp \
 				${x86_DIR}/DescriptorTables/DescriptorTables.cpp ${x86_DIR}/DescriptorTables/Global.cpp ${x86_DIR}/DescriptorTables/Interrupt.cpp \
+				${x86_DIR}/Interrupt/Interrupts.cpp \
 				${x86_DIR}/Memory/Memory.cpp ${x86_DIR}/Memory/Paging.cpp ${x86_DIR}/Memory/Frame.cpp
 
 ASM_FILES    += ${x86_DIR}/DescriptorTables/Global.S ${x86_DIR}/DescriptorTables/Interrupt.S \
@@ -66,5 +67,5 @@ $(KERNEL_FILES:.cpp=.o): $(KERNEL_FILES)
 
 clean:
 	rm -f ${NAME}
-	find . | egrep "\.o" | xargs rm -f
+	find sources | egrep "\.o" | xargs rm -f
 

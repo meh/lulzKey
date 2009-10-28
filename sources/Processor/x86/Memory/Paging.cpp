@@ -60,10 +60,10 @@ switchPage (Directory* directory)
         "movl %0, %%cr3 \n"
 
         // Enable paging
-        "movl %%cr0, %%eax \n"
-        "orl $0x80000000, %%eax \n"
-        "movl %%eax, %%cr0"
-    :: "r" (&directory->tablesPhysical) : "eax");
+        "movl %%cr0, %%edx \n"
+        "orl $0x80000000, %%edx \n"
+        "movl %%edx, %%cr0"
+    :: "r" (&directory->tablesPhysical) : "edx");
 }
 
 Page*
