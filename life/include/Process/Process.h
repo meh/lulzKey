@@ -12,6 +12,8 @@
 #include <Type.h>
 #include <List.h>
 
+namespace Process {
+
 class Process
 {
   public:
@@ -27,7 +29,7 @@ class Process
 
     Context _context;
 
-    List<Thread> _threads;
+//    List<Thread> _threads;
 
   public:
     Process (const char* name);
@@ -40,5 +42,7 @@ class Process
 
     Type::u32 hash (const char* string);
 };
+
+}
 
 #endif

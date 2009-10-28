@@ -6,11 +6,13 @@
 * See COPYING or http://www.gnu.org/licenses/agpl-3.0.txt                   *
 ****************************************************************************/
 
-#ifndef _LIFE_MEMORY_H
-#define _LIFE_MEMORY_H
+#ifdef  _LIFE_PROCESS_COMMUNICATION_H
+#ifndef _LIFE_PROCESS_COMMUNICATION_MESSAGE_H
+#define _LIFE_PROCESS_COMMUNICATION_MESSAGE_H
 
-namespace Memory {
+class Message
+{
+};
 
-}
-
+#endif
 #endif

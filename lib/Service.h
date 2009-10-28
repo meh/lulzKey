@@ -25,7 +25,7 @@
 namespace Service {
 
 struct Info {
-    char     name[23];
+    char*    name;
     Type::u8 priority;
 };
 

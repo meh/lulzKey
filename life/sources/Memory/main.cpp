@@ -6,11 +6,3 @@
 * See COPYING or http://www.gnu.org/licenses/agpl-3.0.txt                   *
 ****************************************************************************/
 
-#ifndef _LIFE_MEMORY_H
-#define _LIFE_MEMORY_H
-
-namespace Memory {
-
-}
-
-#endif
