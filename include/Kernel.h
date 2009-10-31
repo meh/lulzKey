@@ -9,6 +9,10 @@
 #ifndef _LKEY_KERNEL_H
 #define _LKEY_KERNEL_H
 
+#define KERNEL_LEVEL  0
+#define SERVICE_LEVEL 1
+#define USER_LEVEL    3
+
 #include <Tools/Shell/Shell.h>
 
 namespace Kernel {

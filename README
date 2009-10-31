@@ -4,8 +4,7 @@ Yes yes I know, another gay OS, just trying something to learn stuff about kerne
 
 Used software:
     - app-emulation/qemu-0.11.0
-    - sys-devel/gcc-4.4.2
-    - sys-devel/binutils-2.20
+    - sys-devel/llvm-gcc-2.6
 
 If you have problems ensure that you're using those versions or don't bother meh.
 

@@ -7,6 +7,7 @@
 ****************************************************************************/
 
 #include <Services/Services.h>
+#include <Memory/Memory.h>
 
 namespace Kernel {
 
@@ -15,7 +16,7 @@ namespace Services {
 void
 init (Multiboot& boot)
 {
-
+    
 }
 
 }

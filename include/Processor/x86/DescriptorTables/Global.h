@@ -43,9 +43,40 @@ class Global
         Type::u32 base;  /*<< The address of the first descriptor. */
     } __attribute__ ((packed));
 
+    struct TSS {
+        Type::u32 prevTSS;
+        Type::u32 esp0;
+        Type::u32 ss0;
+        Type::u32 esp1;
+        Type::u32 ss1;
+        Type::u32 esp2;
+        Type::u32 ss2;
+        Type::u32 cr3;
+        Type::u32 eip;
+        Type::u32 eflags;
+        Type::u32 eax;
+        Type::u32 ecx;
+        Type::u32 edx;
+        Type::u32 ebx;
+        Type::u32 esp;
+        Type::u32 ebp;
+        Type::u32 esi;
+        Type::u32 edi;
+        Type::u32 es;
+        Type::u32 cs;
+        Type::u32 ss;
+        Type::u32 ds;
+        Type::u32 fs;
+        Type::u32 gs;
+        Type::u32 ldt;
+        Type::u16 trap;
+        Type::u16 iomapBase;
+    } __attribute__ ((packed));
+
   private:
-    static Entry   _entries[7];
+    static Entry   _entries[8];
     static Pointer _pointer;
+    static TSS     _tss;
 
   public:
     static void init (void);
@@ -53,6 +84,10 @@ class Global
     static void set (Type::s32 index, Type::u32 base, Type::u32 limit, Type::u8 access, Type::u8 granularity);
 
     static void flush (void);
+
+  private:
+    static void _initTSS (Type::u32 index, Type::u16 ss0, Type::u32 esp0);
+    static void _flushTSS (void);
 };
 
 }

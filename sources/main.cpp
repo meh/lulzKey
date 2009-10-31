@@ -19,7 +19,7 @@
 using namespace Kernel;
 
 extern "C"
-void
+int
 main (Type::u32 magic, void* information, Type::u32 initialStack)
 {
     Kernel::shell << "O HAI! DIS BEE ";
@@ -28,7 +28,7 @@ main (Type::u32 magic, void* information, Type::u32 initialStack)
 
     if (magic != Multiboot::Magic) {
         shell << "What, it's not a Multiboot-compliant boot loader :(" << Shell::endLine;
-        return;
+        return 1;
     }
 
     Multiboot boot(information);
@@ -41,5 +41,7 @@ main (Type::u32 magic, void* information, Type::u32 initialStack)
     Type::u32 *ptr = (Type::u32*) 0xA0000000;
     Type::u32 do_page_fault = *ptr;
 #endif
+
+    return 0;
 }
 

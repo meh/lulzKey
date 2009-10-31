@@ -7,6 +7,7 @@
 ****************************************************************************/
 
 #include <Processor/x86/Interrupt/Interrupts.h>
+#include <Processor/x86/Memory/Paging.h>
 
 namespace Kernel {
 
@@ -17,7 +18,7 @@ namespace Interrupts {
 void
 init (void)
 {
-
+    Interrupt::define(0x42, &system);
 }
 
 void
@@ -43,7 +44,7 @@ system (Interrupt::Registers& regs)
 
             case 3: // set paging directory to ebx
             asm volatile (
-                "movl %0, %%cr3 \n" :: "r" (regs.ebx)
+                "movl %0, %%cr3 \n" :: "r" (((Memory::Paging::Directory*) regs.ebx)->tablesPhysical)
             );
             break;
 

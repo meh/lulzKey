@@ -1,8 +1,9 @@
 VERSION = 0.0.1
 NAME    = lulzKey
 
-CXX      = g++
-CFLAGS   = -m32 -Wall -Wextra -Wno-long-long -pedantic -ffreestanding -nostartfiles -nostdlib -nodefaultlibs -fno-builtin -fno-stack-protector -fstrength-reduce -fomit-frame-pointer -finline-functions -fno-rtti -fno-exceptions -D___VERSION___='"${VERSION}"' -I./include -I./sources -I./lolibc/include
+CC		 = llvm-gcc
+CXX      = llvm-g++
+CFLAGS   = -m32 -Wall -Wextra -Wno-long-long -pedantic -nostartfiles -nostdlib -nodefaultlibs -fno-builtin -fno-stack-protector -fstrength-reduce -fomit-frame-pointer -finline-functions -fno-rtti -fno-exceptions -D___VERSION___='"${VERSION}"' -I./include -I./sources -I./lolibc/include
 CXXFLAGS = ${CFLAGS}
 LDFLAGS  = -T linker.ld -s -L./lolibc -static -llolibc
 
@@ -53,7 +54,7 @@ KERNEL_FILES += ${ELF_FILES}
 endif
 
 all: kernel_asm kernel
-	gcc ${CFLAGS} -o ${NAME} $(ASM_FILES:.S=_.o) $(KERNEL_FILES:.cpp=.o) ${LDFLAGS} 
+	${CXX} ${CFLAGS} -o ${NAME} $(ASM_FILES:.S=_.o) $(KERNEL_FILES:.cpp=.o) ${LDFLAGS} 
 
 kernel_asm: $(ASM_FILES:.S=_.o)
 
