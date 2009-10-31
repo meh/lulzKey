@@ -87,7 +87,7 @@ class Global
 
   private:
     static void _initTSS (Type::u32 index, Type::u16 ss0, Type::u32 esp0);
-    static void _flushTSS (void);
+    static void _flushTSS (bool service = true);
 };
 
 }

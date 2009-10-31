@@ -40,7 +40,7 @@ struct Table {
 struct Directory {
     Table*    tables[1024];         /*<< array of pointers to Tables */
     Type::u32 tablesPhysical[1024]; /*<< array of physical pointers to those tables, to be passed to CR3 */
-    Type::u32 pysicalAddress;       /*<< physical address of tablesPhysical */
+    Type::u32 physicalAddress;      /*<< physical address of tablesPhysical */
 };
 
 extern Directory* _kernel;

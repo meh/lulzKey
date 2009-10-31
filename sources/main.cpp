@@ -32,15 +32,9 @@ main (Type::u32 magic, void* information, Type::u32 initialStack)
     }
 
     Multiboot boot(information);
-    Debug::dump(boot);
 
     Processor::init(boot);
     Services::init(boot);
-
-#if 0
-    Type::u32 *ptr = (Type::u32*) 0xA0000000;
-    Type::u32 do_page_fault = *ptr;
-#endif
 
     return 0;
 }

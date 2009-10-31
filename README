@@ -10,3 +10,5 @@ If you have problems ensure that you're using those versions or don't bother meh
 
 To compile remember to download lolibc [http://github.com/meh/lolibc], extract it into lolibc/
 and run make 32bit=1.
+
+If you want to use GCC make sure to change the CC and CXX variables in the Makefiles.

@@ -7,10 +7,11 @@ CFLAGS   = -m32 -Wall -Wextra -Wno-long-long -pedantic -nostartfiles -nostdlib -
 CXXFLAGS = ${CFLAGS}
 LDFLAGS  = -T linker.ld -s -L./lolibc -static -llolibc
 
-ifdef OPTIMIZED
+ifndef NOTOPTIMIZED
 CFLAGS   += -Os
 CXXFLAGS += -Os
 endif
+
 
 ifdef PANIC
 CFLAGS += -D_${PANIC}

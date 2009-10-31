@@ -62,12 +62,16 @@ Global::_initTSS (Type::u32 index, Type::u16 ss0, Type::u32 esp0)
 }
 
 void
-Global::_flushTSS (void)
+Global::_flushTSS (bool service)
 {
-    asm volatile (
-        "movw $(0x28 | 3), %%ax \n"
-        "ltr  %%ax \n"
-    ::: "eax");
+    if (service) {
+        asm volatile ("movw $(0x28 | 1), %dx");
+    }
+    else {
+        asm volatile ("movw $(0x28 | 3), %dx");
+    }
+
+    asm volatile ("ltr %dx");
 }
 
 void

@@ -37,6 +37,7 @@ init (Type::u32 upperMemory)
 
     _kernel = (Directory*) Memory::alloc(sizeof(Directory), true);
     Memory::set(_kernel, 0, sizeof(Directory));
+    _kernel->physicalAddress = (Type::u32) _kernel->tablesPhysical;
 
     _current = _kernel;
 
@@ -63,7 +64,7 @@ switchPage (Directory* directory)
         "movl %%cr0, %%edx \n"
         "orl $0x80000000, %%edx \n"
         "movl %%edx, %%cr0"
-    :: "r" (&directory->tablesPhysical) : "edx");
+    :: "r" (directory->physicalAddress) : "edx");
 }
 
 Page*
