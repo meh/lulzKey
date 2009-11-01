@@ -12,8 +12,9 @@
 #include <Process/Process.h>
 #include <System/System.h>
 
-extern "C" const Service::Info info = {
-    "life", 0
+const Service::Info info = {
+    .name     = "life",
+    .priority = 0,
 };
 
 int

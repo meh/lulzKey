@@ -1,8 +1,8 @@
 VERSION = 0.0.1
 NAME    = life
 
-CXX      = g++
-CFLAGS   = -m32 -Wall -Wextra -Wno-long-long -pedantic -nostdlib -nodefaultlibs -fno-builtin -fno-stack-protector -fstrength-reduce -fomit-frame-pointer -finline-functions -fno-rtti -fno-exceptions -D___VERSION___='"${VERSION}"' -I./include -I./sources -I../../lolibc/include -I../lib
+CXX      = llvm-g++
+CFLAGS   = -m32 -Wall -Wextra -Wno-long-long -pedantic -nostdlib -nodefaultlibs -fno-builtin -fno-rtti -fno-exceptions -D___VERSION___='"${VERSION}"' -I./include -I./sources -I../../lolibc/include -I../include
 CXXFLAGS = ${CFLAGS}
 LDFLAGS  = -s -L../../lolibc -static -llolibc
 
@@ -28,4 +28,4 @@ $(FILES:.cpp=.o): $(FILES)
 
 clean:
 	rm -f ${NAME}
-	find sources | egrep "\.o" | xargs rm -f
+	find sources | egrep "\.o$$" | xargs rm -f
