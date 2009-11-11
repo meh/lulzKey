@@ -25,4 +25,3 @@ __gdt_flush:
     
 _flush:
     ret
-

@@ -63,7 +63,9 @@ panic (const char* message, ...)
 
     va_end(args);
 
-    while (true);
+    while (true) {
+        // HARBL HARBL HARBL
+    }
 }
 
 }

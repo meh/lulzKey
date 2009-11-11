@@ -37,9 +37,10 @@ Global::init (void)
     Global::set(5, 0, 0xFFFFFFFF, 0xFA, 0xCF); // User mode code segment    @ 0x28
     Global::set(6, 0, 0xFFFFFFFF, 0xF2, 0xCF); // User mode data segment    @ 0x30
 
-    Global::_initTSS(7, 0x10, 0x0);
+    Global::_initTSS(7, 0x10, 0x0); // @ 0x38
 
     Global::flush();
+    Global::_flushTSS();
 }
 
 void
@@ -65,10 +66,10 @@ void
 Global::_flushTSS (bool service)
 {
     if (service) {
-        asm volatile ("movw $(0x28 | 1), %dx");
+        asm volatile ("movw $(0x38 | 1), %dx");
     }
     else {
-        asm volatile ("movw $(0x28 | 3), %dx");
+        asm volatile ("movw $(0x38 | 3), %dx");
     }
 
     asm volatile ("ltr %dx");
