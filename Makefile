@@ -1,8 +1,8 @@
 VERSION = 0.0.1
 NAME    = lulzKey
 
-CC		 = llvm-gcc
-CXX      = llvm-g++
+CC		 = clang
+CXX      = clang
 CFLAGS   = -m32 -Wall -Wextra -Wno-long-long -pedantic -nostartfiles -nostdlib -nodefaultlibs -fno-builtin -fno-stack-protector -fstrength-reduce -fomit-frame-pointer -finline-functions -fno-rtti -fno-exceptions -D___VERSION___='"${VERSION}"' -I./include -I./sources -I./lolibc/include
 CXXFLAGS = ${CFLAGS}
 LDFLAGS  = -T linker.ld -s -L./lolibc -static -llolibc
