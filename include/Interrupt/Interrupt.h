@@ -18,7 +18,7 @@ namespace Kernel {
 class Interrupt
 {
   protected:
-    Interrupt (void) {};
+    Interrupt (void) {}
 
   public:
     typedef Processor::InterruptRegisters Registers;
