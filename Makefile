@@ -39,7 +39,7 @@ ELF_FILES = ${FORMAT_DIR}/ELF/ELF.cpp \
 ARCH = x86
 
 ifeq ("${ARCH}", "x86")
-CFLAGS += -D_LKEY_X86 -D_LOLIBC_X86
+CFLAGS += -D_LKEY_X86
 
 x86_DIR = sources/Processor/x86
 

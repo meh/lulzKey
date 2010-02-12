@@ -3,12 +3,14 @@ LOL MICROKERNEL.
 Yes yes I know, another gay OS, just trying something to learn stuff about kernel land ^_^
 
 Used software:
-    - app-emulation/qemu-0.11.0
+    - app-emulation/qemu-0.11.1
     - sys-devel/llvm-gcc-2.6
+    - dev-lang/ruby-1.8.7
+    - dev-ruby/rake-0.8.7
 
 If you have problems ensure that you're using those versions or don't bother meh.
 
 To compile remember to download lolibc [http://github.com/meh/lolibc], extract it into lolibc/
-and run make 32bit=1.
+and run rake 32bit=1 ARCH=x86
 
 If you want to use GCC make sure to change the CC and CXX variables in the Makefiles.
