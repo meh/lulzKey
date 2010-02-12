@@ -16,7 +16,18 @@ SOURCES = {
     :ASM => FileList['sources/**/*.S'].exclude('sources/Processor/**')
 }
 
-OBJECTS = FileList[].include(SOURCES[:C].ext('o')).include(SOURCES[:ASM].ext('ao'))
+if not ARGV.include?('clean') and !ARGV.include?('clobber')
+    case ENV['ARCH']
+        when 'x86'
+            SOURCES[:C].include('sources/Processor/x86/**.cpp')
+            SOURCES[:ASM].include('sources/Processor/x86/**.S')
+            CFLAGS << ' -D_LKEY_X86'
+        else
+            raise 'No arch was choosen.'
+    end
+end
+
+OBJECTS = FileList.new.include(SOURCES[:C].ext('o')).include(SOURCES[:ASM].ext('ao'))
 
 task :default => [NAME]
 
@@ -28,18 +39,7 @@ rule '.ao' => '.S' do |t|
     sh "#{CC} #{CFLAGS} -o #{t.name} -c #{t.source}"
 end
 
-task :arch do
-    case ENV['ARCH']
-        when 'x86'
-            C_SOURCES.include('sources/Processor/x86/**.cpp')
-            ASM_SOURCES.include('sources/Processor/x86/**.S')
-            CFLAGS << ' -D_LKEY_X86'
-        else
-            raise 'No arch was choosen.'
-    end
-end
-
-task :compile => [:arch].concat(OBJECTS)
+task :compile => OBJECTS
 
 file NAME => :compile do
     sh "#{CC} #{CFLAGS} -o #{NAME} #{OBJECTS} #{LDFLAGS}"
