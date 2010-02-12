@@ -3,7 +3,7 @@ NAME    = lulzKey
 
 CC		 = llvm-gcc # clang
 CXX      = llvm-g++ # clang
-CFLAGS   = -m32 -Wall -Wextra -Wno-long-long -pedantic -ffreestanding -fno-builtin -nostartfiles -nostdlib -nodefaultlibs -fno-stack-protector -fstrength-reduce -fomit-frame-pointer -finline-functions -fno-rtti -fno-exceptions -D___VERSION___='"${VERSION}"' -I./include -I./sources -I./lolibc/include
+CFLAGS   = -m32 -Wall -Wextra -Wno-long-long -pedantic -fno-builtin -nostartfiles -nostdlib -nodefaultlibs -fno-stack-protector -fstrength-reduce -fomit-frame-pointer -finline-functions -fno-rtti -fno-exceptions -D___VERSION___='"${VERSION}"' -I./include -I./sources -I./lolibc/include
 CXXFLAGS = ${CFLAGS}
 LDFLAGS  = -T linker.ld -s -L./lolibc -static -llolibc
 

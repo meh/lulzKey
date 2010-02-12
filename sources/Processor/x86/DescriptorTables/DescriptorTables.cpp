@@ -1,7 +1,7 @@
 /****************************************************************************
  * lulzKey. Let's close those effin Windows so penguins won't enter.        *
  *                                                                          *
- * Copyright (C) 2009  meh. [http://meh.doesntexist.org]                    *
+ * Copyright (C) 2010  meh. [http://meh.doesntexist.org]                    *
  *                                                                          *
  * This program is free software: you can redistribute it and/or modify     *
  * it under the terms of the GNU Affero General Public License as published *

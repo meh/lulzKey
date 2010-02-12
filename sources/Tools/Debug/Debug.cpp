@@ -1,5 +1,5 @@
 /****************************************************************************
-* Copyright (C) 2009  meh. [http://meh.doesntexist.org]                     *
+* Copyright (C) 2010  meh. [http://meh.doesntexist.org]                     *
 *                                                                           *
 * This file is part of lulzKey.                                             *
 *                                                                           *
