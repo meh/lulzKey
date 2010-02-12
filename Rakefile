@@ -5,23 +5,26 @@ NAME    = 'lulzKey'
 RELEASE = '0.0.1'
 
 CC      = 'llvm-g++'
-CFLAGS  = "-m32 -Wall -Wextra -Wno-long-long -pedantic -fno-builtin -nostartfiles -nostdlib -nodefaultlibs -fno-stack-protector -fstrength-reduce -fomit-frame-pointer -finline-functions -fno-rtti -fno-exceptions -D___VERSION___='\"#{RELEASE}\"' -I./include -I./sources -I./lolibc/include"
+CFLAGS  = "-Wall -Wextra -Wno-long-long -pedantic -fno-builtin -nostartfiles -nostdlib -nodefaultlibs -fno-stack-protector -fstrength-reduce -fomit-frame-pointer -finline-functions -fno-rtti -fno-exceptions -D___VERSION___='\"#{RELEASE}\"' -I./include -I./sources -I./lolibc/include"
 LDFLAGS = '-T linker.ld -s -L./lolibc -static -llolibc'
 
 CLEAN.include('sources/**/*.o', 'sources/**.ao')
 CLOBBER.include(NAME)
 
 SOURCES = {
-    :C   => FileList['sources/**/*.cpp'].exclude('sources/Processor/**'),
-    :ASM => FileList['sources/**/*.S'].exclude('sources/Processor/**')
+    :C   => FileList['sources/**/*.cpp'],
+    :ASM => FileList['sources/**/*.S']
 }
 
-if not ARGV.include?('clean') and !ARGV.include?('clobber')
+CFLAGS << " -D_PANIC_#{ENV['PANIC'] || 'NAZI'}"
+
+if not ARGV.include?('clean') and not ARGV.include?('clobber')
     case ENV['ARCH']
         when 'x86'
-            SOURCES[:C].include('sources/Processor/x86/**.cpp')
-            SOURCES[:ASM].include('sources/Processor/x86/**.S')
-            CFLAGS << ' -D_LKEY_X86'
+            SOURCES[:C].exclude(/sources\/Processor\/(^x86)\/.*\.cpp$/)
+            SOURCES[:ASM].exclude(/sources\/Processor\/(^x86)\/.*\.cpp$/)
+
+            CFLAGS << ' -D_LKEY_X86 -m32'
         else
             raise 'No arch was choosen.'
     end

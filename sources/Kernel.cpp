@@ -40,7 +40,7 @@ _panicImage (void)
 {
     shell.clear();
 
-    #ifdef _NAZI
+    #ifdef _PANIC_NAZI
     shell << Shell::endLine;
     shell << PADDING << BORDER << "             " << "KERNEL" << "             " << VOID << " " << Shell::endLine;
     shell << PADDING << BORDER << "  " << BACKGROUND << "                            " << BORDER << "  " << VOID << " " << Shell::endLine;
