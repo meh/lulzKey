@@ -8,7 +8,7 @@ CC      = 'llvm-g++'
 CFLAGS  = "-Wall -Wextra -Wno-long-long -pedantic -fno-builtin -nostartfiles -nostdlib -nodefaultlibs -fno-stack-protector -fstrength-reduce -fomit-frame-pointer -finline-functions -fno-rtti -fno-exceptions -D___VERSION___='\"#{RELEASE}\"' -I./include -I./sources -I./lolibc/include"
 LDFLAGS = '-T linker.ld -s -L./lolibc -static -llolibc'
 
-CLEAN.include('sources/**/*.o', 'sources/**.ao')
+CLEAN.include('sources/**/*.o', 'sources/**/*.ao')
 CLOBBER.include(NAME)
 
 SOURCES = {
