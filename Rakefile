@@ -12,8 +12,8 @@ CLEAN.include('sources/**/*.o', 'sources/**/*.ao')
 CLOBBER.include(NAME)
 
 SOURCES = {
-    :C   => FileList['sources/**/*.cpp'],
-    :ASM => FileList['sources/**/*.S']
+    :ASM => FileList['sources/loader.S', 'sources/*/**/*.S'],
+    :CPP => FileList['sources/**/*.cpp'],
 }
 
 CFLAGS << " -D_PANIC_#{ENV['PANIC'] || 'NAZI'}"
@@ -21,8 +21,8 @@ CFLAGS << " -D_PANIC_#{ENV['PANIC'] || 'NAZI'}"
 if not ARGV.include?('clean') and not ARGV.include?('clobber')
     case ENV['ARCH']
         when 'x86'
-            SOURCES[:C].exclude(/sources\/Processor\/(^x86)\/.*\.cpp$/)
             SOURCES[:ASM].exclude(/sources\/Processor\/(^x86)\/.*\.cpp$/)
+            SOURCES[:CPP].exclude(/sources\/Processor\/(^x86)\/.*\.cpp$/)
 
             CFLAGS << ' -D_LKEY_X86'
             ENV['32bit'] = 'true'
@@ -39,7 +39,7 @@ if ENV['OPTIMIZED'] != 'false'
     CFLAGS << ' -Os'
 end
 
-OBJECTS = FileList.new.include(SOURCES[:C].ext('o')).include(SOURCES[:ASM].ext('ao'))
+OBJECTS = FileList.new.include(SOURCES[:ASM].ext('ao')).include(SOURCES[:CPP].ext('o'))
 
 task :default => [NAME]
 
