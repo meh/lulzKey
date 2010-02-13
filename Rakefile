@@ -21,14 +21,14 @@ CFLAGS << " -D_PANIC_#{ENV['PANIC'] || 'NAZI'}"
 if not ARGV.include?('clean') and not ARGV.include?('clobber')
     case ENV['ARCH']
         when 'x86'
-            SOURCES[:ASM].exclude(/sources\/Processor\/(^x86)\/.*\.cpp$/)
-            SOURCES[:CPP].exclude(/sources\/Processor\/(^x86)\/.*\.cpp$/)
-
             CFLAGS << ' -D_LKEY_X86'
             ENV['32bit'] = 'true'
         else
             raise 'No arch was choosen.'
     end
+
+    SOURCES[:ASM].exclude(/sources\/Processor\/(^#{ENV['ARCH']})\/.*\.cpp$/)
+    SOURCES[:CPP].exclude(/sources\/Processor\/(^#{ENV['ARCH']})\/.*\.cpp$/)
 end
 
 if ENV['32bit']
