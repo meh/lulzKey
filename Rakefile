@@ -24,10 +24,19 @@ if not ARGV.include?('clean') and not ARGV.include?('clobber')
             SOURCES[:C].exclude(/sources\/Processor\/(^x86)\/.*\.cpp$/)
             SOURCES[:ASM].exclude(/sources\/Processor\/(^x86)\/.*\.cpp$/)
 
-            CFLAGS << ' -D_LKEY_X86 -m32'
+            CFLAGS << ' -D_LKEY_X86'
+            ENV['32bit'] = 'true'
         else
             raise 'No arch was choosen.'
     end
+end
+
+if ENV['32bit']
+    CFLAGS << ' -m32'
+end
+
+if ENV['OPTIMIZED'] != 'false'
+    CFLAGS << ' -Os'
 end
 
 OBJECTS = FileList.new.include(SOURCES[:C].ext('o')).include(SOURCES[:ASM].ext('ao'))
