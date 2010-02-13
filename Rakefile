@@ -21,7 +21,7 @@ CFLAGS << " -D_PANIC_#{ENV['PANIC'] || 'NAZI'}"
 if not ARGV.include?('clean') and not ARGV.include?('clobber')
     case ENV['ARCH']
         when 'x86'
-            CFLAGS << ' -D_LKEY_X86'
+            CFLAGS << ' -D_ARCH_X86'
             ENV['32bit'] = 'true'
         else
             raise 'No arch was choosen.'

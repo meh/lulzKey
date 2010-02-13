@@ -19,7 +19,7 @@
 * along with lulzKey.  If not, see <http://www.gnu.org/licenses/>.          *
 ****************************************************************************/
 
-#ifndef _LKEY_X86
+#ifndef _ARCH_X86
 #   error "Why is this compiling? :)"
 #endif
 
